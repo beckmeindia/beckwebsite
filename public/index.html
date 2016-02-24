@@ -25,12 +25,12 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-71834469-1', 'auto');
 ga('send', 'pageview');
 
-window.onload = getOs
+window.onload = getDevice();
 
-function onload()
+function getDevice()
 {
   var val=detectmob();
-  if(val=='true')
+  if(val === true)
   {  
   document.getElementById("downnow").style.visibility = "hidden";
 }
