@@ -25,6 +25,17 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-71834469-1', 'auto');
 ga('send', 'pageview');
 
+window.onload = getOs
+
+function onload()
+{
+  var val=detectmob();
+  if(val=='true')
+  {  
+  document.getElementById("downnow").style.visibility = "hidden";
+}
+}
+
 function myFunction()
 {
 Ply.dialog("prompt", {
@@ -100,6 +111,22 @@ function notsentSuccessfully() {
     }
 });
 }
+
+function detectmob() { 
+ if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)
+ ){
+    return true;
+  }
+ else {
+    return false;
+  }
+}
 	
 </script>
   </head>
@@ -120,7 +147,7 @@ function notsentSuccessfully() {
           <ul class="nav navbar-nav pull-right">
 
              <li class="nav-item nav-item-toggable">
-              <a style="font-weight:normal;font-size:12 px;  width:230px;height:40px;line-height:0px ;margin-top:-4px;border-radius:2px;border-style: solid;
+              <a id="downnow" style="font-weight:normal;font-size:12 px;  width:230px;height:40px;line-height:0px ;margin-top:-4px;border-radius:2px;border-style: solid;
     border-width: 1px; border-color: #fff;  color: white " class="btn btn-secondary-outline m-b-md" onclick="myFunction()" role="button" text-transform="none">download now</a>
             </li>
             
