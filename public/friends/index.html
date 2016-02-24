@@ -244,25 +244,25 @@
         <ons-list id="pickupdetails" style="display:none;margin-top:-1px;">
           <ons-list-item style="padding-top:10px" onclick="pickupauto()">
             <div class="prop-desc">
-              <ons-icon icon="ion-ios-location" style="vertical-align:-4px;font-size:30px;margin-right:15px"></ons-icon>
+              <ons-icon icon="ion-ios-location" style="vertical-align:-10px;font-size:30px;margin-right:15px"></ons-icon>
               <input readonly type="text" class="text-input text-input--transparent" id="pickuparea" placeholder="Pickup Area Road Name" value="">
             </div>
           </ons-list-item>         
 		   <ons-list-item style="padding-top:10px" onclick="lala()">
             <div class="prop-desc">
-              <ons-icon icon="ion-person" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
+              <ons-icon icon="ion-person" style="vertical-align:-10px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="text" class="text-input text-input--transparent" id="pickupname" placeholder="Pickup Contact Name" value="">
             </div>
           </ons-list-item>
 		<ons-list-item style="padding-top:10px;">
             <div class="prop-desc">
-              <ons-icon icon="ion-clipboard" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
+              <ons-icon icon="ion-clipboard" style="vertical-align:-10px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="text" class="text-input text-input--transparent" id="pickupaddr" placeholder="Pickup Contact Address" value="">
             </div>			
          </ons-list-item>
           <ons-list-item style="padding-top:10px;">
             <div class="prop-desc">
-              <ons-icon icon="ion-ios-telephone" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
+              <ons-icon icon="ion-ios-telephone" style="vertical-align:-10px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="tel" class="text-input text-input--transparent" id="pickupnum" placeholder="Pickup Contact Number" value="">
             </div>
 			<button id="nextodelv" class="button button--large" style="margin-top:10px;" onclick="showdelivery();">NEXT</button><br>
@@ -271,25 +271,25 @@
 		<ons-list id="deliverydetails" style="margin-top:-1px; display:none" >
           <ons-list-item style="padding-top:10px" onclick="delvauto()">
             <div class="prop-desc">
-              <ons-icon icon="ion-ios-location" style="vertical-align:-4px;font-size:30px;margin-right:15px"></ons-icon>
+              <ons-icon icon="ion-ios-location" style="vertical-align:-10px;font-size:30px;margin-right:15px"></ons-icon>
               <input readonly type="text" class="text-input text-input--transparent" id="deliveryarea" placeholder="Delivery Area Road Name" value="">
             </div>
           </ons-list-item>        
 		  <ons-list-item style="padding-top:10px" onclick="lala2()">
             <div class="prop-desc">
-              <ons-icon icon="ion-person" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
+              <ons-icon icon="ion-person" style="vertical-align:-10px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="text" class="text-input text-input--transparent" id="deliveryname" placeholder="Delivery Contact Name" value="">
             </div>
           </ons-list-item>
 			<ons-list-item style="padding-top:10px;">
             <div class="prop-desc">
-              <ons-icon icon="ion-clipboard" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
+              <ons-icon icon="ion-clipboard" style="vertical-align:-10px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="text" class="text-input text-input--transparent" id="deliveryaddr" placeholder="Delivery Contact Address" value="">
             </div>			
           </ons-list-item>	
           <ons-list-item style="padding-top:10px;">
             <div class="prop-desc">
-              <ons-icon icon="ion-ios-telephone" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
+              <ons-icon icon="ion-ios-telephone" style="vertical-align:-10px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="tel" class="text-input text-input--transparent" id="deliverynum" placeholder="Delivery Contact Number" value="">
             </div>	
 			<button class="button button--large" style="margin-top:10px;" onclick="receipt();">NEXT</button><br>			
@@ -313,47 +313,7 @@
   </ons-page>
 </ons-template>
 
- <ons-template id="page2.html">
-  <ons-page modifier="shop-details" style="background:#f4f4f4">
-	<div class="navigation-bar" style="border-bottom:1px solid #d6d6d6;position:fixed;">
-  <div class="navigation-bar__left">
-  <ons-back-button style="color:#fff"> </ons-back-button>      
-  </div>
-  <div class="navigation-bar__center" style="font-size:16px">
-   PACKAGE SUMMARY
-  </div> 
- </div>	
-  <ul class="list" style="margin-top:60px;margin-left:10px;margin-right:10px;border-radius:5px;border:1px solid #d6d6d6">
-  <li class="list__header" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16px;letter-spacing:1px;text-align:center">FARE DETAILS</li>
-  <li class="list__item" style="margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px">YOU PAY<div id="fare" style="float:right;font-size:22px"></div></li>
-  </ul> 
-  <ul class="list list--inset" style="margin-top:20px">
-  <textarea id="descriptor" class="textarea" rows="4" style="width:100%;border:none;background:#fff;margin:5px;" placeholder="Additional Instructions (optional)"></textarea>
-  </ul>  
-  <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4;" onclick="showsumm()">
-  <li class="list__header" style="padding:10px 0px 10px 10px;background:#f4f4f4;color:#000;height:45px;font-size:14px;letter-spacing:1px;"><div id="summhd" style="display:inline">SHOW SUMMARY</div><ons-icon id="summicnryt" icon="ion-arrow-right-b" style="vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon><ons-icon id="summicndwn" icon="ion-arrow-down-b" style="display:none;vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon></li>
-  </ul>   
-  <div id="summary" style="display:none">
-  <div id="card2" style="background:#eaeaea;width: 100%; height: 200px; background-size: 100% 100%; background-repeat: no-repeat;"></div>
-  <ul class="list list--inset" style="margin-top:20px">
-  <li class="list__header list__item--inset" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16Px;LETTER-SPACING:1PX;text-align:center">Pickup Location</li>
-  <li id="pickupareasumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  <li id="pickupdetsumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  </ul>
-  <ul class="list list--inset" style="margin-top:20px">
-  <li class="list__header list__item--inset" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16Px;LETTER-SPACING:1PX;text-align:center">Delivery Location</li>
-  <li id="delvareasumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  <li id="delvdetsumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  </ul>  
-  </div>  
-  <ul class="list list--inset" style="margin-top:15px;">
-  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold">DELIVERY BY<div id="datetymsumm" style="float:right"></div></li>
-  </ul>
-  <button id="postbtn" class="button button--large" style="display:none;margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px" onclick="post2()">POST THIS REQUEST</button>  
-  </ons-page>
-</ons-template>
-
- <ons-template id="page5.html">
+<ons-template id="page5.html">
   <ons-page modifier="shop-details" style="background:#fff">	
 	<div style="font-size:30px;margin-top:50px;height:50px;width:80%;text-align:center;margin-left:10%;color:#000;  letter-spacing:2px;">BECK <div style="font-size:26px;color:#ff0000;display:inline-block;letter-spacing:1px;font-weight:normal;font-family: 'Shadows Into Light', cursive;">Friends</div></div>
 	<input id="pac-input2" type="search" class="search-input" placeholder="Search Your Location..." style="border:none;border-radius:0px;width: 86%;margin-left:7%;margin-top:0px">
@@ -365,6 +325,43 @@
   <ons-page modifier="shop-details" style="background:#f4f4f4">	
 	<input id="pac-input" type="text" class="text-input text-input--transparent" placeholder="Search Location" style="width:75%;margin-top:7px;margin-left:15px">
 	<button id="cancelauto" class="button button--quiet" style="margin-top:4px;color:#000;font-size:12px" onclick="myNavigator.popPage('page3.html', { animation : 'lift' } );">CLOSE</button>	
+  </ons-page>
+</ons-template>
+
+ <ons-template id="page2.html">
+  <ons-page modifier="shop-details" style="background:#f4f4f4">
+	<div class="navigation-bar" style="border-bottom:1px solid #d6d6d6;position:fixed;">
+  <div class="navigation-bar__left">
+  <ons-back-button style="color:#fff"> </ons-back-button>      
+  </div>
+  <div class="navigation-bar__center" style="font-size:16px">
+   PACKAGE SUMMARY
+  </div> 
+ </div> 
+  <ul class="list" style="background:#252525;margin-top:40px;"> 
+  <li class="list__item" style="color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">YOUR FARE<div id="fare" style="color:#fff;float:right;font-size:26px"></div></li>
+  </ul> 
+  <ul class="list" style="margin-top:5px;border:1px solid #f4f4f4;" onclick="showsumm()">
+  <li class="list__header" style="font-weight:normal;padding:10px 0px 10px 10px;background:#f4f4f4;color:#949494;height:45px;font-size:14px;letter-spacing:1px;"><div id="summhd" style="display:inline">SHOW SUMMARY</div><ons-icon id="summicnryt" icon="ion-arrow-right-b" style="vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon><ons-icon id="summicndwn" icon="ion-arrow-down-b" style="display:none;vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon></li>
+  </ul>       
+  <div id="summary" style="display:none;">
+  <div id="card2" style="background:#eaeaea;width: 100%; height: 200px; background-size: 100% 100%; background-repeat: no-repeat;"></div>
+  <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">PICKUP AREA<br><div id="pickupareasumm" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="pickupdetsumm" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  </ul>
+   <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">DELIVERY AREA<br><div id="delvareasumm" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="delvdetsumm" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  </ul>
+  </div> 
+  <ul class="list list--inset" style="margin-top:10px">
+  <textarea id="descriptor" class="textarea" rows="3" style="width:100%;border:none;background:#fff;margin:5px;" placeholder="Additional Instructions (optional)"></textarea>
+  </ul>  
+   <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold">DELIVERY BY<div id="datetymsumm" style="font-size:12px;font-weight:normal;color:#949494;float:right"></div></li>
+  </ul>
+  <button id="postbtn" class="button button--large" style="display:none;margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px" onclick="post2()">POST THIS REQUEST</button>  
   </ons-page>
 </ons-template>
 
@@ -388,11 +385,11 @@
    <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
   <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">PICKUP AREA<br><div id="pflpickarea" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
   <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="pflpickaddr" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
-	</ul>
-	<ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  </ul>
+  <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
   <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">DELIVERY AREA<br><div id="pfldelv" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
   <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="pfldelvaddr" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
-   </ul>
+  </ul>
    <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
   <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold">DELIVERY TIME<div id="pfldtym" style="font-size:12px;font-weight:normal;color:#949494;float:right"></div></li>
   </ul>
