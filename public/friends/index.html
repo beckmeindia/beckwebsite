@@ -10,15 +10,14 @@
     <script src="angular.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
 	<script>
-	var map,directionsService, directionsDisplay;
-	
+	var map,directionsService, directionsDisplay;	
 	function initMap(){
 	directionsService = new google.maps.DirectionsService;
 	directionsDisplay = new google.maps.DirectionsRenderer;
 	map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 18.936023, lng: 72.834920},
+    center: {lat: 21.0000, lng: 78.0000},
     scrollwheel: false,
-    zoom: 10,
+    zoom: 8,
 	suppressInfoWindows: true,
 	disableDefaultUI: true,
 	 styles:[{
@@ -34,30 +33,14 @@
             visibility:"off"
         }]
     }]
-  }); 
-  
-    var updateCriteria = _.debounce(function() {
-    var latLng = map.getCenter();
-	getReverseGeocodingData(latLng.lat(),latLng.lng());
-    geoQuery.updateCriteria({
-      center: [latLng.lat(), latLng.lng()]
-    });
-  }, 10);
-  map.addListener('click', function() {
-    document.getElementById("rqstgist").style.display="none"  
-  });
-
-  google.maps.event.addListener(map, 'dragend',updateCriteria);
-}
-
-google.maps.event.addDomListener(window, 'load', initMap);
-	
-        angular.module('app', ['onsen']);
-        angular.module('app').controller('AppController', function ($scope) {});
+	}); 
+  	}
+	google.maps.event.addDomListener(window, 'load', initMap);	
+    angular.module('app', ['onsen']); angular.module('app').controller('AppController', function ($scope) {});
     </script>
 	</head>
 	 <script src="index.js"></script>
- <body ng-controller="AppController" onload="getLocation()" style="font-family:'Maven Pro', sans-serif;">   
+ <body ng-controller="AppController" onload="getLocation()">   
  <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -68,70 +51,32 @@ google.maps.event.addDomListener(window, 'load', initMap);
 	
 	FB.getLoginStatus(function(response) {
 	if (response.status === 'connected') {
-	FB.api('/me?fields=id,email,name', function(response) {     
+	FB.api('/me?fields=id,email,name', function(response) {		
       document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0] + '!';
 	  usrname = String(response.name); usremail = String(response.email);
 	  checkfirebase(usremail);
     });
 	document.getElementById("signleft").style.display = "none";
-	// alert('Logged in.');
 	}
 	else {
-	setTimeout(function(){
-	if(locerr==1){
-	var tour = new Tour({
-        storage: false,
-		
-        steps: [
-            {
-    element: "#locasion", // element selector to show the popover next to;
-    title: "Package locations",
-	placement: "bottom",
-	backdrop:true,
-    content: "Search various places to see packages there"
-  },
-  {
-    element: "#map", // element selector to show the popover next to;
-    title: "Packages",
-	backdrop:true,
-    content: "The live packages appear here. Click on the marker to see details"
-  },
-  {
-    element: "#add",
-    title: "New Request",
-	placement: "bottom",
-	backdrop:true,
-    content: "You can post a request if you want to send"
-  },
-  {
-    element: "#fblogin",
-    title: "Login",	
-	placement: "bottom",
-	backdrop:true,
-    content: "Finally, login for posting with us"
-  }
-        ]
-    }).init().start(true);    
-	}
-	},4000);
+	hiname = 1;
 	document.getElementById("namehdr").innerHTML = "";
 	document.getElementById("signleft").style.display = "block";
-	loggedin=0,usrname="",usremail="",usrphone="",usrid="";		
-    //alert('Not Logged in.');
+	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
 	}
 	});	
-  };
+	};
 
-  (function(d, s, id){
+	(function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
      js = d.createElement(s); js.id = id;
      js.src = "//connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+	}(document, 'script', 'facebook-jssdk'));
    
-   function login(){
-   clicklogin=1;
+	function login(){
+	clicklogin=1;
 	FB.login(function(response) {
 	if (response.status === 'connected') {	
 	FB.api('/me?fields=id,email,name', function(response) {	
@@ -142,7 +87,6 @@ google.maps.event.addDomListener(window, 'load', initMap);
 	document.getElementById("signleft").style.display = "none";
 	}
 	else {
-    //alert('Not Logged in.');
 	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
 	document.getElementById("namehdr").innerHTML = "";
 	document.getElementById("signleft").style.display = "block";
@@ -150,75 +94,82 @@ google.maps.event.addDomListener(window, 'load', initMap);
 	} , {scope: 'email'});	
    }
 </script>
+<ons-sliding-menu var="sidebar" swipeable="false" main-page="main.html" menu-page="menu.html" max-slide-distance="250px" type="reveal" side="left">
+</ons-sliding-menu>
+
+<div class="test">Enter into your BECK Friends account</div>
+<ons-template id="main.html">
  <ons-navigator title="Navigator" var="myNavigator">
   <ons-page style="background:#fff" >
- <div class="navigation-bar" style="border-bottom:0px;position:fixed;">
-  <div id="fblogin" class="navigation-bar__left" style="margin-top:-5px;">
-    <span class="toolbar-button--quiet navigation-bar__line-height" onclick="login()" id="signleft" style="display:none;font-family:'Maven Pro', sans-serif;font-size:14px;">
-     <i class="ion-social-facebook" style="font-size:16px; vertical-align:-2px;color:#000;margin-right:10px;"></i>LOGIN
-    </span>
+ <div class="navigation-bar" style="position:fixed;">
+  <div ng-click="sidebar.toggleMenu()" class="navigation-bar__left" style="margin-top:-5px;">
+    <ons-toolbar-button>
+          <ons-icon icon="ion-navicon" style="vertical-align:-10px;font-size: 32px; width: 1em;"></ons-icon>
+        </ons-toolbar-button>
   </div>
   <div class="navigation-bar__center" style="font-size:18px;letter-spacing:3px;">
-   BECK <span style="letter-spacing:1px;font-size:20px;color:#ff0000;font-family: 'Dancing Script', cursive;">Friends</span>
+   BECK <span style="letter-spacing:1px;font-size:20px;color:#ff0000;font-family: 'Shadows Into Light', cursive;">Friends</span>
   </div> 
-  <div class="navigation-bar__right">
-    <span class="toolbar-button--quiet navigation-bar__line-height" id="namehdr" STYLE="font-family:'Maven Pro', sans-serif;font-size:12px;">      
+  <div class="navigation-bar__right">  
+	<span class="toolbar-button--quiet navigation-bar__line-height" onclick="befrlogin()" id="signleft" style="margin-top:-5px;font-size:14px;">
+     <i class="ion-social-facebook" style="font-size:16px; vertical-align:-1px;color:#000;margin-right:10px;"></i>LOGIN
+    </span>
+    <span class="toolbar-button--quiet navigation-bar__line-height" id="namehdr" STYLE="opcity:1;font-size:12px;" disabled>      
     </span>
   </div>
  </div>
 
- <div style="width:90%;margin-left:5%;height:45px;margin-top:45px;position:fixed;border:1px solid #d8d8d8;" onclick="startauto()">
-   <i class="ion-ios-search-strong" style="position:absolute;font-size:20px; margin-top:15px;margin-left:10px;color:#000"></i>
-   <div style="font-weight:bold;width:100%;font-size:12px;color:#000;text-align:center; color:#009d00;margin-top:4px;">SEARCH LOCATION</div>
+ <div style="width:90%;margin-left:5%;height:42px;margin-top:45px;position:fixed;border:1px solid #d8d8d8;" onclick="startauto()">
+   <i class="ion-location" style="position:absolute;font-size:20px; margin-top:15px;margin-left:10px;color:#000"></i>
+   <div style="font-weight:bold;width:100%;font-size:10px;color:#000;text-align:center; color:#009d00;margin-top:4px;opacity:0.5;font-weight:bold">REQUESTS AROUND</div>
  <div id="locasion" style="padding-left:10%;padding-right:10%;width:80%;font-size:14px;color:#000;text-align:center;margin-top:2px; height:25px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">Search</div>
  </div>
   <div class="tab-bar tab-bar--top tab-bar--top-border" style="background:#fff;border-bottom:1px solid #d8d8d8;position:fixed;margin-top:100px">
-  <label class="tab-bar__item tab-bar--top-border__item" style="border-right:1px solid #d8d8d8;color:#fff;background:#0098c6">
-    <input type="radio" name="top-tab-bar-b" checked="checked">
-	
+  <label class="tab-bar__item tab-bar--top-border__item" style="border-right:1px solid #d8d8d8;color:#fff;background:#252525">
+    <input type="radio" name="top-tab-bar-b" checked="checked">	
     <button class="tab-bar__button tab-bar--top-border__button" style="color:#fff;font-size:14px">
 	 <i class="ion-ios-clock-outline" style="font-size:20px; vertical-align:-2px;margin-right:5px;color:#fff"></i>
      LIVE REQUESTS
     </button>
   </label>
-
   <label id="add" class="tab-bar__item tab-bar--top-border__item" onclick="addnewrqst()">
-     <button class="tab-bar__button tab-bar--top-border__button" style="color:#0098c6;font-size:14px">
-	<i class="ion-plus-round" style="font-size:20px; vertical-align:-2px;margin-right:5px;color:#0098c6"></i>
+     <button class="tab-bar__button tab-bar--top-border__button" style="color:#000;font-size:14px">
+	<i class="ion-plus-round" style="font-size:20px; vertical-align:-2px;margin-right:5px;color:#000"></i>
       ADD A REQUEST
     </button>
   </label> 
   </div>
-  <div id="map" style="z-index:-9999;margin-top:150px"></div>
-  
-<div id="rqstgist" class="popover2 popover--up" style="display:none; bottom: 0px; width:100%" onclick="openaccept()">
-    <div style="text-align: center; margin-top: 0px;">
-	
-	  <ons-list id="pckimg" style="border:none; background:#000">
-	  
-        <ons-list-item class="list-item-container">
-          <ons-row style="padding-left:40px">            
-            <ons-col>
-              <div class="name" style="font-family:'Maven Pro', sans-serif;color:#fff;font-size:12px;letter-spacing:1px;line-height:20px;padding-top:10px">
+  <div id="map" style="z-index:-9999;margin-top:150px;"></div>  
+	<div id="rqstgist" class="popover2 popover--up" style="display:none;bottom: 0px; width:100%">
+    <div style="text-align: center; margin-top: 0px;">	
+	  <ons-list id="pckimg" style="border:none; background:#fff; background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)),to(rgba(206, 206, 206,0.8)), color-stop(.5,#eaeaea));">
+        <ons-list-item class="list-item-container" style="padding:0px">
+          <ons-row style="width:100%">
+			<ons-col width="50px" style="padding-top:65px" onclick="showprev()"><i id="prevbtn" class="ion-ios-arrow-left" style="color:#000;font-size:40px;margin-left:10px"></i></ons-col>	  
+            <ons-col width="calc(100% - 90px)" onclick="openaccept()">
+              <div class="name" style="color:#000;font-size:12px;letter-spacing:1px;line-height:20px;padding-top:10px">
                 YOU EARN : <b id="pfare" style="font-size:14px"></b><br> SIZE : <span id="psize" style="font-size:10px"></span><br> DELIVERY <span id="pdatetym" style="font-size:12px"></span>
               </div>
-              <div class="location" style="font-size:12px;color:#fff;font-family:'Maven Pro', sans-serif; height:50px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;padding-right:20px">
+              <div class="location" style="font-size:12px;color:#000;height:50px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
                 <i class="fa fa-map-marker" style="margin-right:15px;color:green"></i> <span id="ppickup"></span>
               </div>
-			  <div class="location" style="font-size:12px;color:#fff;font-family:'Maven Pro', sans-serif;margin-top:-20px;height:50px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;padding-right:20px">
+			  <div class="location" style="font-size:12px;color:#000;margin-top:-20px;height:30px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
                 <i class="fa fa-map-marker" style="margin-right:15px;color:red"></i> <span id="pdelv"></span>
               </div>
-              <button class="button button--quiet" style="font-family:'Maven Pro', sans-serif;color:#fff;height:30px;font-size:12px;padding-top:-5px;margin-top:-30px;letter-spacing:1px;">SHOW MORE DETAILS</button>
-            </ons-col>
-            <ons-col width="40px"></ons-col>
+			  <div>			 
+              <button class="button button--quiet" style="color:#000;height:50px;font-size:12px;margin-top:-10px;letter-spacing:1px;opacity:1" disabled>SHOW MORE DETAILS</button>
+			  <button id="pckgctr" class="button--quiet" style="float:right;text-align:center;color:#000;height:30px;font-size:12px;margin-top:-6px;letter-spacing:1px;opacity:1" disabled></button>
+			  </div>
+			</ons-col>
+            <ons-col width="40px" style="padding-top:65px" onclick="shownext()"><i id="nxtbtn" class="ion-ios-arrow-right" style="color:#000;font-size:40px;margin-left:10px"></i></ons-col>
           </ons-row>
         </ons-list-item>
 		</ons-list>
 	  </div>
-
-</div>
+	</div>
   </ons-page>
-   </ons-navigator>
+   </ons-navigator> 
+   </ons-template>
    
    <ons-template id="page1.html">
   <ons-page modifier="shop-details" style="background:#fff">
@@ -230,42 +181,36 @@ google.maps.event.addDomListener(window, 'load', initMap);
 	<div class="navigation-bar__right" onclick="exit()">
     <button class="button button--quiet" style="font-size:12px; font-weight:bold;color:#000;MARGIN-TOP:2PX">CANCEL</button>      
   </div>  
- </div>
-	
+ </div>	
         <div class="rating" style="margin-top:40px"><div class="rating-num" style="background:#fff;padding:0;">
         </div></div>
-
-        <ons-list id="choicebtns" style="border-top:0px solid #fff;margin-top:5px"><ons-list-item style="border-top:0px solid #fff; line-height: 1; padding: 0;">
+        <ons-list id="choicebtns" style="border-top:0px solid #fff;"><ons-list-item style="border-top:0px solid #fff; line-height: 1; padding: 0;">
           <ons-row class="action" style="border-top:0px solid #fff;">
 			<ons-col class="action-col" onclick="showpckg();">
               <div class="action-icon"><ons-icon icon="ion-ios-box"></ons-icon></div>
               <div class="action-label">Details</div>
 			  <div class="action-label" style="background:#00b100;height:5px;margin-top:5px">&nbsp;</div>
-            </ons-col>
-			
+            </ons-col>			
 			<ons-col class="action-col" onclick="showdatetym();">
               <div class="action-icon"><ons-icon icon="ion-ios-clock"></ons-icon></div>
               <div class="action-label">Delivery Time</div>
 			  <div class="action-label" id="timebtn" style="height:5px;margin-top:5px">&nbsp;</div>
-            </ons-col>
-			
+            </ons-col>			
             <ons-col class="action-col" onclick="showpickup();">
               <div class="action-icon"><ons-icon icon="ion-android-map"></ons-icon></div>
               <div class="action-label">Pickup Details</div>
 			  <div class="action-label" id="pickupbtn" style="height:5px;margin-top:5px">&nbsp;</div>
             </ons-col>
-
             <ons-col class="action-col" onclick="showdelivery();">
               <div class="action-icon" ><ons-icon icon="ion-map"></ons-icon></div>
 			  <div class="action-label" >Delivery Details</div>
               <div class="action-label" id="deliverybtn" style="height:5px;margin-top:5px">&nbsp;</div>
-            </ons-col>          
-
-          </ons-row>
+            </ons-col>
+		</ons-row>
         </ons-list-item>
 		</ons-list>
 		<ons-list style="margin-top:-1px;" id="packagedetails">
-          <ons-list-item style="padding-top:10px" >
+          <ons-list-item>
             <div class="button-bar" style="border-radius:0px;width:100%;border-bottom:1px solid #efefef;">
   <div class="button-bar__item">
     <input type="radio" name="segment-a" onclick="pckgsize = 'SMALL (FITS IN BAG)'">
@@ -287,8 +232,7 @@ google.maps.event.addDomListener(window, 'load', initMap);
     <button class="button-bar__button" style="height:70px;line-height:10px">HUGE<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>TRUCK</div></button>
   </div>
 </div>
-          </ons-list-item> 
-		 
+          </ons-list-item>		 
 		 <ons-list-item style="padding-top:10px">
             <div id="packagephoto" style="color:#fff;position:absolute;margin-top:80px;font-size:14px;width:100%;height:20px;z-index:9;text-align:center;letter-spacing:1px;"><ons-icon icon="ion-camera" style="font-size:30px;color:#fff; margin-right:15px"></ons-icon>ADD PACKAGE PHOTO</div>
 	<div id="card" style="background-color:rgba(0,0,0,0.81);height:250px;width: 100%; height: 200px; background-size: 100% 100%; background-repeat: no-repeat;" onclick="card()">	 
@@ -303,9 +247,7 @@ google.maps.event.addDomListener(window, 'load', initMap);
               <ons-icon icon="ion-ios-location" style="vertical-align:-4px;font-size:30px;margin-right:15px"></ons-icon>
               <input readonly type="text" class="text-input text-input--transparent" id="pickuparea" placeholder="Pickup Area Road Name" value="">
             </div>
-          </ons-list-item>
-
-         
+          </ons-list-item>         
 		   <ons-list-item style="padding-top:10px" onclick="lala()">
             <div class="prop-desc">
               <ons-icon icon="ion-person" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
@@ -324,19 +266,15 @@ google.maps.event.addDomListener(window, 'load', initMap);
               <input type="tel" class="text-input text-input--transparent" id="pickupnum" placeholder="Pickup Contact Number" value="">
             </div>
 			<button id="nextodelv" class="button button--large" style="margin-top:10px;" onclick="showdelivery();">NEXT</button><br>
-		 </ons-list-item>  
-		 
+		 </ons-list-item>  		 
         </ons-list>  
-
 		<ons-list id="deliverydetails" style="margin-top:-1px; display:none" >
           <ons-list-item style="padding-top:10px" onclick="delvauto()">
             <div class="prop-desc">
               <ons-icon icon="ion-ios-location" style="vertical-align:-4px;font-size:30px;margin-right:15px"></ons-icon>
               <input readonly type="text" class="text-input text-input--transparent" id="deliveryarea" placeholder="Delivery Area Road Name" value="">
             </div>
-          </ons-list-item>
-
-        
+          </ons-list-item>        
 		  <ons-list-item style="padding-top:10px" onclick="lala2()">
             <div class="prop-desc">
               <ons-icon icon="ion-person" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
@@ -354,91 +292,72 @@ google.maps.event.addDomListener(window, 'load', initMap);
               <ons-icon icon="ion-ios-telephone" style="vertical-align:-4px;font-size:30px;margin-right:10px"></ons-icon>
               <input type="tel" class="text-input text-input--transparent" id="deliverynum" placeholder="Delivery Contact Number" value="">
             </div>	
-<button class="button button--large" style="margin-top:10px;" onclick="receipt();">NEXT</button><br>			
-		  </ons-list-item> 
-		  
-			  
-        </ons-list>	
-		
+			<button class="button button--large" style="margin-top:10px;" onclick="receipt();">NEXT</button><br>			
+		  </ons-list-item> 		  
+        </ons-list>			
 		<ons-list id="timedetails" style="margin-top:-1px; display:none" >
           <ons-list-item style="padding-top:10px">
             <div class="prop-desc">
               <ons-icon icon="ion-calendar" style="vertical-align:-4px;font-size:30px;margin-right:15px"><div style="font-size:12px">Date</div></ons-icon>
               <input type="date" id="myDate" name="bday" min="2016-01-25" max="2017-01-01" class="text-input text-input--transparent" style="text-align:center;background:#000;color:#fff">
 		  </div>
-          </ons-list-item>
-        
+          </ons-list-item>        
 		  <ons-list-item style="padding-top:10px">
             <div class="prop-desc">
               <ons-icon icon="ion-ios-clock" style="vertical-align:-4px;font-size:30px;margin-right:10px"><div style="font-size:12px">Time</div></ons-icon>
               <input type="time" id="myTime" class="text-input text-input--transparent" style="text-align:center;background:#000;color:#fff">
             </div>
 			<button class="button button--large" style="margin-top:10px;" onclick="showpickup()">NEXT</button><br>
-          </ons-list-item>
-	  
+          </ons-list-item>	  
         </ons-list>			
   </ons-page>
 </ons-template>
+
  <ons-template id="page2.html">
   <ons-page modifier="shop-details" style="background:#f4f4f4">
 	<div class="navigation-bar" style="border-bottom:1px solid #d6d6d6;position:fixed;">
   <div class="navigation-bar__left">
-  <ons-back-button style="color:#fff"> </ons-back-button>
-      
+  <ons-back-button style="color:#fff"> </ons-back-button>      
   </div>
   <div class="navigation-bar__center" style="font-size:16px">
    PACKAGE SUMMARY
   </div> 
- </div>
-	
-  <ul class="list" style="margin-top:60px;margin-left:15px;margin-right:15px;border-radius:5px;border:1px solid #d6d6d6">
+ </div>	
+  <ul class="list" style="margin-top:60px;margin-left:10px;margin-right:10px;border-radius:5px;border:1px solid #d6d6d6">
   <li class="list__header" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16px;letter-spacing:1px;text-align:center">FARE DETAILS</li>
   <li class="list__item" style="margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px">YOU PAY<div id="fare" style="float:right;font-size:22px"></div></li>
-  </ul>  
-  
-  <ul class="list" style="display:none;margin-top:5px;border:1px solid #d6d6d6" onclick="showfarebreak()">
-  <li class="list__header" id="farebrkheader" style="background:#afafaf;color:#fff;height:30px;padding-top:3px;font-size:14px;LETTER-SPACING:1PX;text-align:center">SHOW FARE BREAKDOWN</li>
-  </ul>  
-  
-  <ul class="list" id="farebreakdown" style="margin-top:0px;display:none;padding-left:20px;padding-right:30px">
-  <li class="list__item list__item--inset" style="color:#afafaf;font-size:14px">FOR TIME<div style="float:right">40%</div></li>
-  <li class="list__item list__item--inset" style="color:#afafaf;font-size:14px">FOR SIZE<div style="float:right">30%</div></li>
-  <li class="list__item list__item--inset" style="color:#afafaf;font-size:14px">FOR DISTANCE<div style="float:right">30%</div></li>
-  </ul>
-  <button onclick="post2()" class="button button--large" style="margin:20px 10px 10px 10px;width:calc(100% - 20px);letter-spacing:1px">POST THIS REQUEST</button>
- 
-  <ul class="list" style="margin-top:30px;border:1px solid #f4f4f4">
-  <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">SUMMARY</li>
   </ul> 
-  
+  <ul class="list list--inset" style="margin-top:20px">
+  <textarea id="descriptor" class="textarea" rows="4" style="width:100%;border:none;background:#fff;margin:5px;" placeholder="Additional Instructions (optional)"></textarea>
+  </ul>  
+  <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4;" onclick="showsumm()">
+  <li class="list__header" style="padding:10px 0px 10px 10px;background:#f4f4f4;color:#000;height:45px;font-size:14px;letter-spacing:1px;"><div id="summhd" style="display:inline">SHOW SUMMARY</div><ons-icon id="summicnryt" icon="ion-arrow-right-b" style="vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon><ons-icon id="summicndwn" icon="ion-arrow-down-b" style="display:none;vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon></li>
+  </ul>   
+  <div id="summary" style="display:none">
   <div id="card2" style="background:#eaeaea;width: 100%; height: 200px; background-size: 100% 100%; background-repeat: no-repeat;"></div>
   <ul class="list list--inset" style="margin-top:20px">
   <li class="list__header list__item--inset" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16Px;LETTER-SPACING:1PX;text-align:center">Pickup Location</li>
   <li id="pickupareasumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
   <li id="pickupdetsumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
   </ul>
-
   <ul class="list list--inset" style="margin-top:20px">
   <li class="list__header list__item--inset" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16Px;LETTER-SPACING:1PX;text-align:center">Delivery Location</li>
   <li id="delvareasumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
   <li id="delvdetsumm" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  </ul>
-  <ul class="list list--inset" style="margin-top:20px">
-  <textarea id="descriptor" class="textarea" rows="4" style="width:100%;border:none;background:#fff;margin:5px;" placeholder="Package Description (optional)"></textarea>
-  </ul>
-  
-  <ul class="list list--inset" style="margin-top:20px;">
+  </ul>  
+  </div>  
+  <ul class="list list--inset" style="margin-top:15px;">
   <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold">DELIVERY BY<div id="datetymsumm" style="float:right"></div></li>
   </ul>
-  <button class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px" onclick="post2()">POST THIS REQUEST</button>  
+  <button id="postbtn" class="button button--large" style="display:none;margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px" onclick="post2()">POST THIS REQUEST</button>  
   </ons-page>
 </ons-template>
 
  <ons-template id="page5.html">
   <ons-page modifier="shop-details" style="background:#fff">	
-	<div style="font-weight:500;font-size:30px;margin-top:50px;height:50px;width:80%;text-align:center;margin-left:10%;color:#000;font-family: 'Maven Pro', sans-serif; letter-spacing:3px;">BECK <div style="color:red;display:inline-block;font-weight:normal;font-family: 'Dancing Script', cursive;">Friends</div></div>
+	<div style="font-size:30px;margin-top:50px;height:50px;width:80%;text-align:center;margin-left:10%;color:#000;  letter-spacing:2px;">BECK <div style="font-size:26px;color:#ff0000;display:inline-block;letter-spacing:1px;font-weight:normal;font-family: 'Shadows Into Light', cursive;">Friends</div></div>
 	<input id="pac-input2" type="search" class="search-input" placeholder="Search Your Location..." style="border:none;border-radius:0px;width: 86%;margin-left:7%;margin-top:0px">
-	<div style="margin-top:30px;height:100px;width:80%;text-align:center;margin-left:10%;margin-right:10%;color:#888;font-family:'Maven Pro', sans-serif;">Your location could not be found.<br> <br>Please enter your location here</div>	
+	<div style="margin-top:30px;height:100px;width:80%;text-align:center;margin-left:10%;margin-right:10%;color:#888;">Your location could not be found.<br> <br>Please enter your location here</div>	
   </ons-page>
 </ons-template>
 
@@ -453,45 +372,75 @@ google.maps.event.addDomListener(window, 'load', initMap);
   <ons-page modifier="shop-details" style="background:#f4f4f4">
 	<div class="navigation-bar" style="border-bottom:1px solid #d6d6d6;position:fixed">
 	<div class="navigation-bar__left">
-    <ons-back-button style="color:#fff"> </ons-back-button>      
+    <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>      
 	</div>
 	<div class="navigation-bar__center" style="font-size:16px">REQUEST SUMMARY</div> 
 	</div>	
-  <ul class="list" style="margin-top:60px;margin-left:15px;margin-right:15px;border-radius:5px;border:1px solid #d6d6d6">
-  <li class="list__header" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16px;letter-spacing:1px;text-align:center">FARE DETAILS</li>
-  <li class="list__item" style="margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px">YOU EARN<div id="pflfare" style="float:right;font-size:26px"></div></li>
-  </ul>  
-  <ul class="list list--inset" style="margin:20px 10px 20px 10px">
-  <li class="list__header" style="height:40px;padding-top:7px;font-size:14px;letter-spacing:1px;text-align:center">PACKAGE SIZE & WEIGHT</li>
-  <li id="psizewt"  class="list__header" style="height:40px;padding-top:7px;font-size:14px;letter-spacing:1px;text-align:center"></li>
-  </ul>  
-  <ul class="list" style="margin-top:30px;border:1px solid #f4f4f4">
+  <ul class="list" style="background:#252525;margin-top:40px;"> 
+  <li class="list__item" style="color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">YOU EARN<div id="pflfare" style="color:#fff;float:right;font-size:26px"></div></li>
+  </ul>    
+  <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4">
   <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">SUMMARY</li>
   </ul> 
-  <div id="pflbckg" class="card"></div>
-  <ul class="list list--inset" style="margin-top:20px">
-  <li class="list__header list__item--inset" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16Px;LETTER-SPACING:1PX;text-align:center">Pickup Location</li>
-  <li id="pflpickarea" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  <li id="pflpickaddr" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
+  <ul class="list list--inset" style="margin-top:0px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">PACKAGE SIZE & WEIGHT<br><div id="psizewt" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+   </ul>
+   <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">PICKUP AREA<br><div id="pflpickarea" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="pflpickaddr" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+	</ul>
+	<ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">DELIVERY AREA<br><div id="pfldelv" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="pfldelvaddr" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+   </ul>
+   <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold">DELIVERY TIME<div id="pfldtym" style="font-size:12px;font-weight:normal;color:#949494;float:right"></div></li>
   </ul>
-  <ul class="list list--inset" style="margin-top:20px">
-  <li class="list__header list__item--inset" style="background:#7e7e7e;color:#fff;height:40px;padding-top:7px;font-size:16Px;LETTER-SPACING:1PX;text-align:center">Delivery Location</li>
-  <li id="pfldelv" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  <li id="pfldelvaddr" class="list__item list__item--inset" style="text-align:center;padding-top:10px;font-size:12px;line-height:20px"></li>
-  </ul>  
-  <ul class="list list--inset" style="margin-top:20px;">
-  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold">DELIVERY TIME<div id="pfldtym" style="float:right"></div></li>
-  </ul>
+  <div id="pflbckg" class="card" style="margin-top:15px"></div>
   <button class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px" onclick="accept()">ACCEPT THIS REQUEST</button>  
  </ons-page>
 </ons-template>
+
  <ons-template id="request.html">
   <ons-page style="background:#000">
-	<div style="position: absolute;top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);">
-	<img style="display: block; margin: 0 auto;margin-top:40%" src="openripple.gif">	
-	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 id="postanim" class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">POSTING REQUEST</h1></div>
+	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
+	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">POSTING REQUEST</h1></div>
 	</div>
   </ons-page>
+</ons-template>
+
+<ons-template id="accept.html">
+  <ons-page style="background:#000">
+	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
+	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">ACCEPTING REQUEST</h1></div>
+	</div>
+  </ons-page>
+</ons-template>
+
+<ons-template id="menu.html">
+    <ons-page>
+        <div class="profile-card">
+        <img src="profile.png" class="profile-image">
+        <div class="profile-name">Rahul Basu</div>
+      </div>
+      <ons-list style="padding-top: 10px;padding-bottom:10px;text-align:center">
+        <ons-list-item style="padding-bottom:10px;">
+         Accepted Requests
+        </ons-list-item>
+        <ons-list-item style="padding-top: 10px;padding-bottom:10px;">
+         Previous Requests
+        </ons-list-item>
+        <ons-list-item style="padding-top: 10px;padding-bottom:10px;">
+         Invite & Earn
+        </ons-list-item>
+		<ons-list-item style="padding-top: 10px;">
+         Edit Profile
+        </ons-list-item>
+      </ons-list>
+      <br>
+    </ons-page>
 </ons-template>
 </body>
 </html>
