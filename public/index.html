@@ -25,7 +25,9 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-71834469-1', 'auto');
 ga('send', 'pageview');
 
-window.onload = getDevice();
+$(document).ready(function(){
+   getDevice();
+});
 
 function getDevice()
 {
@@ -50,13 +52,11 @@ Ply.dialog("prompt", {
         console.log( l+" "+number);
         if(l!=10)
         {
-          console.log("not 10");
           //reload the function
         myFunction();
         }
         else if(isNaN(number))
         {
-          console.log("not a no");
         //reload the function
         myFunction();
         }
