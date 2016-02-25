@@ -113,24 +113,7 @@ ons-pull-hook {
 }
 
 
-/*
-Copyright 2013-2015 ASIAL CORPORATION
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
- */
-
-ons-carousel {
+ons-carousel{
   display: block;
   position: relative;
   width: 100%;
@@ -840,22 +823,6 @@ ons-icon[fixed-width="true"] {
   font-size: 5em;
 }
 
-/*
-Copyright 2013-2015 ASIAL CORPORATION
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-*/
 
 ons-scroller {
   display: block;
@@ -873,23 +840,6 @@ ons-scroller::-webkit-scrollbar {
   height: 100%;
   overflow: scroll;
 }
-
-/*
-Copyright 2013-2015 ASIAL CORPORATION
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-*/
 
 ons-sliding-menu {
   position: absolute;
@@ -918,22 +868,6 @@ ons-sliding-menu {
 }
 
 
-/*
-Copyright 2013-2015 ASIAL CORPORATION
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-*/
 
 ons-split-view {
   position: absolute;
@@ -3479,8 +3413,6 @@ h6 {
   -webkit-overflow-scrolling: touch;
   padding: 0;
   background-color: #fff;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
   background-color: #fff;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
@@ -3507,6 +3439,7 @@ h6 {
   display: block;
   padding: 0 10px 0 10px;
   margin: 0 0 0 0;
+  border-bottom: none;
   border-top: none;
   color: #0;
   background-color: transparent;
@@ -3521,6 +3454,8 @@ h6 {
   line-height: 44px;
 }
 .list__item_active:active {
+	border-bottom: none;
+  border-top: none;
   background-color: #d9d9d9;
   -webkit-transition: none;
   -moz-transition: none;
@@ -3528,10 +3463,12 @@ h6 {
   transition: none;
 }
 .list__item:first-child {
+  border-bottom: none;
   border-top: none;
   
 }
 .list__item:last-child {
+  border-top: none;
   border-bottom: none;
 }
 .list__item:first-child:last-child {

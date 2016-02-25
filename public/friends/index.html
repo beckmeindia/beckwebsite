@@ -41,7 +41,7 @@
 	</head>
 	 <script src="index.js"></script>
  <body ng-controller="AppController" onload="getLocation()">   
- <script>
+ <!--script>
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '969987659705048',
@@ -93,7 +93,7 @@
 	}
 	} , {scope: 'email'});	
    }
-</script>
+</script-->
 <ons-sliding-menu var="sidebar" swipeable="false" main-page="main.html" menu-page="menu.html" max-slide-distance="250px" type="reveal" side="left">
 </ons-sliding-menu>
 
@@ -209,9 +209,9 @@
 		</ons-row>
         </ons-list-item>
 		</ons-list>
-		<ons-list style="margin-top:-1px;" id="packagedetails">
+		<ons-list style="margin-top:-1px;height:70%" id="packagedetails">
           <ons-list-item>
-            <div class="button-bar" style="border-radius:0px;width:100%;border-bottom:1px solid #efefef;">
+            <div class="button-bar" style="border-radius:0px;width:100%;border:1px solid #efefef;">
   <div class="button-bar__item">
     <input type="radio" name="segment-a" onclick="pckgsize = 'SMALL (FITS IN BAG)'">
     <button class="button-bar__button" style="height:70px;line-height:10px">SMALL<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>BAG</div></button>
