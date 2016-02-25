@@ -67,7 +67,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 });
 	
 	
-	function getLocation() {	
+	function getLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(showPosition,onerror,{maximumAge:600000});
     }
@@ -273,7 +273,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	var place = autocomplete.getPlace();
 	if (!place.geometry) {
 		swal({   title: "Location Error",   text: "Sorry could not find the location. Please search again",   type: "error",   confirmButtonText: "OK" });
-        return;
+       myNavigator.popPage('page5.html', { animation : 'none' } );	
     }
    
 	center = place.geometry.location;    
@@ -339,7 +339,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	var place = autocomplete.getPlace();
 	if (!place.geometry) {
 	swal({   title: "Location Error",   text: "Sorry could not find the location. Please search again",   type: "error",   confirmButtonText: "OK" });
-    return;
+    myNavigator.popPage('page3.html', { animation : 'lift' } );	
     }
    
 	center = place.geometry.location;    
@@ -411,7 +411,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			swal({   title: "DELIVERY DETAILS",   text: "Please fill all Pickup Details",   type: "error",   confirmButtonText: "OK" });
 		}		
 		else if(phoneNumDelv.length != 10) {
-			swal({   title: "INVALID MOBILE NO.",   text: "Please fill a valid phone number at delivery location",   type: "error",   confirmButtonText: "OK" });
+			swal({   title: "INVALID MOBILE NO.",   text: "Please enter a valid 10-digit mobile number at delivery location",   type: "error",   confirmButtonText: "OK" });
 		}
 		else if(img===undefined || img == ""){
 			swal({   title: "ADD PACKAGE PHOTO",   text: "Please add photo of your package at the top",   type: "error",   confirmButtonText: "OK" });
@@ -567,7 +567,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			swal({   title: "PICKUP DETAILS",   text: "Please fill all Pickup Details",   type: "error",   confirmButtonText: "OK" });
 		}		
 		else if(phoneNumPick.length != 10) {
-			swal({   title: "INVALID MOBILE NO.",   text: "Please fill a valid phone number at pickup location",   type: "error",   confirmButtonText: "OK" });
+			swal({   title: "INVALID MOBILE NO.",   text: "Please enter a valid 10-digit mobile number at pickup location",   type: "error",   confirmButtonText: "OK" });
 		}
 		else{
 		pickuparea = document.getElementById("pickuparea").value;
@@ -624,31 +624,33 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				usrid = snapshot.child(usrnewmail).child("usrid").val();
 				fbflag = 0; loggedin = 1;				
 			}else if(clicklogin==1){				
-				swal({title: "Mobile Verification", text: "Enter your mobile number with country code (eg: 919987638852)",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Type your number here" }, 
+				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
 				function(inputValue){
 				var number = inputValue.replace(/[^\d]/g, '').length ;
 				if (inputValue === false) return false; 
-				if (number != 12) {     swal.showInputError("Please Enter your 10 digit mobile number with country code in beginning (eg; 91)");     return false   }
-				
-				if(String(inputValue).substring(0, 2) == '91'){
-					otpcall(inputValue);
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number and select your country code");     return false   }
+				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
+				if(document.getElementById("countrycd").value == '91'){
+					otpcall(intno);
 				}else{
-					otpintcall(inputValue);
-				}				
+					otpintcall(intno);
+				}
+						
 				swal({title: "Enter OTP", text: "Please enter the 4 digit OTP sent as SMS",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "OTP (One Time Password)" }, 
 				function(inputValue2){
 				var number = inputValue.replace(/[^\d]/g, '').length ;
 				if (inputValue === false) return false; 
 				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
 				firebaseRef.child("users").child(usrnewmail).update({
-					usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:inputValue
+					usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno
 				});				
-				usrphone = inputValue;
+				usrphone = intno;
 				usrid = usrnewmail;				
 				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 
 				loggedin = 1;				
 				});
-				});				
+				});	
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
 			}; 			
 		});
 	}
@@ -665,7 +667,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log(JSON.stringify(data));
+       console.log(JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -724,40 +726,79 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			title: "Login with Facebook"});  		
 	}
 	
-	function smsacceptdm(number){	
-	$.ajax({
+  function smsacceptdm(number){
+	if(String(number).substring(0, 2) == '91'){
+					//otpcall(inputValue);
+	  $.ajax({
       url: 'https://www.beckme.in/otp.php',
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at '+usrphone
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at +'+usrphone
       },
       error: function(error) {
-      console.log(JSON.stringify(error));
+      //console.log(JSON.stringify(error));
         },
       success: function(data) {
        // console.log("worked");
+       },
+      type: 'POST'
+	});
+	}else{
+	//otpintcall(inputValue);
+	$.ajax({
+      url: 'https://www.beckme.in/otpint.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at +'+usrphone
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+       //console.log(JSON.stringify(data));
        },
       type: 'POST'
 	});
 	}
+	}
 	
 	function smsacceptsupp(number){	
+	if(String(number).substring(0, 2) == '91'){
 	$.ajax({
       url: 'https://www.beckme.in/otp.php',
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at '+arrPckgs[rsltshow].usrphn
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at +'+arrPckgs[rsltshow].usrphn
       },
       error: function(error) {
-      console.log(JSON.stringify(error));
+      //console.log(JSON.stringify(error));
         },
       success: function(data) {
        // console.log("worked");
        },
       type: 'POST'
 	});
+	}else{
+		//otpintcall(inputValue);
+	$.ajax({
+      url: 'https://www.beckme.in/otpint.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at +'+arrPckgs[rsltshow].usrphn
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+       //console.log(JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}
 	}	
 
 	function post(){	
