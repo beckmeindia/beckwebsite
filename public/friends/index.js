@@ -5,6 +5,46 @@
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", fbflag=0, usrnewmail="";
 	var otp = Math.floor((Math.random() * 900) + 1000); var locerr = 0; var hiname = 0;
 	var arrPckgs = []; var rsltshow = 0;
+	app.controller('AppController', ["$scope", "$firebaseArray",
+	
+		function($scope, $firebaseArray) {
+			$scope.post2 = function(){
+				if(loggedin==1){ post()}	else{ befrlogin() };	
+			}
+		
+		$scope.accept2 = function(){
+		clicklogin=1;
+		if(loggedin==1){
+		myNavigator.pushPage('accept.html', { animation : 'none' } );
+		var interval = setInterval(function(){
+		if(typeof usrid === 'undefined'){}
+		else{
+		clearInterval(interval);
+		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]).then(function() {
+		myNavigator.popPage('accept.html', { animation : 'none' } );
+		myNavigator.popPage('page4.html', { animation : 'none' } );
+		google.maps.event.trigger(map, 'resize');
+		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
+		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone);
+		var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id;
+		//mailcall(actionz,usremail,usrphone);	
+  		});		
+		};		
+		},2000);		
+		}
+		else{
+			fbflag = 1;
+			befrlogin();
+		}
+		};
+		
+		setInterval(function(){
+		  if(loggedin == 1){	
+			$scope.messages = $firebaseArray(firebaseRef.child("users").child(usrid).child("accepts"));
+		  }
+		},2000);	
+		}
+	]);
 	
 	function exit(){
 		swal({   title: "Are you sure?",   text: "You will lose the data you added for this request",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, go back",   closeOnConfirm: true }, function(){   myNavigator.popPage('page1.html', { animation : 'lift' } ); google.maps.event.trigger(map, 'resize'); });
@@ -158,7 +198,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		delv: vehicle.deliveryarea,
 		size: vehicle.pckgsize,
 		weight:vehicle.pckgweight,
-		datetym: ": By " + vehicle.deliverytime +" on "+vehicle.deliverydate,
+		datetym: "By "+vehicle.deliverydate+" " + vehicle.deliverytime,
 		pickup: vehicle.pickuparea,
 		pickupaddr: vehicle.pickupaddr,
 		deliveryaddr: vehicle.deliveryaddr,
@@ -717,6 +757,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			befrlogin();
 		}			
 	}
+	
 	function befrlogin(){
 		 $(".test").fbmodal({
             modalwidth: "200px",
@@ -734,13 +775,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at +'+usrphone
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at '+usrphone
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       // console.log("worked");
+        //console.log("01"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -751,13 +792,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at +'+usrphone
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at '+usrphone
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log(JSON.stringify(data));
+       //console.log("02"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -771,13 +812,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at +'+arrPckgs[rsltshow].usrphn
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at '+arrPckgs[rsltshow].usrphn
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       // console.log("worked");
+      // console.log("11"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -788,13 +829,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at +'+arrPckgs[rsltshow].usrphn
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at '+arrPckgs[rsltshow].usrphn
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log(JSON.stringify(data));
+       //console.log("12"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -868,7 +909,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		}else if(today > document.getElementById('myDate').value){
 			swal({   title: "Previous Date",   text: "You cannot select a previous date for delivery",   type: "error",   confirmButtonText: "OK" });
 		}
-		else if((isValidDate(document.getElementById('myDate').value)) == false){swal({   title: "Invalid Date",   text: "Please select an appropriate date type for delivery",   type: "error",   confirmButtonText: "OK" });}
+		//else if((isValidDate(document.getElementById('myDate').value)) == false){swal({   title: "Invalid Date",   text: "Please select an appropriate date type for delivery",   type: "error",   confirmButtonText: "OK" });}
 		else{
 		document.getElementById("packagedetails").style.display="none";		
 		document.getElementById("pickupbtn").style.background="#00b100";
