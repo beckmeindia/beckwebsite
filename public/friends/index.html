@@ -402,6 +402,40 @@
  </ons-page>
 </ons-template>
 
+ <ons-template id="track.html">
+  <ons-page modifier="shop-details" style="background:#f4f4f4">
+	<div class="navigation-bar" style="border-bottom:1px solid #d6d6d6;position:fixed">
+	<div class="navigation-bar__left">
+    <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>      
+	</div>
+	<div class="navigation-bar__center" style="font-size:16px">REQUEST SUMMARY</div> 
+	
+	</div>	
+  <ul class="list" style="background:#252525;margin-top:40px;"> 
+  <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">ESTIMATE<div id="tflfare" style="color:#fff;float:right;font-size:26px"></div></li>
+  </ul>    
+  <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4">
+  <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">SUMMARY</li>
+  </ul> 
+  <ul class="list list--inset" style="margin-top:0px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">PACKAGE SIZE & WEIGHT<br><div id="tsizewt" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+   </ul>
+   <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">PICKUP AREA<br><div id="tflpickarea" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="tflpickaddr" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  </ul>
+  <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">DELIVERY AREA<br><div id="tfldelv" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  <li class="list__item list__item--inset" style="font-size:12px;letter-spacing:1px;font-weight:bold"><div id="tfldelvaddr" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  </ul>
+   <ul class="list list--inset" style="margin-top:10px;padding:10px 0px 10px 0px">
+  <li class="list__item list__item--inset" style="font-size:14px;letter-spacing:1px;font-weight:bold;text-align:center">DELIVERY TIME<br><div id="tfldtym" style="font-size:12px;font-weight:normal;color:#949494;text-align:center;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;"></div></li>
+  </ul>
+  <div id="tflbckg" class="card" style="margin-top:15px"></div>
+  
+ </ons-page>
+</ons-template>
+
  <ons-template id="request.html">
   <ons-page style="background:#000">
 	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
@@ -424,7 +458,7 @@
 	   <div class="navigation-bar" style="background:#252525">
 	   <div class="navigation-bar__left"></div>
   <div class="navigation-bar__center" style="color:#fff">
-    ACCEPTED REQUESTS
+    ACCEPTED
   </div>
   <div class="navigation-bar__right">
     <span class="toolbar-button--quiet navigation-bar__line-height">
@@ -435,22 +469,25 @@
   </div>
 	</div>
         <ons-list class="plan-list" style="padding-top:20px">
-          <ons-list-item class="plan" ng-repeat="msg in messages">
+          <ons-list-item class="plan" ng-repeat="msg in accepts" ng-click="fillboxes(msg)">
             <ons-row>
               <ons-col width="90px" class="plan-left">
-                <div class="plan-date">5:30 PM</div>
-                <div class="plan-duration">1h</div>
+                <div class="plan-date">{{ msg.date }}</div>
+                <div class="plan-duration">{{ msg.time }}</div>
               </ons-col>
 			   <ons-col width="3px" class="plan-center" ng-style="{backgroundColor:'#ddd'}">
               </ons-col>
-              <ons-col class="plan-right">
-                <div class="plan-name">ORDER ID: {{ msg.fare }}</div>
+              <ons-col class="plan-right" width="calc(100% - 100px)">
+                <div class="plan-name">ESTIMATE {{ msg.fare }}</div>
                 <div class="plan-info">
-                  <div>
-                    <ons-icon icon="fa-phone"></ons-icon>123-456-789
+                  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-map-marker" style="font-size:14px; margin-right:5px;color:green"></ons-icon> PICKUP : {{ msg.pickup }}
                   </div>
-                  <div>
-                    <ons-icon icon="fa-map-marker"></ons-icon>{{ msg.id }}
+                  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-map-marker" style="font-size:14px; margin-right:5px;color:red"></ons-icon> DELIVERY : {{ msg.delv }}
+                  </div>
+				  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-archive" style="margin-right:5px;color:#808080"></ons-icon> SIZE : {{ msg.size }}
                   </div>
                 </div>
               </ons-col>
@@ -464,7 +501,7 @@
 	  <div class="navigation-bar" style="background:#252525">
 	   <div class="navigation-bar__left"></div>
   <div class="navigation-bar__center" style="color:#fff">
-    POSTED REQUESTS
+    POSTED
   </div>
   <div class="navigation-bar__right">
     <span class="toolbar-button--quiet navigation-bar__line-height">
@@ -475,26 +512,28 @@
   </div>
 	</div>
         <ons-list class="plan-list" style="padding-top:20px">
-          <ons-list-item class="plan" ng-repeat="msg in messages">
+          <ons-list-item class="plan" ng-repeat="msg in posts" ng-click="fillboxes(msg)">
             <ons-row>
               <ons-col width="90px" class="plan-left">
-                <div class="plan-date">5:30 PM</div>
-                <div class="plan-duration">1h</div>
+                <div class="plan-date">{{ msg.deliverytime }}</div>
+                <div class="plan-duration">{{ msg.deliverydate }}</div>
               </ons-col>
 
               <ons-col width="3px" class="plan-center" ng-style="{backgroundColor:'#ddd'}">
               </ons-col>
 
-              <ons-col class="plan-right">
-                <div class="plan-name">order: {{ msg.fare }}</div>
+              <ons-col class="plan-right" width="calc(100% - 100px)">
+                <div class="plan-name">ESTIMATE {{msg.fare}}</div>
 
                 <div class="plan-info">
-                  <div>
-                    <ons-icon icon="fa-phone"></ons-icon>123-456-789
+                  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-map-marker" style="font-size:14px;margin-right:5px;color:green"></ons-icon> PICKUP : {{msg.pickuparea}}
                   </div>
-
-                  <div>
-                    <ons-icon icon="fa-map-marker"></ons-icon>{{ msg.id }}
+                  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-map-marker" style="font-size:14px;margin-right:5px;color:red"></ons-icon> DELIVERY : {{ msg.deliveryarea }}
+                  </div>
+				  <div style="margin:5px 0px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-archive" style="margin-right:5px;color:#808080"></ons-icon> SIZE : {{ msg.pckgsize }}
                   </div>
                 </div>
               </ons-col>
@@ -511,17 +550,17 @@
         <div id="profile_name" class="profile-name">&nbsp;</div>
       </div>
       <ons-list style="padding-top: 10px;padding-bottom:10px;text-align:center">
-        <ons-list-item style="border:1px solid#fff; padding-bottom:10px;" onclick="myNavigator.pushPage('schedule.html', { animation : 'push' } );sidebar.toggleMenu();">
+        <ons-list-item style="border:1px solid#fff; padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){myNavigator.pushPage('schedule.html', { animation : 'push' } )},500)}else{befrlogin()}">
          Accepted Requests
         </ons-list-item>
-        <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;" onclick="myNavigator.pushPage('posted.html', { animation : 'push' } );sidebar.toggleMenu();">
+        <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){myNavigator.pushPage('posted.html', { animation : 'push' } )},500)}else{befrlogin()}">
          Posted Requests
         </ons-list-item>
         <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;">
          Invite & Earn
         </ons-list-item>
-		<ons-list-item style="border:1px solid#fff; padding-top: 10px;">
-         Edit Profile
+		<ons-list-item style="border:1px solid#fff; padding-top: 10px;" onclick="smsending()">
+         Edit Contact No.
         </ons-list-item>
       </ons-list>
       <br>

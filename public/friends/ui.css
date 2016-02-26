@@ -6306,19 +6306,21 @@ display:none;
 }
 
 .plan-right {
-  padding: 10px 40px 10px 20px;
+  padding: 10px 10px 10px 20px;
+  width: calc(100% - 100px);
 }
 
 .plan-date {
-  font-size: 14px;
+  font-size: 12px;
   opacity: 0.8;
   margin-bottom: 4px;
   font-weight: 500;
 }
 
 .plan-duration {
-  font-size: 11px;
-  opacity: 0.4;
+  font-size: 12px;
+   font-weight: 500;
+  opacity: 0.5;
 }
 
 .plan-name {
@@ -6327,7 +6329,7 @@ display:none;
 }
 
 .plan-info {
-  opacity: 0.4;
+  opacity: 0.8;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 2;
 }

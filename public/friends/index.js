@@ -11,6 +11,25 @@
 			$scope.post2 = function(){
 				if(loggedin==1){ post()}	else{ befrlogin() };	
 			}
+			
+			
+			$scope.fillboxes = function(detail){
+		imagz="";
+		myNavigator.pushPage('track.html', { animation : 'push' } );
+		setTimeout(function(){ 
+		document.getElementById("tflfare").innerHTML = detail.fare;
+		document.getElementById("tsizewt").innerHTML = detail.weight+" "+detail.size;
+		document.getElementById("tflpickarea").innerHTML = detail.pickup;
+		document.getElementById("tflpickaddr").innerHTML = detail.pickupaddr;
+		document.getElementById("tfldelv").innerHTML = detail.delv;
+		document.getElementById("tfldelvaddr").innerHTML = detail.deliveryaddr;
+		document.getElementById("tfldtym").innerHTML = detail.datetym;
+		firebaseRef.child("packages").child(detail.id).child("img").once("value", function(dataSnapshot) {
+			imagz = dataSnapshot.child("img64").val();
+			$("#tflbckg").css("background-image", "url('" + imagz + "')");
+		});
+		},100);
+			}
 		
 		$scope.accept2 = function(){
 		clicklogin=1;
@@ -27,7 +46,7 @@
 		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
 		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone);
 		var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id;
-		//mailcall(actionz,usremail,usrphone);	
+		mailcall(actionz,usremail,usrphone);	
   		});		
 		};		
 		},2000);		
@@ -38,9 +57,29 @@
 		}
 		};
 		
-		setInterval(function(){
-		  if(loggedin == 1){	
-			$scope.messages = $firebaseArray(firebaseRef.child("users").child(usrid).child("accepts"));
+		var intervall = setInterval(function(){
+		  if(loggedin == 1){
+			clearInterval(intervall);			  
+			$scope.accepts = $firebaseArray(firebaseRef.child("users").child(usrid).child("accepts"));
+			$scope.accepts.$loaded()
+			.then(function(arr){
+				if(arr.length == 0){
+					// show the div with no trips yet
+				}
+				else{
+					//hide the div with no trips yet
+				}
+			});
+			$scope.posts = $firebaseArray(firebaseRef.child("users").child(usrid).child("posts"));
+			$scope.posts.$loaded()
+			.then(function(arr){
+				if(arr.length == 0){
+					// show the div with no trips yet
+				}
+				else{
+					//hide the div with no trips yet
+				}
+			});
 		  }
 		},2000);	
 		}
@@ -198,6 +237,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		delv: vehicle.deliveryarea,
 		size: vehicle.pckgsize,
 		weight:vehicle.pckgweight,
+		date: vehicle.deliverydate,
+		time: vehicle.deliverytime,
 		datetym: "By "+vehicle.deliverydate+" " + vehicle.deliverytime,
 		pickup: vehicle.pickuparea,
 		pickupaddr: vehicle.pickupaddr,
@@ -636,7 +677,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 	if (time.length > 1) {
     time = time.slice (1);
-    time[5] = +time[0] < 12 ? ' AM' : ' PM';
+    time[5] = +time[0] < 12 ? 'am' : 'pm';
     time[0] = +time[0] % 12 || 12;
 	}
 	return time.join ('');
@@ -654,6 +695,41 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		else{befrlogin()};		
 	}
 	
+	function smsending(){
+		if(loggedin==1){
+		swal({title: "Mobile Verification", text: "",   type: "input",  allowOutsideClick:true,   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
+				function(inputValue){
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
+				if (String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, '')) == String(usrphone)) {swal.showInputError("Please do not enter the existing registered mobile number");     return false   }
+				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
+				if(document.getElementById("countrycd").value == '91'){
+					otpcall(intno);
+				}else{
+					otpintcall(intno);
+				}
+						
+				swal({title: "Enter OTP", text: "Please enter the 4 digit OTP sent as SMS",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "OTP (One Time Password)" }, 
+				function(inputValue2){
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				firebaseRef.child("users").child(usrid).update({
+					usrphone:intno
+				});				
+				usrphone = intno;			
+				swal("Update Succesful", "Congratulations. You have succesully updated your mobile number", "success"); 
+				loggedin = 1;				
+				});
+				});	
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
+			}
+			else{
+				befrlogin();
+			}
+	}
+	
 	function checkfirebase(email){		
 		usrnewmail = String(email).replace(/[^a-zA-Z0-9]/g, ' ');
 		firebaseRef.child("users").once("value", function(snapshot) {			
@@ -668,7 +744,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				function(inputValue){
 				var number = inputValue.replace(/[^\d]/g, '').length ;
 				if (inputValue === false) return false; 
-				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number and select your country code");     return false   }
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
 				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
 				if(document.getElementById("countrycd").value == '91'){
 					otpcall(intno);
@@ -859,6 +935,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		} else {
 			var actionz = "BECK friend "+ usrname +" requested a new order: " + orderid;
 			mailcall(actionz,usremail,usrphone);
+			firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
 		}
 		});
 		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}});
