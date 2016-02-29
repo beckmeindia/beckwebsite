@@ -51,8 +51,8 @@
 	
 	FB.getLoginStatus(function(response) {
 	if (response.status === 'connected') {
-	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {		
-      document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
+	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {	
+	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
 	  document.getElementById("profile_img").src = String(response.picture.data.url);
 	  document.getElementById("profile_name").innerHTML = String(response.name);
 	  usrname = String(response.name); usremail = String(response.email);
@@ -112,7 +112,7 @@
         </ons-toolbar-button>
   </div>
   <div class="navigation-bar__center" style="font-size:18px;letter-spacing:3px;">
-   BECK <span style="letter-spacing:1px;font-size:20px;color:#ff0000;font-family: 'Shadows Into Light', cursive;">Friends</span>
+   BECK <span style="font-size:16px;letter-spacing:2px;color:#ff0000;">FRIENDS</span>
   </div> 
   <div class="navigation-bar__right">  
 	<span class="toolbar-button--quiet navigation-bar__line-height" onclick="befrlogin()" id="signleft" style="display:none;margin-top:-5px;font-size:14px;">
@@ -126,7 +126,7 @@
  <div style="width:90%;margin-left:5%;height:42px;margin-top:45px;position:fixed;border:1px solid #d8d8d8;" onclick="startauto()">
    <i class="ion-location" style="position:absolute;font-size:20px; margin-top:15px;margin-left:10px;color:#000"></i>
    <div style="font-weight:bold;width:100%;font-size:10px;color:#000;text-align:center; color:#009d00;margin-top:4px;opacity:0.5;font-weight:bold">REQUESTS AROUND</div>
- <div id="locasion" style="padding-left:10%;padding-right:10%;width:80%;font-size:14px;color:#000;text-align:center;margin-top:2px; height:25px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">Search</div>
+ <div id="locasion" style="padding-left:10%;padding-right:10%;width:80%;font-size:14px;color:#000;text-align:center;margin-top:2px; height:25px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">Loading...</div>
  </div>
   <div class="tab-bar tab-bar--top tab-bar--top-border" style="background:#fff;border-bottom:1px solid #d8d8d8;position:fixed;margin-top:100px">
   <label class="tab-bar__item tab-bar--top-border__item" style="border-right:1px solid #d8d8d8;color:#fff;background:#252525">
@@ -319,7 +319,7 @@
 
 <ons-template id="page5.html">
   <ons-page modifier="shop-details" style="background:#fff">	
-	<div style="font-size:30px;margin-top:50px;height:50px;width:80%;text-align:center;margin-left:10%;color:#000;  letter-spacing:2px;">BECK <div style="font-size:26px;color:#ff0000;display:inline-block;letter-spacing:1px;font-weight:normal;font-family: 'Shadows Into Light', cursive;">Friends</div></div>
+	<div style="font-size:30px;margin-top:50px;height:50px;width:80%;text-align:center;margin-left:10%;color:#000;  letter-spacing:2px;">BECK <div style="color:#ff0000;display:inline-block;letter-spacing:1px;font-weight:normal;">Friends</div></div>
 	<input id="pac-input2" type="search" class="search-input" placeholder="Search Your Location..." style="border:none;border-radius:0px;width: 86%;margin-left:7%;margin-top:0px">
 	<div style="margin-top:30px;height:100px;width:80%;text-align:center;margin-left:10%;margin-right:10%;color:#888;">Your location could not be found.<br> <br>Please enter your location here</div>	
   </ons-page>
@@ -413,7 +413,20 @@
 	</div>	
   <ul class="list" style="background:#252525;margin-top:40px;"> 
   <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">ESTIMATE<div id="tflfare" style="color:#fff;float:right;font-size:26px"></div></li>
-  </ul>    
+  </ul>   
+	<ul class="list" style="margin:20px 0" id="accptrdiv">
+	<li class="list__header" style="text-align:center;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">PEOPLE WHO ACCEPTED THE REQUEST</li>
+  <li class="list__item list__item--tappable" ng-repeat="(key,value) in acceptors track by $index">
+    <label class="radio-button radio-button--list-item">
+      <input type="radio"  name='select' id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'>
+      <div class="radio-button__checkmark
+        radio-button--list-item__checkmark"></div>
+      {{ value.usrname }}
+    </label>
+  </li>
+  <button id="appfrndbtn" class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px" ng-click="approvefrnd(detail.id)">APPROVE THIS BECK FRIEND</button>  
+  </ul>  
+  
   <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4">
   <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">SUMMARY</li>
   </ul> 
@@ -433,16 +446,17 @@
   </ul>
   <div id="tflbckg" class="card" style="margin-top:15px"></div>
   
+  
  </ons-page>
 </ons-template>
 
- <ons-template id="request.html">
-  <ons-page style="background:#000">
+<ons-template id="request.html">
+ <ons-page style="background:#000">
 	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
 	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
 	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">POSTING REQUEST</h1></div>
 	</div>
-  </ons-page>
+ </ons-page>
 </ons-template>
 
 <ons-template id="accept.html">
@@ -453,22 +467,32 @@
 	</div>
   </ons-page>
 </ons-template>
+<ons-template id="confirm.html">
+  <ons-page style="background:#000">
+	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
+	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">CONFIRMING REQUEST</h1></div>
+	</div>
+  </ons-page>
+</ons-template>
 <ons-template id="schedule.html">
       <ons-page style="background:#fff">
 	   <div class="navigation-bar" style="background:#252525">
-	   <div class="navigation-bar__left"></div>
+	   <div class="navigation-bar__left">
+	   <span class="toolbar-button--quiet navigation-bar__line-height">
+     <ons-toolbar-button>
+        <ons-icon icon="ion-android-arrow-back" fixed-width="false" style="color:#fff;vertical-align: 0px;" onclick="myNavigator.popPage('schedule.html', { animation : 'push' } ); google.maps.event.trigger(map, 'resize');"></ons-icon>
+     </ons-toolbar-button>
+    </span>
+	   </div>
   <div class="navigation-bar__center" style="color:#fff">
     ACCEPTED
   </div>
   <div class="navigation-bar__right">
-    <span class="toolbar-button--quiet navigation-bar__line-height">
-     <ons-toolbar-button>
-              <ons-icon icon="ion-android-cancel" fixed-width="false" style="color:#fff;vertical-align: 0px;" onclick="myNavigator.popPage('schedule.html', { animation : 'push' } ); google.maps.event.trigger(map, 'resize');"></ons-icon>
-     </ons-toolbar-button>
-    </span>
+    
   </div>
 	</div>
-        <ons-list class="plan-list" style="padding-top:20px">
+        <ons-list class="plan-list" style="padding-top:0px">
           <ons-list-item class="plan" ng-repeat="msg in accepts" ng-click="fillboxes(msg)">
             <ons-row>
               <ons-col width="90px" class="plan-left">
@@ -478,7 +502,7 @@
 			   <ons-col width="3px" class="plan-center" ng-style="{backgroundColor:'#ddd'}">
               </ons-col>
               <ons-col class="plan-right" width="calc(100% - 100px)">
-                <div class="plan-name">ESTIMATE {{ msg.fare }}</div>
+                <div class="plan-name">ESTIMATE &nbsp;&nbsp;&nbsp; {{ msg.fare }}</div>
                 <div class="plan-info">
                   <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
                     <ons-icon icon="fa-map-marker" style="font-size:14px; margin-right:5px;color:green"></ons-icon> PICKUP : {{ msg.pickup }}
@@ -488,6 +512,9 @@
                   </div>
 				  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
                     <ons-icon icon="fa-archive" style="margin-right:5px;color:#808080"></ons-icon> SIZE : {{ msg.size }}
+                  </div>
+				  <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
+                    <ons-icon icon="fa-clock-o" style="margin-right:5px;color:#808080"></ons-icon> STATUS : {{ msg.status }}
                   </div>
                 </div>
               </ons-col>
@@ -499,20 +526,22 @@
 	<ons-template id="posted.html">
       <ons-page style="background:#fff">
 	  <div class="navigation-bar" style="background:#252525">
-	   <div class="navigation-bar__left"></div>
+	   <div class="navigation-bar__left">
+	   <span class="toolbar-button--quiet navigation-bar__line-height">
+     <ons-toolbar-button>
+         <ons-icon icon="ion-android-arrow-back" fixed-width="false" style="color:#fff;vertical-align: 0px;" onclick="myNavigator.popPage('posted.html', { animation : 'push' } ); google.maps.event.trigger(map, 'resize');"></ons-icon>
+     </ons-toolbar-button>
+    </span>
+	   </div>
   <div class="navigation-bar__center" style="color:#fff">
     POSTED
   </div>
   <div class="navigation-bar__right">
-    <span class="toolbar-button--quiet navigation-bar__line-height">
-     <ons-toolbar-button>
-              <ons-icon icon="ion-android-cancel" fixed-width="false" style="color:#fff;vertical-align: 0px;" onclick="myNavigator.popPage('posted.html', { animation : 'push' } ); google.maps.event.trigger(map, 'resize');"></ons-icon>
-     </ons-toolbar-button>
-    </span>
+    
   </div>
 	</div>
-        <ons-list class="plan-list" style="padding-top:20px">
-          <ons-list-item class="plan" ng-repeat="msg in posts" ng-click="fillboxes(msg)">
+        <ons-list class="plan-list" style="padding-top:0px">
+          <ons-list-item class="plan" ng-repeat="msg in posts" ng-click="fillboxes2(msg)">
             <ons-row>
               <ons-col width="90px" class="plan-left">
                 <div class="plan-date">{{ msg.deliverytime }}</div>
@@ -523,7 +552,7 @@
               </ons-col>
 
               <ons-col class="plan-right" width="calc(100% - 100px)">
-                <div class="plan-name">ESTIMATE {{msg.fare}}</div>
+                <div class="plan-name">ESTIMATE &nbsp;&nbsp;&nbsp; {{msg.fare}}</div>
 
                 <div class="plan-info">
                   <div style="margin:5px 0px; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">
@@ -540,10 +569,10 @@
             </ons-row>
           </ons-list-item>
         </ons-list>
-
       </ons-page>
     </ons-template>
-<ons-template id="menu.html">
+	
+	<ons-template id="menu.html">
     <ons-page style="background:#fff">
         <div class="profile-card">
         <img id="profile_img" src="profile.png" class="profile-image">
@@ -559,12 +588,12 @@
         <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;">
          Invite & Earn
         </ons-list-item>
-		<ons-list-item style="border:1px solid#fff; padding-top: 10px;" onclick="smsending()">
+		<ons-list-item style="border:1px solid#fff; padding-top: 10px;" onclick="editnum()">
          Edit Contact No.
         </ons-list-item>
       </ons-list>
       <br>
     </ons-page>
-</ons-template>
+	</ons-template>
 </body>
 </html>

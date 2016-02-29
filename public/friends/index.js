@@ -4,19 +4,38 @@
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", fbflag=0, usrnewmail="";
 	var otp = Math.floor((Math.random() * 900) + 1000); var locerr = 0; var hiname = 0;
-	var arrPckgs = []; var rsltshow = 0;
+	var arrPckgs = []; var rsltshow = 0; var idpckgmatch;
 	app.controller('AppController', ["$scope", "$firebaseArray",
-	
+		
 		function($scope, $firebaseArray) {
-			$scope.post2 = function(){
-				if(loggedin==1){ post()}	else{ befrlogin() };	
+		$scope.post2 = function(){
+			if(loggedin==1){ post()}	else{ befrlogin() };	
+		}
+		
+		$scope.approvefrnd = function(id){			
+			var number = $("input:radio[name='select']:checked").val();
+			if(number === undefined){
+				swal("Select a BECK FRIEND", "Please select the BECK friend who would complete your request")
+			}else{
+				var actionz = "BECK friend "+ $scope.acceptors[number].usrname +" was selected for order: " + idpckgmatch;
+				myNavigator.pushPage('confirm.html', { animation : 'none' } );
+				mailcall(actionz,$scope.acceptors[number].usrid,$scope.acceptors[number].usrphone);
+				smsmatchsuppl($scope.acceptors[number].usrphone); 
+				smsmatchdmnd(usrphone,$scope.acceptors[number].usrname,$scope.acceptors[number].usrphone);
+				var otherid = $scope.acceptors[number].id;				
+				firebaseRef.child("users").child(otherid).child("accepts").child(idpckgmatch).update({"status":"Approved"}).then(function() {
+					myNavigator.popPage('confirm.html', { animation : 'none' } ); myNavigator.popPage('track.html', { animation : 'none' } ); myNavigator.popPage('posted.html', { animation : 'none' } );
+					setTimeout(function(){swal("Succesfully Connected", "The details of the BECK Friend your approved for this request has been sent you through SMS", "success")},2000);	
+				});
+				
 			}
-			
-			
-			$scope.fillboxes = function(detail){
+		}
+		
+		$scope.fillboxes = function(detail){		
 		imagz="";
 		myNavigator.pushPage('track.html', { animation : 'push' } );
-		setTimeout(function(){ 
+		setTimeout(function(){
+		document.getElementById("accptrdiv").style.display="none";
 		document.getElementById("tflfare").innerHTML = detail.fare;
 		document.getElementById("tsizewt").innerHTML = detail.weight+" "+detail.size;
 		document.getElementById("tflpickarea").innerHTML = detail.pickup;
@@ -28,9 +47,43 @@
 			imagz = dataSnapshot.child("img64").val();
 			$("#tflbckg").css("background-image", "url('" + imagz + "')");
 		});
-		},100);
-			}
+		},100)
+		};
 		
+		$scope.fillboxes2 = function(detail){
+				
+		if(detail.acceptors === undefined){
+			$scope.acceptors = '';			
+		}
+		else{
+			var obj = detail.acceptors; var dett = Object.keys(obj).map(function(k) { return obj[k] });
+			$scope.acceptors = dett;
+		}		
+		//	console.log(dett.length);
+		imagz="";
+		myNavigator.pushPage('track.html', { animation : 'push' } );
+		setTimeout(function(){
+		if(detail.acceptors === undefined){
+			document.getElementById("accptrdiv").style.display="none"
+		}else{
+			document.getElementById("accptrdiv").style.display="block";
+			idpckgmatch = detail.id;
+		};	
+		
+		document.getElementById("tflfare").innerHTML = detail.fare;
+		document.getElementById("tsizewt").innerHTML = detail.pckgweight+" , "+detail.pckgsize;
+		document.getElementById("tflpickarea").innerHTML = detail.pickuparea;
+		document.getElementById("tflpickaddr").innerHTML = detail.pickupaddr;
+		document.getElementById("tfldelv").innerHTML = detail.deliveryarea;
+		document.getElementById("tfldelvaddr").innerHTML = detail.deliveryaddr;
+		document.getElementById("tfldtym").innerHTML = "By " + detail.deliverydate + " " + detail.deliverytime;
+		firebaseRef.child("packages").child(detail.id).child("img").once("value", function(dataSnapshot) {
+			imagz = dataSnapshot.child("img64").val();
+			$("#tflbckg").css("background-image", "url('" + imagz + "')");
+		});
+		},100);
+		}
+				
 		$scope.accept2 = function(){
 		clicklogin=1;
 		if(loggedin==1){
@@ -40,14 +93,14 @@
 		else{
 		clearInterval(interval);
 		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]).then(function() {
+		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
+		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone}).then(function() {
 		myNavigator.popPage('accept.html', { animation : 'none' } );
 		myNavigator.popPage('page4.html', { animation : 'none' } );
-		google.maps.event.trigger(map, 'resize');
-		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
-		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone);
-		var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id;
-		mailcall(actionz,usremail,usrphone);	
-  		});		
+		google.maps.event.trigger(map, 'resize'); swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
+  			
+		})
+		})			
 		};		
 		},2000);		
 		}
@@ -64,9 +117,11 @@
 			$scope.accepts.$loaded()
 			.then(function(arr){
 				if(arr.length == 0){
+					
 					// show the div with no trips yet
 				}
 				else{
+					
 					//hide the div with no trips yet
 				}
 			});
@@ -74,9 +129,11 @@
 			$scope.posts.$loaded()
 			.then(function(arr){
 				if(arr.length == 0){
+					
 					// show the div with no trips yet
 				}
 				else{
+					
 					//hide the div with no trips yet
 				}
 			});
@@ -87,6 +144,79 @@
 	
 	function exit(){
 		swal({   title: "Are you sure?",   text: "You will lose the data you added for this request",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, go back",   closeOnConfirm: true }, function(){   myNavigator.popPage('page1.html', { animation : 'lift' } ); google.maps.event.trigger(map, 'resize'); });
+	}
+	
+	  function smsmatchdmnd(number,name1,num1){
+	if(String(number).substring(0, 2) == '91'){
+					//otpcall(inputValue);
+	  $.ajax({
+      url: 'https://www.beckme.in/otp.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Your request has been accepted by your BECK friend '+name1+'. You can reach him at '+num1
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+        //console.log("01"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}else{
+	$.ajax({
+      url: 'https://www.beckme.in/otpint.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com'
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+       //console.log("02"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}
+	}
+	
+	function smsmatchsuppl(number){	
+	if(String(number).substring(0, 2) == '91'){
+	$.ajax({
+      url: 'https://www.beckme.in/otp.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+usrname+'. You can reach him at '+usrphone
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+      // console.log("11"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}else{
+	$.ajax({
+      url: 'https://www.beckme.in/otpint.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+       //console.log("12"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}
 	}
 	
 	function mailcall(custName,custEmail,custPhone){
@@ -230,6 +360,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     map: map
 	});
 	arrPckgs.push({
+		status:"Not Approved Yet",
 		id: vehicle.id,
 		fare: vehicle.fare,
 		pickuplat: vehicle.pickuplat,
@@ -243,6 +374,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		pickup: vehicle.pickuparea,
 		pickupaddr: vehicle.pickupaddr,
 		deliveryaddr: vehicle.deliveryaddr,
+		usrid: vehicle.usrid,
         usrname: vehicle.usrname,
 		usrphn: vehicle.usrphone,
         sortable: true
@@ -687,19 +819,21 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	dArr = dateStr.split("-");
 	return dArr[2]+ "/" +dArr[1]+ "/" +dArr[0];
 	}
-	
-	
+		
 	var fbflag,clicklogin=0;
-	function post2(){		
-		if(loggedin==1){post()}
-		else{befrlogin()};		
-	}
+	
+	function editnum(){		
+		swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Yes, change it",   closeOnConfirm: false }, function(){ smsending() });
+	}	
 	
 	function smsending(){
 		if(loggedin==1){
-		swal({title: "Mobile Verification", text: "",   type: "input",  allowOutsideClick:true,   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
+				swal({title: "Mobile Verification", text: "", type: "input", closeOnConfirm: false, animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
 				function(inputValue){
-				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if((inputValue.length == 11) && (inputValue[0] == '0')){
+					inputValue = inputValue.substr(1,inputValue.length);
+				};
+				var number = inputValue.replace(/[^\d]/g, '').length;
 				if (inputValue === false) return false; 
 				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
 				if (String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, '')) == String(usrphone)) {swal.showInputError("Please do not enter the existing registered mobile number");     return false   }
@@ -718,12 +852,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				firebaseRef.child("users").child(usrid).update({
 					usrphone:intno
 				});				
-				usrphone = intno;			
+				usrphone = intno;
 				swal("Update Succesful", "Congratulations. You have succesully updated your mobile number", "success"); 
 				loggedin = 1;				
 				});
 				});	
-				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px; font-family:\'Maven Pro\', sans-serif;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
 			}
 			else{
 				befrlogin();
@@ -738,10 +872,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				usremail=  snapshot.child(usrnewmail).child("usremail").val();
 				usrphone = snapshot.child(usrnewmail).child("usrphone").val();
 				usrid = snapshot.child(usrnewmail).child("usrid").val();
-				fbflag = 0; loggedin = 1;				
+				fbflag = 0; loggedin = 1;		
 			}else if(clicklogin==1){				
 				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
 				function(inputValue){
+				if((inputValue.length == 11) && (inputValue[0] == '0')){
+					inputValue = inputValue.substr(1,inputValue.length);
+				};
 				var number = inputValue.replace(/[^\d]/g, '').length ;
 				if (inputValue === false) return false; 
 				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
@@ -851,7 +988,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at '+usrphone
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -862,13 +999,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       type: 'POST'
 	});
 	}else{
-	//otpintcall(inputValue);
 	$.ajax({
       url: 'https://www.beckme.in/otpint.php',
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can reach him at '+usrphone
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -888,7 +1024,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at '+arrPckgs[rsltshow].usrphn
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -899,13 +1035,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       type: 'POST'
 	});
 	}else{
-		//otpintcall(inputValue);
 	$.ajax({
       url: 'https://www.beckme.in/otpint.php',
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. You can reach him at '+arrPckgs[rsltshow].usrphn
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -926,20 +1061,22 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		if(document.getElementById("descriptor").value != ""){
 			description = document.getElementById("descriptor").value;
 		}
-		geoFire.set(orderid, [pickuplat, pickuplng]).then(function() {}, function(error) {
-		swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
-		});
+		
 		firebaseRef.child("packages").child(orderid).update({order:{description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare}},function(error){
 		if (error) {
+			myNavigator.popPage('request.html', { animation : 'none' } );
 			swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
 		} else {
 			var actionz = "BECK friend "+ usrname +" requested a new order: " + orderid;
-			mailcall(actionz,usremail,usrphone);
-			firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
+			mailcall(actionz,usremail,usrphone);			
 		}
 		});
-		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}});
-		setTimeout(function(){
+		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}}).then(function() {
+		firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
+		geoFire.set(orderid, [pickuplat, pickuplng]).then(function() {}, function(error) {
+		myNavigator.popPage('request.html', { animation : 'none' } );
+		swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
+		});
 		myNavigator.popPage('request.html', { animation : 'none' } );
 		myNavigator.popPage('page2.html', { animation : 'none' } );
 		myNavigator.popPage('page1.html', { animation : 'none' } );
@@ -947,8 +1084,11 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		google.maps.event.trigger(map, 'resize');
 		swal("Succesfully Posted", "Your Request is posted at the pickup location. We shall update you soon!", "success");
 		rfrshresults(map.getCenter());
-		},1000)	
-		},5500);			
+		},1000)
+		}, function(error) {
+		myNavigator.popPage('request.html', { animation : 'none' } );
+		swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
+		});		
 	}
 	
 	var today;
@@ -986,7 +1126,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		}else if(today > document.getElementById('myDate').value){
 			swal({   title: "Previous Date",   text: "You cannot select a previous date for delivery",   type: "error",   confirmButtonText: "OK" });
 		}
-		//else if((isValidDate(document.getElementById('myDate').value)) == false){swal({   title: "Invalid Date",   text: "Please select an appropriate date type for delivery",   type: "error",   confirmButtonText: "OK" });}
+		else if((isValidDate(document.getElementById('myDate').value)) == false){swal({   title: "Invalid Date",   text: "Please select an appropriate date type for delivery",   type: "error",   confirmButtonText: "OK" });}
 		else{
 		document.getElementById("packagedetails").style.display="none";		
 		document.getElementById("pickupbtn").style.background="#00b100";
