@@ -2783,7 +2783,7 @@ h6 {
   font-size: 17px;
   padding: 4px 10px;
   letter-spacing: 0;
-  color: #252525;
+  color: inherit;
   text-shadow: 0 1px none;
   vertical-align: baseline;
   background-color: rgba(0,0,0,0);
@@ -4930,12 +4930,12 @@ body.stop-scrolling {
       right: 15px; } }
   .sweet-alert h2 {
     color: #575757;
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
     font-weight: 600;
     text-transform: none;
     position: relative;
-    margin: 25px 0;
+    margin: 15px 0;
     padding: 0;
     line-height: 40px;
     display: block; }
@@ -6307,7 +6307,7 @@ display:none;
 
 .plan-right {
   padding: 10px 10px 10px 20px;
-  width: calc(100% - 100px);
+  width: calc(100% - 110px);
 }
 
 .plan-date {

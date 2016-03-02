@@ -2,8 +2,8 @@
 	var geoFire = new GeoFire(firebaseRef.child("_geopckgs")); var geoQuery = geoFire.query({center: [0,0],radius: 0});
 	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 2 Kgs",pckgsize = "SMALL (FITS IN BAG)";
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
-	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", fbflag=0, usrnewmail="";
-	var otp = Math.floor((Math.random() * 900) + 1000); var locerr = 0; var hiname = 0;
+	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
+	var otp; var locerr = 0; var hiname = 0;
 	var arrPckgs = []; var rsltshow = 0; var idpckgmatch;
 	app.controller('AppController', ["$scope", "$firebaseArray",
 		
@@ -23,11 +23,16 @@
 				smsmatchsuppl($scope.acceptors[number].usrphone); 
 				smsmatchdmnd(usrphone,$scope.acceptors[number].usrname,$scope.acceptors[number].usrphone);
 				var otherid = $scope.acceptors[number].id;				
+				firebaseRef.child("users").child(usrid).child("posts").child(idpckgmatch).update({"status":"Approved & Completed"});
 				firebaseRef.child("users").child(otherid).child("accepts").child(idpckgmatch).update({"status":"Approved"}).then(function() {
+					geoFire.remove(idpckgmatch);					
+					setTimeout(function(){
+		google.maps.event.trigger(map, 'resize');
+		swal("Succesfully Connected", "The details of the BECK Friend your approved for this request has been sent you through SMS", "success");
+		rfrshresults(map.getCenter());
+		},2000);
 					myNavigator.popPage('confirm.html', { animation : 'none' } ); myNavigator.popPage('track.html', { animation : 'none' } ); myNavigator.popPage('posted.html', { animation : 'none' } );
-					setTimeout(function(){swal("Succesfully Connected", "The details of the BECK Friend your approved for this request has been sent you through SMS", "success")},2000);	
-				});
-				
+				});				
 			}
 		}
 		
@@ -35,7 +40,16 @@
 		imagz="";
 		myNavigator.pushPage('track.html', { animation : 'push' } );
 		setTimeout(function(){
+		summbrk = 0;
+		showsummprof();
+		if(detail.status == 'Approved'){
+			document.getElementById("tflpnmct").innerHTML = detail.pickupname + "<br>" + detail.pickupnum;
+			document.getElementById("tfldnmct").innerHTML = detail.delvname + "<br>" + detail.delvnum;
+			document.getElementById("pickupdivv").style.display="block";
+			document.getElementById("delvdivv").style.display="block";
+		}
 		document.getElementById("accptrdiv").style.display="none";
+		document.getElementById("appfrndbtn").style.display="none";
 		document.getElementById("tflfare").innerHTML = detail.fare;
 		document.getElementById("tsizewt").innerHTML = detail.weight+" "+detail.size;
 		document.getElementById("tflpickarea").innerHTML = detail.pickup;
@@ -50,23 +64,35 @@
 		},100)
 		};
 		
-		$scope.fillboxes2 = function(detail){
-				
+		$scope.fillboxes2 = function(detail){				
 		if(detail.acceptors === undefined){
 			$scope.acceptors = '';			
 		}
 		else{
 			var obj = detail.acceptors; var dett = Object.keys(obj).map(function(k) { return obj[k] });
-			$scope.acceptors = dett;
+			$scope.acceptors = dett; 
+			if(dett.length>0 && detail.status=="Waiting for Accept"){
+				firebaseRef.child("users").child(usrid).child("posts").child(detail.id).update({status:"Waiting for Approval"});
+			}
 		}		
-		//	console.log(dett.length);
 		imagz="";
 		myNavigator.pushPage('track.html', { animation : 'push' } );
 		setTimeout(function(){
+			document.getElementById("tflpnmct").innerHTML = detail.pickupname + "<br>" + detail.pickupnum;
+			document.getElementById("tfldnmct").innerHTML = detail.deliveryname + "<br>" + detail.deliverynum;
+			document.getElementById("pickupdivv").style.display="block";
+			document.getElementById("delvdivv").style.display="block";
 		if(detail.acceptors === undefined){
-			document.getElementById("accptrdiv").style.display="none"
-		}else{
+			document.getElementById("accptrdiv").style.display="none";
+			document.getElementById("appfrndbtn").style.display="none";
+		}
+		else if(detail.status=="Approved & Completed"){
+			document.getElementById("accptrdiv").style.display="none";
+			document.getElementById("appfrndbtn").style.display="none";
+		}
+		else{
 			document.getElementById("accptrdiv").style.display="block";
+			document.getElementById("appfrndbtn").style.display="block";
 			idpckgmatch = detail.id;
 		};	
 		
@@ -92,15 +118,13 @@
 		if(typeof usrid === 'undefined'){}
 		else{
 		clearInterval(interval);
-		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]).then(function() {
+		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]);
+		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone, usrfbid:usrfbid, usrfbimg:usrfbimg}).then(function() {
 		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
-		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone}).then(function() {
 		myNavigator.popPage('accept.html', { animation : 'none' } );
 		myNavigator.popPage('page4.html', { animation : 'none' } );
 		google.maps.event.trigger(map, 'resize'); swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
-  			
-		})
-		})			
+  		})			
 		};		
 		},2000);		
 		}
@@ -117,11 +141,13 @@
 			$scope.accepts.$loaded()
 			.then(function(arr){
 				if(arr.length == 0){
-					
+					document.getElementById("notif1").style.display="none";
+					document.getElementById("notif").style.display="none";
 					// show the div with no trips yet
 				}
 				else{
-					
+					document.getElementById("notif1").style.display="inline";
+					document.getElementById("notif").style.display="inline";
 					//hide the div with no trips yet
 				}
 			});
@@ -129,11 +155,13 @@
 			$scope.posts.$loaded()
 			.then(function(arr){
 				if(arr.length == 0){
-					
+					document.getElementById("notif2").style.display="none";
+					document.getElementById("notif").style.display="none";
 					// show the div with no trips yet
 				}
 				else{
-					
+					document.getElementById("notif2").style.display="inline";
+					document.getElementById("notif").style.display="inline";
 					//hide the div with no trips yet
 				}
 			});
@@ -170,7 +198,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com'
+        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com/friends'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -372,6 +400,10 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		time: vehicle.deliverytime,
 		datetym: "By "+vehicle.deliverydate+" " + vehicle.deliverytime,
 		pickup: vehicle.pickuparea,
+		pickupname: vehicle.pickupname,
+		pickupnum: vehicle.pickupnum,
+		delvname: vehicle.deliveryname,
+		delvnum: vehicle.deliverynum,		
 		pickupaddr: vehicle.pickupaddr,
 		deliveryaddr: vehicle.deliveryaddr,
 		usrid: vehicle.usrid,
@@ -618,12 +650,26 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		}		
 	}
 	
+	var summbrk = 0;
+	function showsummprof(){		
+		if(summbrk==0){
+		document.getElementById("summhdprf").innerHTML = 'HIDE SUMMARY';document.getElementById("summicndwnprf").style.display="inline";
+		document.getElementById("summaryprf").style.display="inline";document.getElementById("summicnrytprf").style.display="none";
+		summbrk = 1;
+		}
+		else{
+		document.getElementById("summhdprf").innerHTML = 'SHOW SUMMARY';document.getElementById("summicndwnprf").style.display="none";
+		document.getElementById("summaryprf").style.display="none";document.getElementById("summicnrytprf").style.display="inline";
+		summbrk = 0;
+		}		
+	}
+	
 	function receipt(){
 		phoneNumDelv = document.getElementById("deliverynum").value.replace(/[^\d]/g, '');
 		if(document.getElementById('deliveryarea').value=="" || document.getElementById('deliveryname').value=="" || document.getElementById('deliverynum').value=="" || document.getElementById('deliveryaddr').value==""){
 			swal({   title: "DELIVERY DETAILS",   text: "Please fill all Pickup Details",   type: "error",   confirmButtonText: "OK" });
 		}		
-		else if(phoneNumDelv.length != 10) {
+		else if(phoneNumDelv.length < 10) {
 			swal({   title: "INVALID MOBILE NO.",   text: "Please enter a valid 10-digit mobile number at delivery location",   type: "error",   confirmButtonText: "OK" });
 		}
 		else if(img===undefined || img == ""){
@@ -779,7 +825,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		if(document.getElementById('pickuparea').value=="" || document.getElementById('pickupname').value=="" || document.getElementById('pickupnum').value=="" || document.getElementById('pickupaddr').value==""){
 			swal({   title: "PICKUP DETAILS",   text: "Please fill all Pickup Details",   type: "error",   confirmButtonText: "OK" });
 		}		
-		else if(phoneNumPick.length != 10) {
+		else if(phoneNumPick.length < 10) {
 			swal({   title: "INVALID MOBILE NO.",   text: "Please enter a valid 10-digit mobile number at pickup location",   type: "error",   confirmButtonText: "OK" });
 		}
 		else{
@@ -895,7 +941,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				if (inputValue === false) return false; 
 				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
 				firebaseRef.child("users").child(usrnewmail).update({
-					usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno
+					usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno, usrfbimg:usrfbimg, usrfbid:usrfbid
 				});				
 				usrphone = intno;
 				usrid = usrnewmail;				
@@ -909,6 +955,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	}
 	
 	function otpintcall(number){
+	otp = Math.floor((Math.random() * 900) + 1000);	
 	$.ajax({
       url: 'https://www.beckme.in/otpint.php',
       data:
@@ -927,6 +974,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	}
 		
 	function otpcall(number){
+	otp = Math.floor((Math.random() * 900) + 1000);
 	$.ajax({
       url: 'https://www.beckme.in/otp.php',
       data:
@@ -1072,7 +1120,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		}
 		});
 		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}}).then(function() {
-		firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
+		firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({status:"Waiting for Accept",description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
 		geoFire.set(orderid, [pickuplat, pickuplng]).then(function() {}, function(error) {
 		myNavigator.popPage('request.html', { animation : 'none' } );
 		swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
