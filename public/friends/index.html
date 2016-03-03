@@ -113,11 +113,11 @@
  <div class="navigation-bar" style="position:fixed;">
   <div ng-click="sidebar.toggleMenu()" class="navigation-bar__left" style="margin-top:-5px;">
     <ons-toolbar-button>
-          <ons-icon icon="ion-navicon" style="vertical-align:-10px;font-size: 32px; width: 1em;"><span id="notif" class="notification" style="font-size:8px;display:none">&nbsp;</span></ons-icon>&nbsp;MENU
+          <ons-icon icon="ion-navicon" style="vertical-align:-10px;font-size: 32px; width: 1em;"><span id="notif" class="notification" style="font-size:8px;display:none">&nbsp;</span></ons-icon>
 	</ons-toolbar-button>
   </div>
   <div class="navigation-bar__center" style="font-size:18px;letter-spacing:3px;">
-   BECK <span style="font-size:16px;letter-spacing:2px;color:#ff0000;">FRIENDS<span class="notification" style="font-size:8px;display:none;background:#2bb1de">BETA</span></span>
+   BECK <span style="font-size:16px;letter-spacing:2px;color:#ff0000;">FRIENDS<span class="notification" style="margin-top:10px;font-size:8px;background:#2bb1de">BETA</span></span>
   </div> 
   <div class="navigation-bar__right">  
 	<span class="toolbar-button--quiet navigation-bar__line-height" onclick="befrlogin()" id="signleft" style="display:none;margin-top:-5px;font-size:14px;">
@@ -341,7 +341,7 @@
   <ons-page modifier="shop-details" style="background:#f4f4f4">
 	<div class="navigation-bar" style="border-bottom:1px solid #252525;position:fixed;background:#252525">
   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
-  <ons-back-button style="color:#fff"></ons-back-button>&nbsp;BACK     
+  <ons-back-button style="color:#fff"></ons-back-button>    
   </div>
   <div class="navigation-bar__center" style="color:#fff;font-size:16px">
    PACKAGE SUMMARY
@@ -378,7 +378,7 @@
   <ons-page modifier="shop-details" style="background:#f4f4f4">
 	<div class="navigation-bar" style="border-bottom:1px solid #252525;position:fixed;background:#252525">
 	<div class="navigation-bar__left" style="color:#fff;font-size:8px">
-    <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>&nbsp;BACK    
+    <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>     
 	</div>
 	<div class="navigation-bar__center" style="font-size:16px;color:#fff">REQUEST SUMMARY</div> 
 	</div>	
@@ -411,7 +411,7 @@
   <ons-page modifier="shop-details" style="background:#f4f4f4">
 	<div class="navigation-bar" style="border-bottom:1px solid #252525;position:fixed;background:#252525">
 	<div class="navigation-bar__left" style="color:#fff;font-size:8px">
-    <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>&nbsp;BACK      
+    <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>       
 	</div>
 	<div class="navigation-bar__center" style="font-size:16px;color:#fff">REQUEST SUMMARY</div> 
 	
@@ -419,8 +419,22 @@
   <ul class="list" style="background:#252525;margin-top:40px;"> 
   <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">ESTIMATE<div id="tflfare" style="color:#fff;float:right;font-size:26px"></div></li>
   </ul>    
-    
-  <ul class="list" style="margin:15px 0" id="accptrdiv">
+    <ons-list id="accptrdiv" style="padding-bottom:30px">
+        <ons-list-item class="list-item-container" style="padding:30px" ng-repeat="(key,value) in acceptors track by $index">
+          <div class="list-item-left">
+            <img ng-src="{{ value.usrfbimg }}" class="avator">
+          </div>
+          <div class="list-item-right" ng-click="showprofile(value)">
+            <div class="list-item-content">
+              <div class="name">{{ value.usrname }}
+                
+              </div>
+              <span class="desc">VIEW PROFILE</span>
+            </div>
+          </div>
+        </ons-list-item>
+	</ons-list>	
+  <!--ul class="list" style="margin:15px 0" id="accptrdiv">
 	<li class="list__header" style="text-align:center;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">PEOPLE WHO ACCEPTED YOUR REQUEST</li>
   <li class="list__item list__item--tappable" ng-repeat="(key,value) in acceptors track by $index">
     <label class="radio-button" style="padding-top:10px">
@@ -430,8 +444,8 @@
       {{ value.usrname }}
     </label>
   </li>
-  </ul>  
-  <button id="appfrndbtn" class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px;display:none;" ng-click="approvefrnd(detail.id)">APPROVE THIS BECK FRIEND</button>  
+  </ul-->  
+  <button id="appfrndbtn" class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px;display:none;">APPROVE YOUR BECK FRIEND</button>  
   <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4" onclick="showsummprof()" >
   <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;"><div id="summhdprf" style="display:inline">SHOW SUMMARY</div><ons-icon id="summicnrytprf" icon="ion-arrow-right-b" style="vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon><ons-icon id="summicndwnprf" icon="ion-arrow-down-b" style="display:none;vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon></li>
   </ul> 
@@ -490,7 +504,7 @@
       <ons-page style="background:#fff">
 	   <div class="navigation-bar" style="background:#252525">
 	   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
-	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>&nbsp;BACK
+	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button> 
 	   </div>
   <div class="navigation-bar__center" style="color:#fff">
     ACCEPTED
@@ -537,7 +551,7 @@
       <ons-page style="background:#fff">
 	  <div class="navigation-bar" style="background:#252525">
 	   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
-	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>&nbsp;BACK
+	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button> 
 	   </div>
   <div class="navigation-bar__center" style="color:#fff">
     POSTED

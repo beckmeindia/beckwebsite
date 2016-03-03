@@ -12,6 +12,12 @@
 			if(loggedin==1){ post()}	else{ befrlogin() };	
 		}
 		
+		$scope.showprofile = function(value){
+			console.log(value.usrfbid);
+			window.open('http://www.fb.com/'+value.usrfbid,'_blank');
+			//window.location.href="www.fb.com/"+value.usrfbid;
+		}
+		
 		$scope.approvefrnd = function(id){			
 			var number = $("input:radio[name='select']:checked").val();
 			if(number === undefined){
