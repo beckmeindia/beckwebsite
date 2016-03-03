@@ -7,7 +7,7 @@
     "**/node_modules/**"
   ],
   "headers": [{
-    "source" : "/public/img/*.@(jpg|jpeg|gif|png)",
+    "source" : "/public/img/video-poster.jpg",
     "headers" : [ {
       "key" : "Cache-Control",
       "value" : "max-age=3600"
