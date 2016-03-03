@@ -3927,7 +3927,6 @@ input[type="search"].search-input::-webkit-search-cancel-button {
 .text-input--transparent {
   padding: 0;
   margin: 0;
-  font: inherit;
   color: inherit;
   background: transparent;
   line-height: normal;
@@ -3943,7 +3942,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: 0;
   border: 1px solid #fff;
   -webkit-border-radius: 4px;
@@ -3954,7 +3953,6 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   color: #1f1f21;
   padding: 4px 8px 0 8px;
   margin: 0;
-  font-size: 15px;
   height: 31px;
   font-weight: 400;
   -webkit-box-sizing: border-box;
@@ -5939,7 +5937,7 @@ body.stop-scrolling {
 }
 
 .action-label {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .prop-desc {
