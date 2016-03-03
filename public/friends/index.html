@@ -117,7 +117,7 @@
 	</ons-toolbar-button>
   </div>
   <div class="navigation-bar__center" style="font-size:18px;letter-spacing:3px;">
-   BECK <span style="font-size:16px;letter-spacing:2px;color:#ff0000;">FRIENDS<span class="notification" style="margin-top:10px;font-size:8px;background:#2bb1de">BETA</span></span>
+   BECK <span style="font-size:16px;letter-spacing:2px;color:#ff0000;">FRIENDS<span class="notification" style="margin-top:10px;font-size:8px;background:#2bb1de"> BETA </span></span>
   </div> 
   <div class="navigation-bar__right">  
 	<span class="toolbar-button--quiet navigation-bar__line-height" onclick="befrlogin()" id="signleft" style="display:none;margin-top:-5px;font-size:14px;">
@@ -419,33 +419,25 @@
   <ul class="list" style="background:#252525;margin-top:40px;"> 
   <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">ESTIMATE<div id="tflfare" style="color:#fff;float:right;font-size:26px"></div></li>
   </ul>    
-    <ons-list id="accptrdiv" style="padding-bottom:30px">
-        <ons-list-item class="list-item-container" style="padding:30px" ng-repeat="(key,value) in acceptors track by $index">
-          <div class="list-item-left">
-            <img ng-src="{{ value.usrfbimg }}" class="avator">
+    <ons-list id="accptrdiv">
+        <ons-list-item class="list-item-container" ng-repeat="(key,value) in acceptors track by $index">
+          <label class="radio-button radio-button--list-item">
+            <input type="radio" name="select" id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'>
+            <div class="radio-button__checkmark radio-button--list-item__checkmark"></div>	
+		  <div class="list-item-left">		  
+            <img ng-src="{{ value.usrfbimg }}" class="avator" ng-click="showprofile(value)">
           </div>
-          <div class="list-item-right" ng-click="showprofile(value)">
+          <div class="list-item-right">
             <div class="list-item-content">
-              <div class="name">{{ value.usrname }}
-                
-              </div>
-              <span class="desc">VIEW PROFILE</span>
+              <div class="name">{{ value.usrname }}</div>
+              <span class="desc" ng-click="showprofile(value)">VIEW PROFILE</span>			 
             </div>
-          </div>
+		  </div>
+		 
+		  </label>
         </ons-list-item>
 	</ons-list>	
-  <!--ul class="list" style="margin:15px 0" id="accptrdiv">
-	<li class="list__header" style="text-align:center;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">PEOPLE WHO ACCEPTED YOUR REQUEST</li>
-  <li class="list__item list__item--tappable" ng-repeat="(key,value) in acceptors track by $index">
-    <label class="radio-button" style="padding-top:10px">
-      <input type="radio"  name='select' id='{{$index}}' ng-value='$index' ng-model='$parent.selectedItem'>
-      <div class="radio-button__checkmark"></div>
-	  <img ng-src="{{ value.usrfbimg }}" width="40" class="avator" style="margin-right:10px" />
-      {{ value.usrname }}
-    </label>
-  </li>
-  </ul-->  
-  <button id="appfrndbtn" class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px;display:none;">APPROVE YOUR BECK FRIEND</button>  
+  <button id="appfrndbtn" class="button button--large" style="margin:20px 10px 50px 10px;width:calc(100% - 20px);letter-spacing:1px;display:none;" ng-click="approvefrnd()">APPROVE YOUR BECK FRIEND</button>  
   <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4" onclick="showsummprof()" >
   <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;"><div id="summhdprf" style="display:inline">SHOW SUMMARY</div><ons-icon id="summicnrytprf" icon="ion-arrow-right-b" style="vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon><ons-icon id="summicndwnprf" icon="ion-arrow-down-b" style="display:none;vertical-align:-1px;font-size:15px;margin-left:10px"></ons-icon></li>
   </ul> 

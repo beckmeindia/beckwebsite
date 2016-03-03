@@ -3675,7 +3675,6 @@ h6 {
   height: 100%;
   padding: 0;
   margin: 0;
-  line-height: 44px;
 }
 .radio-button--list-item__checkmark {
   margin-top: 10px;
@@ -6347,7 +6346,7 @@ display:none;
 }
 
 .list-item-right {
-  width: 100%;
+  width: calc(100% - 80px);
   float: right;
 }
 
@@ -6361,6 +6360,7 @@ display:none;
   height: 40px;
   border-radius: 3px;
   -webkit-border-radius: 3px;
+  margin-left:50px;
 }
 
 .name {

@@ -13,9 +13,7 @@
 		}
 		
 		$scope.showprofile = function(value){
-			console.log(value.usrfbid);
 			window.open('http://www.fb.com/'+value.usrfbid,'_blank');
-			//window.location.href="www.fb.com/"+value.usrfbid;
 		}
 		
 		$scope.approvefrnd = function(id){			
