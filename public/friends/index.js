@@ -515,7 +515,6 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	function loadauto2(){
 	myNavigator.pushPage('page5.html', { animation : 'none' } );	
 	setTimeout(function(){
-	document.getElementById('pac-input2').focus();		
 	var input = (document.getElementById('pac-input2'));
 	var autocomplete = new google.maps.places.Autocomplete(input);	
 	autocomplete.addListener('place_changed', function() {
@@ -581,7 +580,6 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	function loadauto(){
 	myNavigator.pushPage('page3.html', { animation : 'lift' } );		
 	setTimeout(function(){
-	document.getElementById('pac-input').focus();
 	var input = (document.getElementById('pac-input'));
 	var autocomplete = new google.maps.places.Autocomplete(input);	
 	autocomplete.addListener('place_changed', function() {	
@@ -819,7 +817,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				document.getElementById("delvareasumm").innerHTML = deliveryarea;
 				document.getElementById("delvdetsumm").innerHTML = deliveryaddr;
 				document.getElementById("datetymsumm").innerHTML =  deliverytime+" on "+deliverydate;
-			},2000)			
+			},3500)			
 		}		
 	}
 	
