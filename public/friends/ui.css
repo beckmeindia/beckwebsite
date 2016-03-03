@@ -5862,7 +5862,7 @@ body.stop-scrolling {
 .card {
   background-color: #eaeaea; 
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   color: #000;
   height: 250px;
 }

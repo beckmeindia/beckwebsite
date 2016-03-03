@@ -1208,6 +1208,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	img = "url('"+e.target.result+"')";  img64 = String(event.target.result);
 		document.getElementById("packagephoto").style.display = "none";
         document.getElementById("card").style.backgroundImage = img;
+		document.getElementById("card").style.backgroundSize = "contain"; document.getElementById("card").style.backgroundPosition = "center"; document.getElementById("card").style.backgroundRepeat = "no-repeat";
     };
     reader.readAsDataURL(this.files[0]);
 	}	
