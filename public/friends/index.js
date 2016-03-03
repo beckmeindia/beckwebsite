@@ -763,7 +763,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 					fare="Rs. "+String(Math.round(distance*1.5));
 				}				
 				else{
-					fare="GET A QUOTE";
+					fare="GET QUOTE";
 				}				
 			}
 			else if(diffDays>0 && diffDays<=7){
@@ -772,7 +772,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 					fare="Rs. "+String(Math.round(distance*1));
 				}
 				else{
-					fare="GET A QUOTE";
+					fare="GET QUOTE";
 				}					
 			}else{
 				
@@ -780,7 +780,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 					fare="Rs. "+String(Math.round(distance*0.5));
 				}
 				else{
-					fare="GET A QUOTE";
+					fare="GET QUOTE";
 				}					
 			}
 	}   
@@ -790,20 +790,20 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
 					fare="Rs. "+String(Math.round(distance*0.75));
 				}else{
-					fare="GET A QUOTE";
+					fare="GET QUOTE";
 				}				
 			}
 			else if(diffDays>=3 && diffDays<=7){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
 					fare="Rs. "+String(Math.round(distance*0.5));
 				}else{
-					fare="GET A QUOTE";
+					fare="GET QUOTE";
 				}				
 			}else{
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
 					fare="Rs. "+String(Math.round(distance*0.25));
 				}else{
-					fare="GET A QUOTE";
+					fare="GET QUOTE";
 				}				
 			}
 			};	
@@ -871,7 +871,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	var fbflag,clicklogin=0;
 	
 	function editnum(){
-		if(loggedin==1){swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Yes, change it",   closeOnConfirm: false }, function(){ smsending() })}else{befrlogin()};
+		if(loggedin==1){swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Change it",   closeOnConfirm: false }, function(){ smsending() })}else{befrlogin()};
 	}	
 	
 	function smsending(){
