@@ -123,6 +123,8 @@
 		else{
 		clearInterval(interval);
 		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]);
+		firebaseRef.child("users").child(usrid).child("accepts").update({notification:"yes"});
+		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone, usrfbid:usrfbid, usrfbimg:usrfbimg}).then(function() {
 		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
 		myNavigator.popPage('accept.html', { animation : 'none' } );
@@ -144,9 +146,8 @@
 			$scope.accepts = $firebaseArray(firebaseRef.child("users").child(usrid).child("accepts"));
 			$scope.accepts.$loaded()
 			.then(function(arr){
-				if(arr.length == 0){
+				if(arr.$getRecord("notification").$value == "no"){
 					document.getElementById("notif1").style.display="none";
-					document.getElementById("notif").style.display="none";
 				}
 				else{
 					document.getElementById("notif1").style.display="inline";
@@ -156,11 +157,9 @@
 			});
 			$scope.posts = $firebaseArray(firebaseRef.child("users").child(usrid).child("posts"));
 			$scope.posts.$loaded()
-			.then(function(arr){
-				if(arr.length == 0){
-					document.getElementById("notif2").style.display="none";
-					document.getElementById("notif").style.display="none";
-					// show the div with no trips yet
+			.then(function(arr){ 
+				if(arr.$getRecord("notification").$value == "no"){
+					document.getElementById("notif2").style.display="none";					
 				}
 				else{
 					document.getElementById("notif2").style.display="inline";
@@ -172,6 +171,16 @@
 		},2000);	
 		}
 	]);
+	
+	function openposts(){
+		myNavigator.pushPage('posted.html', { animation : 'push' } );
+		firebaseRef.child("users").child(usrid).child("posts").update({notification:"no"});
+	}
+	
+	function openaccepts(){
+		myNavigator.pushPage('schedule.html', { animation : 'push' } );
+		firebaseRef.child("users").child(usrid).child("accepts").update({notification:"no"});
+	}
 	
 	function exit(){
 		swal({   title: "Are you sure?",   text: "You will lose the data you added for this request",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, go back",   closeOnConfirm: true }, function(){   myNavigator.popPage('page1.html', { animation : 'lift' } ); google.maps.event.trigger(map, 'resize'); });
@@ -1130,6 +1139,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		var orderid2 = orderid+"D";
 		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}}).then(function() {
 		firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({status:"Waiting for Accept",description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
+		firebaseRef.child("users").child(usrid).child("posts").update({notification:"yes"});
 		geoFire.set(orderid, [pickuplat, pickuplng]).then(function() {}, function(error) {
 		myNavigator.popPage('request.html', { animation : 'none' } );
 		swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });

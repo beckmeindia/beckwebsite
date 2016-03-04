@@ -509,7 +509,7 @@
   </div>
 	</div>
         <ons-list class="plan-list" style="margin-top:40px">
-          <ons-list-item class="plan" ng-repeat="msg in accepts" ng-click="fillboxes(msg)">
+          <ons-list-item class="plan" ng-repeat="msg in accepts" ng-if="msg.$id!='notification'" ng-click="fillboxes(msg)">
             <ons-row>
               <ons-col width="100px" class="plan-left">
                 <div class="plan-date">By {{ msg.time }}</div>
@@ -551,12 +551,10 @@
   <div class="navigation-bar__center" style="color:#fff">
     POSTED
   </div>
-  <div class="navigation-bar__right">
-    
-  </div>
+  <div class="navigation-bar__right"></div>
 	</div>
         <ons-list class="plan-list" style="margin-top:40px">
-          <ons-list-item class="plan" ng-repeat="msg in posts" ng-click="fillboxes2(msg)">
+          <ons-list-item class="plan" ng-repeat="msg in posts" ng-if="msg.$id!='notification'" ng-click="fillboxes2(msg)">
             <ons-row>
               <ons-col width="100px" class="plan-left">
                 <div class="plan-date">By {{ msg.deliverytime }}</div>
@@ -600,10 +598,10 @@
         <div id="profile_name" class="profile-name">&nbsp;</div>
       </div>
       <ons-list style="padding-top: 10px;padding-bottom:10px;text-align:center">
-        <ons-list-item style="border:1px solid#fff; padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){myNavigator.pushPage('schedule.html', { animation : 'push' } )},500)}else{befrlogin()}">
+        <ons-list-item style="border:1px solid#fff; padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){ openaccepts() },500)}else{befrlogin()}">
          Accepted Requests <span id="notif1" class="notification" style="font-size:8px;display:none">NEW</span>
         </ons-list-item>
-        <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){ myNavigator.pushPage('posted.html', { animation : 'push' } )},500)}else{befrlogin()}">
+        <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){ openposts() },500)}else{befrlogin()}">
          Posted Requests <span id="notif2" class="notification" style="font-size:8px;display:none">NEW</span>
         </ons-list-item>
         <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;">
