@@ -147,7 +147,6 @@
 				if(arr.length == 0){
 					document.getElementById("notif1").style.display="none";
 					document.getElementById("notif").style.display="none";
-					// show the div with no trips yet
 				}
 				else{
 					document.getElementById("notif1").style.display="inline";
@@ -180,7 +179,6 @@
 	
 	  function smsmatchdmnd(number,name1,num1){
 	if(String(number).substring(0, 2) == '91'){
-					//otpcall(inputValue);
 	  $.ajax({
       url: 'https://www.beckme.in/otp.php',
       data:
@@ -373,9 +371,9 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		document.getElementById("pflfare").innerHTML = arrPckgs[rsltshow].fare;
 		document.getElementById("psizewt").innerHTML = arrPckgs[rsltshow].weight+" "+arrPckgs[rsltshow].size;
 		document.getElementById("pflpickarea").innerHTML = arrPckgs[rsltshow].pickup;
-		document.getElementById("pflpickaddr").innerHTML = arrPckgs[rsltshow].pickupaddr;
+		//document.getElementById("pflpickaddr").innerHTML = arrPckgs[rsltshow].pickupaddr;
 		document.getElementById("pfldelv").innerHTML = arrPckgs[rsltshow].delv;
-		document.getElementById("pfldelvaddr").innerHTML = arrPckgs[rsltshow].deliveryaddr;
+		//document.getElementById("pfldelvaddr").innerHTML = arrPckgs[rsltshow].deliveryaddr;
 		document.getElementById("pfldtym").innerHTML = arrPckgs[rsltshow].datetym;
 		firebaseRef.child("packages").child(arrPckgs[rsltshow].id).child("img").once("value", function(dataSnapshot) {
 			imagz = dataSnapshot.child("img64").val();
@@ -757,27 +755,31 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			}
 	}
 	else{
-	if(diffDays==0){
-			
+	if(diffDays==0){			
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*1.5));
+					fare="Rs. "+String(Math.round(200 + distance*0.75));
 				}				
 				else{
 					fare="GET QUOTE";
 				}				
 			}
-			else if(diffDays>0 && diffDays<=7){
-				
+			else if(diffDays>0 && diffDays<=3){				
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*1));
+					fare="Rs. "+String(Math.round(175 + distance*0.5));
 				}
 				else{
 					fare="GET QUOTE";
 				}					
-			}else{
-				
+			}else if(diffDays>3 && diffDays<=7){				
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*0.5));
+					fare="Rs. "+String(Math.round(150 + distance*0.5));
+				}
+				else{
+					fare="GET QUOTE";
+				}					
+			}else{				
+				if(pckgsize == 'SMALL (FITS IN BAG)'){
+					fare="Rs. "+String(Math.round(125 + distance*0.25));
 				}
 				else{
 					fare="GET QUOTE";
@@ -796,6 +798,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			else if(diffDays>=3 && diffDays<=7){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
 					fare="Rs. "+String(Math.round(distance*0.5));
+				}else{
+					fare="GET QUOTE";
+				}			
+			}else if(diffDays>7 && diffDays<=31){
+				if(pckgsize == 'SMALL (FITS IN BAG)'){
+					fare="Rs. "+String(Math.round(distance*0.4));
 				}else{
 					fare="GET QUOTE";
 				}				
