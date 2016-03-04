@@ -1,6 +1,6 @@
 	var ntfnd = 0; var center;var firebaseRef = new Firebase("https://beckrequest.firebaseio.com");
 	var geoFire = new GeoFire(firebaseRef.child("_geopckgs")); var geoQuery = geoFire.query({center: [0,0],radius: 0});
-	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 2 Kgs",pckgsize = "SMALL (FITS IN BAG)";
+	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 10 Kgs",pckgsize = "SMALL (FITS IN BAG)";
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
 	var otp; var locerr = 0; var hiname = 0;
@@ -184,7 +184,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+name1+'. You can reach him at '+num1
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).substring(0, 30)+'. You can reach him at '+num1
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -200,7 +200,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com/friends'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).substring(0, 30)+'. You can reach him at '+num1
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -220,7 +220,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+usrname+'. You can reach him at '+usrphone
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).substring(0, 30)+'. You can reach him at '+usrphone
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -236,7 +236,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).substring(0, 30)+'. You can reach him at '+usrphone
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -317,12 +317,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			rsltshow++;
 			showreslt(rsltshow);
 		}		
-		if(rsltshow == (arrPckgs.length-1)){
-			document.getElementById("nxtbtn").style.display="none";
-		}
-		if(rsltshow==1){
-			document.getElementById("prevbtn").style.display="inline";
-		}
+		
 	}
 	
 	function showprev(){
@@ -330,26 +325,29 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			rsltshow--;
 			showreslt(rsltshow);
 		}	
-		if(rsltshow == 0){
-			document.getElementById("prevbtn").style.display="none";
-		}
-		if(rsltshow==(arrPckgs.length-2)){
-			document.getElementById("nxtbtn").style.display="inline";
-		}		
+				
 		
 	}
 	
 	function showreslt(i){
-	if(nofkeys==1){
-		document.getElementById("prevbtn").style.display="none"; document.getElementById("nxtbtn").style.display="none";
-	}
-	if(i==0 && nofkeys>1){
-		document.getElementById("nxtbtn").style.display="inline";
-	}		
 	if(i<nofkeys){
 		document.getElementById("pckgctr").innerHTML = (i+1) +" of " + nofkeys;
 	}
-	
+	if(nofkeys==1){
+		document.getElementById("prevbtn").style.display="none"; document.getElementById("nxtbtn").style.display="none";
+	}
+	else{
+	if(i==0){
+		document.getElementById("prevbtn").style.display="none";
+	}else{
+		document.getElementById("prevbtn").style.display="inline";
+	}
+	if(i == nofkeys-1){
+		document.getElementById("nxtbtn").style.display="none";
+	}else{
+		document.getElementById("nxtbtn").style.display="inline";
+	}	
+	}
 	document.getElementById("pfare").innerHTML = arrPckgs[i].fare;
 	document.getElementById("psize").innerHTML = arrPckgs[i].size;
 	document.getElementById("pdatetym").innerHTML = arrPckgs[i].datetym;
@@ -451,7 +449,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	}
 	
 	function showVal(newVal){
-		var cars = ["","Less than 1 Kg", "1 Kg - 2 Kgs", "2 Kgs to 10 Kgs", "10 Kgs - 20 Kgs", "Above 20 Kgs"];
+		var cars = ["","Less than 1 Kg", "1 Kg - 10 Kgs", "10 Kgs to 20 Kgs", "20 Kgs - 30 Kgs", "Above 20 Kgs"];
 		document.getElementById("rangeText").innerHTML=cars[newVal]; pckgweight = cars[newVal];
 	}
 	
@@ -1046,7 +1044,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1062,7 +1060,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+usrname+'. You can approve his request from your profile at www.beckme.com'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1082,13 +1080,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(arrPckgs[rsltshow].usrname).substring(0, 10)+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
         },
       success: function(data) {
-      // console.log("11"+JSON.stringify(data));
+       //console.log("11"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -1129,6 +1127,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			mailcall(actionz,usremail,usrphone);			
 		}
 		});
+		var orderid2 = orderid+"D";
 		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}}).then(function() {
 		firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({status:"Waiting for Accept",description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
 		geoFire.set(orderid, [pickuplat, pickuplng]).then(function() {}, function(error) {

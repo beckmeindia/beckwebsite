@@ -384,7 +384,9 @@
 	<div class="navigation-bar__center" style="font-size:16px;color:#fff">REQUEST SUMMARY</div> 
 	</div>	
   <ul class="list" style="background:#252525;margin-top:40px;"> 
-  <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">YOU EARN<div id="pflfare" style="color:#fff;float:right;font-size:26px"></div></li>
+  <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:5px;font-size:24px;padding-right:20px;padding-left:20px">YOU EARN^<div id="pflfare" style="color:#fff;float:right;font-size:26px"></div></li>
+  <li class="list__header" style="font-weight:normal;padding-left:20px;background:#252525;color:#fff;height:45px;font-size:10px;letter-spacing:1px"> ^ Actual FARE to be mutually decided</li>
+
   </ul>    
   <ul class="list" style="margin-top:15px;border:1px solid #f4f4f4">
   <li class="list__header" style="padding-left:30px;background:#f4f4f4;color:#afafaf;height:30px;font-size:12px;letter-spacing:1px;">SUMMARY</li>
@@ -495,7 +497,7 @@
 </ons-template>
 <ons-template id="schedule.html">
       <ons-page style="background:#fff">
-	   <div class="navigation-bar" style="background:#252525">
+	   <div class="navigation-bar" style="position:fixed;background:#252525">
 	   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
 	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button> 
 	   </div>
@@ -506,7 +508,7 @@
     
   </div>
 	</div>
-        <ons-list class="plan-list" style="padding-top:0px">
+        <ons-list class="plan-list" style="margin-top:40px">
           <ons-list-item class="plan" ng-repeat="msg in accepts" ng-click="fillboxes(msg)">
             <ons-row>
               <ons-col width="100px" class="plan-left">
@@ -542,7 +544,7 @@
     </ons-template>
 	<ons-template id="posted.html">
       <ons-page style="background:#fff">
-	  <div class="navigation-bar" style="background:#252525">
+	  <div class="navigation-bar" style="position:fixed;background:#252525">
 	   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
 	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button> 
 	   </div>
@@ -553,7 +555,7 @@
     
   </div>
 	</div>
-        <ons-list class="plan-list" style="padding-top:0px">
+        <ons-list class="plan-list" style="margin-top:40px">
           <ons-list-item class="plan" ng-repeat="msg in posts" ng-click="fillboxes2(msg)">
             <ons-row>
               <ons-col width="100px" class="plan-left">
