@@ -61,12 +61,12 @@
 	  document.getElementById("profile_name").innerHTML = String(response.name);
 	  usrname = String(response.name); usremail = String(response.email);
 	  usrfbid = String(response.id); usrfbimg = String(response.picture.data.url);
-	  checkfirebase(usremail);
+	  checkfirebase(usremail); $("button[data-role='end']").click();
     });
 	document.getElementById("signleft").style.display = "none";
 	}
 	else {
-	hiname = 1;
+	hiname = 1; acceptsloaded=1;
 	document.getElementById("namehdr").innerHTML = "";
 	document.getElementById("signleft").style.display = "block";
 	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
@@ -91,11 +91,12 @@
 	  document.getElementById("profile_img").src = String(response.picture.data.url);
 	  document.getElementById("profile_name").innerHTML = String(response.name);
 	  usrfbimg = String(response.picture.data.url); usrname = String(response.name); usremail = String(response.email); usrfbid = String(response.id);
-	  checkfirebase(usremail);
+	  checkfirebase(usremail); $("button[data-role='end']").click();
     });
 	document.getElementById("signleft").style.display = "none";
 	}
 	else {
+	acceptsloaded=1;
 	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
 	document.getElementById("namehdr").innerHTML = "";
 	document.getElementById("signleft").style.display = "block";

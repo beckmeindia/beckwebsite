@@ -3,8 +3,8 @@
 	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 10 Kgs",pckgsize = "SMALL (FITS IN BAG)";
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
-	var otp; var locerr = 0; var hiname = 0;
-	var arrPckgs = []; var rsltshow = 0; var idpckgmatch;
+	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 60; var convcurr="$";
+	var arrPckgs = []; var rsltshow = 0; var idpckgmatch; var arraccepts = [];
 	app.controller('AppController', ["$scope", "$firebaseArray",
 		
 		function($scope, $firebaseArray) {
@@ -144,15 +144,19 @@
 		  if(loggedin == 1){
 			clearInterval(intervall);			  
 			$scope.accepts = $firebaseArray(firebaseRef.child("users").child(usrid).child("accepts"));
-			$scope.accepts.$loaded()
-			.then(function(arr){
+			$scope.accepts.$loaded().then(function(arr){
+				for (var key in arr) {
+					if(arr[key].$id === undefined){}else{
+					arraccepts.push(arr[key].$id);
+					}
+				}
+				acceptsloaded = 1;			
 				if(arr.$getRecord("notification").$value == "no"){
 					document.getElementById("notif1").style.display="none";
 				}
 				else{
 					document.getElementById("notif1").style.display="inline";
 					document.getElementById("notif").style.display="inline";
-					//hide the div with no trips yet
 				}
 			});
 			$scope.posts = $firebaseArray(firebaseRef.child("users").child(usrid).child("posts"));
@@ -164,7 +168,6 @@
 				else{
 					document.getElementById("notif2").style.display="inline";
 					document.getElementById("notif").style.display="inline";
-					//hide the div with no trips yet
 				}
 			});
 		  }
@@ -304,15 +307,20 @@ function isValidDate(dateString) {
   return dateString.match(regEx) != null;
 }
 
-geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
-  
-  var vehicle = vehiclesInQuery[vehicleId];
+function forcekeyexit(vehicleId){
+	var vehicle = vehiclesInQuery[vehicleId];
+	if(vehicle !== undefined){
   if (vehicle !== true) {
     vehicle.marker.setMap(null);
 	findAndRemove(arrPckgs, 'id', vehicleId);
   }
   delete vehiclesInQuery[vehicleId];
-});
+	}
+}
+
+geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
+  forcekeyexit(vehicleId);  
+})
 	
 	
 	function getLocation() {
@@ -396,10 +404,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	icon: "package.png",
     map: map
 	});
+	var nwfr = convcurr+" "+String(Math.round((vehicle.fare)/conval));
+	console.log(nwfr);
 	arrPckgs.push({
 		status:"Not Approved Yet",
 		id: vehicle.id,
-		fare: vehicle.fare,
+		fare: nwfr,
 		pickuplat: vehicle.pickuplat,
 		pickuplng: vehicle.pickuplng,
 		delv: vehicle.deliveryarea,
@@ -476,34 +486,39 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		if(hiname == 1){
 		var tour = new Tour({
         storage: false,		
-        steps: [
-            {
+		steps: [
+         {
+    orphan: true,
+    title: "What is BECK Friends?",
+	backdrop:true,
+    content: "A global peer-to-peer marketplace for sending anything anywhere economically with an opportunity to earn as you travel<br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
+  },   {
     element: "#locasion", 
     title: "Package locations",
 	placement: "bottom",
 	backdrop:true,
-    content: "Search various places to see packages there"
+    content: "Search various places to see packages there<br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
   },
   {
     element: "#map", 
     title: "Packages",
 	placement: "bottom",
 	backdrop:true,
-    content: "The live packages and their details appear here. Use the left and right arrow to navigate"
+    content: "The live packages and their details appear here. Use the left and right arrow to navigate<br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
   },
   {
     element: "#add",
     title: "New Request",
 	placement: "bottom",
 	backdrop:true,
-    content: "You can post a request if you want to send"
+    content: "You can post a request if you want to send <br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
   },
   {
     element: "#signleft",
     title: "Login",	
 	placement: "bottom",
 	backdrop:true,
-    content: "Finally, login for posting with us"
+    content: "Finally, login for posting with us<br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
   }
         ]
     }).init().start(true);   
@@ -557,19 +572,35 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	geoQuery.on("ready", function() {
 	nofkeys = Object.keys(vehiclesInQuery).length;
 	if(nofkeys==0 && geoQuery.radius()>1){
-		setTimeout(function(){
-			swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 })
-		},5000);		
+		if(geoQuery.radius()==30){
+			geoQuery.updateCriteria({radius: 300});
+		}else if(geoQuery.radius()==300){
+			geoQuery.updateCriteria({radius: 700});
+		}else if(geoQuery.radius()==700){
+			geoQuery.updateCriteria({radius: 1000});
+		}else if(geoQuery.radius()==1000){
+			geoQuery.updateCriteria({radius: 1500});
+		}else if(geoQuery.radius()==1500){
+			geoQuery.updateCriteria({radius: 3500});
+		}else if(geoQuery.radius()==3500){
+			geoQuery.updateCriteria({radius: 5000});
+		}else{
+		setTimeout(function(){swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 })},5000);		
+		}
+		
 	}
 	var interval = setInterval(function(){
-	if(arrPckgs.length == nofkeys && nofkeys!=0){			
+	if(arrPckgs.length == nofkeys && nofkeys!=0 && acceptsloaded==1){			
 		clearInterval(interval);
+		for (var key in arraccepts) {forcekeyexit(arraccepts[key])};
 		arrPckgs.sort(function(a, b) {	
 		return parseInt(Number(String(b.fare).split(" ")[1])) - parseInt(Number(String(a.fare).split(" ")[1]));
 		});
+		nofkeys = arrPckgs.length;
 		document.getElementById("prevbtn").style.display="none";
 		showreslt(0);
 	}	
+	
 	},3000);
 	});	
 	
@@ -578,7 +609,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		  document.getElementById("map").style.height = '100%';
 		  google.maps.event.trigger(map, 'resize');
 		  map.setCenter(center);map.setZoom(12); ntfnd=0;
-		  geoQuery.updateCriteria({center: [center.lat(), center.lng()]});
+		  geoQuery.updateCriteria({center: [center.lat(), center.lng()],radius:30});
     }
 	
 	var img="";
@@ -605,7 +636,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	  if(autoflag==0)
 	  {
 		document.getElementById("locasion").innerHTML = document.getElementById("pac-input").value;
-	  myNavigator.popPage('page3.html', { animation : 'lift' } );	
+	  myNavigator.popPage('page3.html', { animation : 'lift' } );
+	  
 	  setTimeout(function(){		  
 		rfrshresults(center);
 	  },1500)
@@ -708,63 +740,63 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	if(distance<=60){	
 		if(diffDays==0){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(route*0.008));
+					fare=String(Math.round(route*0.008));
 				}
 				else if(pckgsize == 'MEDIUM (FITS IN CAR)'){
-					fare="Rs. "+String(Math.round(route*0.01));
+					fare=String(Math.round(route*0.01));
 				}
 				else if(pckgsize == 'LARGE (FITS IN VAN)'){
-					fare="Rs. "+String(Math.round(route*0.014));
+					fare=String(Math.round(route*0.014));
 				}
 				else{
-					fare="Rs. "+String(Math.round(route*0.024));
+					fare=String(Math.round(route*0.024));
 				}				
 			}
 			else if(diffDays>=1 && diffDays<=3){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(route*0.007));
+					fare=String(Math.round(route*0.007));
 				}
 				else if(pckgsize == 'MEDIUM (FITS IN CAR)'){
-					fare="Rs. "+String(Math.round(route*0.009));
+					fare=String(Math.round(route*0.009));
 				}
 				else if(pckgsize == 'LARGE (FITS IN VAN)'){
-					fare="Rs. "+String(Math.round(route*0.012));
+					fare=String(Math.round(route*0.012));
 				}
 				else{
-					fare="Rs. "+String(Math.round(route*0.021));
+					fare=String(Math.round(route*0.021));
 				}				
 			}else if(diffDays>3 && diffDays<=7){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(route*0.005));
+					fare=String(Math.round(route*0.005));
 				}
 				else if(pckgsize == 'MEDIUM (FITS IN CAR)'){
-					fare="Rs. "+String(Math.round(route*0.007));
+					fare=String(Math.round(route*0.007));
 				}
 				else if(pckgsize == 'LARGE (FITS IN VAN)'){
-					fare="Rs. "+String(Math.round(route*0.008));
+					fare=String(Math.round(route*0.008));
 				}
 				else{
-					fare="Rs. "+String(Math.round(route*0.015));
+					fare=String(Math.round(route*0.015));
 				}					
 			}else{
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(route*0.004));
+					fare=String(Math.round(route*0.004));
 				}
 				else if(pckgsize == 'MEDIUM (FITS IN CAR)'){
-					fare="Rs. "+String(Math.round(route*0.005));
+					fare=String(Math.round(route*0.005));
 				}
 				else if(pckgsize == 'LARGE (FITS IN VAN)'){
-					fare="Rs. "+String(Math.round(route*0.007));
+					fare=String(Math.round(route*0.007));
 				}
 				else{
-					fare="Rs. "+String(Math.round(route*0.012));
+					fare=String(Math.round(route*0.012));
 				}					
 			}
 	}
 	else{
 	if(diffDays==0){			
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(200 + distance*0.75));
+					fare=String(Math.round(200 + distance*0.75));
 				}				
 				else{
 					fare="GET QUOTE";
@@ -772,21 +804,21 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			}
 			else if(diffDays>0 && diffDays<=3){				
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(175 + distance*0.5));
+					fare=String(Math.round(175 + distance*0.5));
 				}
 				else{
 					fare="GET QUOTE";
 				}					
 			}else if(diffDays>3 && diffDays<=7){				
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(150 + distance*0.5));
+					fare=String(Math.round(150 + distance*0.5));
 				}
 				else{
 					fare="GET QUOTE";
 				}					
 			}else{				
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(125 + distance*0.25));
+					fare=String(Math.round(125 + distance*0.25));
 				}
 				else{
 					fare="GET QUOTE";
@@ -797,26 +829,26 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			}else{
 			if(diffDays<3){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*0.75));
+					fare=String(Math.round(distance*0.75));
 				}else{
 					fare="GET QUOTE";
 				}				
 			}
 			else if(diffDays>=3 && diffDays<=7){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*0.5));
+					fare=String(Math.round(distance*0.5));
 				}else{
 					fare="GET QUOTE";
 				}			
 			}else if(diffDays>7 && diffDays<=31){
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*0.4));
+					fare=String(Math.round(distance*0.4));
 				}else{
 					fare="GET QUOTE";
 				}				
 			}else{
 				if(pckgsize == 'SMALL (FITS IN BAG)'){
-					fare="Rs. "+String(Math.round(distance*0.25));
+					fare=String(Math.round(distance*0.25));
 				}else{
 					fare="GET QUOTE";
 				}				
@@ -824,8 +856,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			};	
 			myNavigator.pushPage('page2.html', { animation : 'push' } );
 			setTimeout(function(){
+				var newfrconv = "";
+				if(fare!="GET QUOTE"){
+				newfrconv = convcurr + Math.round(fare/conval);
+				}
 				document.getElementById("postbtn").style.display = "block";
-				document.getElementById("fare").innerHTML = fare;
+				document.getElementById("fare").innerHTML = newfrconv;
 				document.getElementById("card2").style.backgroundImage = img;
 				document.getElementById("pickupareasumm").innerHTML = pickuparea;
 				document.getElementById("pickupdetsumm").innerHTML = pickupaddr;
@@ -981,10 +1017,10 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
         randomNumber : otp + ' is your OTP (One Time Password) for Beck. Please use the password to complete your Registration.'
       },
       error: function(error) {
-      console.log(JSON.stringify(error));
+     // console.log(JSON.stringify(error));
         },
       success: function(data) {
-       console.log(JSON.stringify(data));
+       //console.log(JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -1000,7 +1036,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
         randomNumber : otp + ' is your OTP (One Time Password) for Beck. Please use the password to complete your Registration.'
       },
       error: function(error) {
-      console.log(JSON.stringify(error));
+      //console.log(JSON.stringify(error));
         },
       success: function(data) {
        //console.log(JSON.stringify(data));
@@ -1037,6 +1073,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	}
 	
 	function befrlogin(){
+		$("button[data-role='end']").click();
 		 $(".test").fbmodal({
             modalwidth: "200px",
 			opacity: 0.7,
