@@ -44,7 +44,7 @@
     </script>
 	</head>
 	 <script src="index.js"></script>
- <body ng-controller="AppController" onload="getLocation()" style="visibility: hidden">   
+ <body oncontextmenu="return false;" ng-controller="AppController" onload="getLocation()" style="visibility: hidden">   
  <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -131,7 +131,7 @@
 
  <div style="width:90%;margin-left:5%;height:42px;margin-top:45px;position:fixed;border:1px solid #d8d8d8;" onclick="startauto()">
    <i class="ion-location" style="position:absolute;font-size:20px; margin-top:15px;margin-left:10px;color:#000"></i>
-   <div style="font-weight:bold;width:100%;font-size:10px;color:#000;text-align:center; color:#009d00;margin-top:4px;opacity:0.5;font-weight:bold">REQUESTS AROUND</div>
+   <div style="font-weight:bold;width:100%;font-size:10px;color:#000;text-align:center; color:#009d00;margin-top:4px;opacity:0.5;font-weight:bold">NEAREST REQUESTS AROUND</div>
  <div id="locasion" style="padding-left:10%;padding-right:10%;width:80%;font-size:14px;color:#000;text-align:center;margin-top:2px; height:25px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;">Loading...</div>
  </div>
   <div class="tab-bar tab-bar--top tab-bar--top-border" style="background:#fff;border-bottom:1px solid #d8d8d8;position:fixed;margin-top:100px">
@@ -183,13 +183,13 @@
    
    <ons-template id="page1.html">
   <ons-page modifier="shop-details" style="background:#fff">
-	<div class="navigation-bar" style="border-bottom:0px;position:fixed;z-index:999">
+	<div class="navigation-bar" style="background:#252525;;border-bottom:0px;position:fixed;z-index:999">
   <div class="navigation-bar__left"></div>
-  <div class="navigation-bar__center" style="font-size:16px">
+  <div class="navigation-bar__center" style="font-size:16px;color:#fff">
    REQUEST DETAILS
   </div>
 	<div class="navigation-bar__right" onclick="exit()">
-    <button class="button button--quiet" style="font-size:12px; font-weight:bold;color:#000;MARGIN-TOP:2PX">CANCEL</button>      
+    <button class="button button--quiet" style="color:#fff;font-size:12px; font-weight:bold;MARGIN-TOP:2PX">CANCEL</button>      
   </div>  
  </div>	
         <div class="rating" style="margin-top:40px"><div class="rating-num" style="background:#fff;padding:0;">
@@ -221,7 +221,7 @@
 		</ons-list>
 		<ons-list style="margin-top:-1px;" id="packagedetails">
           <ons-list-item>
-            <div class="button-bar" style="border-radius:0px;width:100%;border:1px solid #efefef;">
+            <div class="button-bar" style="margin-top:5px;border-radius:0px;width:100%;border:1px solid #efefef;">
   <div class="button-bar__item">
     <input type="radio" name="segment-a" onclick="pckgsize = 'SMALL (FITS IN BAG)'">
     <button class="button-bar__button" style="height:70px;line-height:10px">SMALL<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>BAG</div></button>
@@ -244,11 +244,11 @@
 </div>
         </ons-list-item>		 
 		<ons-list-item style="padding-top:10px">
-        <div id="packagephoto" style="color:#fff;position:absolute;margin-top:80px;font-size:14px;width:100%;height:20px;z-index:9;text-align:center;letter-spacing:1px;"><ons-icon icon="ion-camera" style="font-size:30px;color:#fff; margin-right:15px"></ons-icon>ADD PACKAGE PHOTO</div>
-		<div id="card" style="background-color:rgba(0,0,0,0.81); width: 100%; height: 200px; background-repeat: no-repeat;" onclick="card()">	 
-	 	<input type="file" id="files" name="upload" style="width:100%;height:300px; opacity: 0;-moz-opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)"/>
+        <div id="packagephoto" style="color:#fff;position:absolute;margin-top:80px;font-size:14px;width:97%;height:20px;z-index:9;text-align:center;letter-spacing:1px;"><ons-icon icon="ion-camera" style="font-size:30px;color:#fff; margin-right:15px"></ons-icon>ADD PACKAGE PHOTO</div>
+		<div id="card" style="background-color:rgba(0,0,0,0.31); width: 100%; height: 200px; background-repeat: no-repeat;" onclick="card()">	 
+	 	<input type="file" id="files" name="upload" style="width:97%;height:200px; opacity: 0;-moz-opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)"/>
 		</div>
-		<button class="button button--large" style="margin-top:10px;" onclick="showdatetym();">NEXT</button><br>
+		<button class="button button--large" style="margin-top:10px;width:100%" onclick="showdatetym();">NEXT</button><br>
         </ons-list-item>
         </ons-list> 
         <ons-list id="pickupdetails" style="display:none;margin-top:-1px;">

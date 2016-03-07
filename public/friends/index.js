@@ -3,8 +3,8 @@
 	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 10 Kgs",pckgsize = "SMALL (FITS IN BAG)";
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
-	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 60; var convcurr="$";
-	var arrPckgs = []; var rsltshow = 0; var idpckgmatch; var arraccepts = [];
+	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 60; var convcurr="USD";
+	var arrPckgs = []; var rsltshow = 0; var idpckgmatch; var arraccepts = []; var revrsdone = 0;
 	app.controller('AppController', ["$scope", "$firebaseArray",
 		
 		function($scope, $firebaseArray) {
@@ -161,7 +161,20 @@
 			});
 			$scope.posts = $firebaseArray(firebaseRef.child("users").child(usrid).child("posts"));
 			$scope.posts.$loaded()
-			.then(function(arr){ 
+			.then(function(arr){
+				var interval = setInterval(function(){
+					if(revrsdone==1){
+						clearInterval(interval);
+						for (var key in arr) {
+					if(arr[key].$id === undefined || arr[key].fare == 'GET QUOTE'){}else{
+					arr[key].fare = convcurr+" "+ Math.round(Number(arr[key].fare)/conval);
+					}
+				}	
+				
+					}
+				},1500);
+				
+				
 				if(arr.$getRecord("notification").$value == "no"){
 					document.getElementById("notif2").style.display="none";					
 				}
@@ -405,7 +418,6 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     map: map
 	});
 	var nwfr = convcurr+" "+String(Math.round((vehicle.fare)/conval));
-	console.log(nwfr);
 	arrPckgs.push({
 		status:"Not Approved Yet",
 		id: vehicle.id,
@@ -437,15 +449,30 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     var latlng = new google.maps.LatLng(lat, lng);
     // This is making the Geocode request
     var geocoder = new google.maps.Geocoder();
+	// geoPosition.getCurrentPosition(function(r){
+        var findResult = function(results, name){
+            var result =  _.find(results, function(obj){
+                return obj.types[0] == name && obj.types[1] == "political";
+            });
+            return result ? result.short_name : null;
+        };
     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-        if (status !== google.maps.GeocoderStatus.OK) {
-          //  alert(status);
-        }
-        // This is checking to see if the Geoeode Status is OK before proceeding
         if (status == google.maps.GeocoderStatus.OK) {
             var address = (results[0].formatted_address);
 			document.getElementById("locasion").innerHTML = address;
-			
+			var country = findResult(results[0].address_components, "country");
+			if(country == 'IN'){
+				conval = 1; convcurr = "INR";
+			}else if(country == "IT" || country == "GR" || country == "FR" || country == "ES" || country == "PL" || country == "BE" || country == "DE" ||country == "IE" || country == "PT" || country == "CH" || country == "TR" || country == "UA" || country == "DK" || country == "NL"){
+				conval = 70; convcurr = "EUR";
+			}else if(country == "GB"){
+				conval = 90; convcurr = "GBP";
+			}else if(country == "JP"){
+				conval = 0.6; convcurr = "JPY";
+			}else{
+				conval = 60; convcurr = "USD";
+			}
+			revrsdone = 1;
         }
     });
 	}
@@ -552,8 +579,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		(place.address_components[1] && place.address_components[1].short_name || ''), 
         (place.address_components[2] && place.address_components[2].short_name || '')      
       ].join(' ');
-	  
-	document.getElementById("locasion").innerHTML=address;
+	  getReverseGeocodingData(center.lat(), center.lng());
+	//document.getElementById("locasion").innerHTML=address;
 	 map.setCenter(center);map.setZoom(11); ntfnd=0;
 	myNavigator.popPage('page5.html', { animation : 'none' } );	
 	setTimeout(function(){
@@ -597,8 +624,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		return parseInt(Number(String(b.fare).split(" ")[1])) - parseInt(Number(String(a.fare).split(" ")[1]));
 		});
 		nofkeys = arrPckgs.length;
-		document.getElementById("prevbtn").style.display="none";
-		showreslt(0);
+		if(nofkeys==0){
+			swal({   title: "No New Packages Here",   text: "You have accepted all packages near this location. Please come back later or continue searching for other locations.",   type: "error",   confirmButtonText: "OK" });
+    	}else{
+			document.getElementById("prevbtn").style.display="none"; showreslt(0);
+		}
+		
 	}	
 	
 	},3000);
@@ -858,7 +889,10 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			setTimeout(function(){
 				var newfrconv = "";
 				if(fare!="GET QUOTE"){
-				newfrconv = convcurr + Math.round(fare/conval);
+				newfrconv = convcurr+" "+ Math.round(fare/conval);
+				}
+				else{
+				newfrconv = "GET QUOTE";
 				}
 				document.getElementById("postbtn").style.display = "block";
 				document.getElementById("fare").innerHTML = newfrconv;
@@ -1210,8 +1244,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		document.getElementById("packagedetails").style.display="none";
 		document.getElementById("timedetails").style.display="block";
 		document.getElementById("timebtn").style.background="#00b100";		
-		document.getElementById("pickupbtn").style.background="#fff";
-		document.getElementById("deliverybtn").style.background="#fff";
+		document.getElementById("pickupbtn").style.background="#252525";
+		document.getElementById("deliverybtn").style.background="#252525";
 		document.getElementById('myDate').valueAsDate = new Date();
 		document.getElementById("myDate").min = document.getElementById("myDate").value;
 		}
@@ -1237,18 +1271,18 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		document.getElementById("timebtn").style.background="#00b100";
 		document.getElementById("pickupdetails").style.display="block";
 		document.getElementById("deliverydetails").style.display="none";
-		document.getElementById("deliverybtn").style.background="#fff";	
+		document.getElementById("deliverybtn").style.background="#252525";	
 		document.getElementById("timedetails").style.display="none";
 		}						
 	}
 	
 	function showpckg(){		
-		document.getElementById("pickupbtn").style.background="#fff";
-		document.getElementById("timebtn").style.background="#fff";
+		document.getElementById("pickupbtn").style.background="#252525";
+		document.getElementById("timebtn").style.background="#252525";
 		document.getElementById("packagedetails").style.display="block";
 		document.getElementById("pickupdetails").style.display="none";
 		document.getElementById("deliverydetails").style.display="none";
-		document.getElementById("deliverybtn").style.background="#fff";	
+		document.getElementById("deliverybtn").style.background="#252525";	
 		document.getElementById("timedetails").style.display="none";				
 	}
 	
