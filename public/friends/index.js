@@ -464,7 +464,11 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             var address = (results[0].formatted_address);
-			document.getElementById("locasion").innerHTML = address;
+			if(ntfnd==1){
+				ntfnd=0;
+			}else{
+			document.getElementById("locasion").innerHTML = address;				
+			}
 			var country = findResult(results[0].address_components, "country");
 			if(country == 'IN'){
 				conval = 1; convcurr = "INR";
@@ -546,6 +550,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     content: "You can post a request if you want to send <br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
   },
   {
+    element: "#mnulft",
+    title: "Menu",	
+	placement: "bottom",
+	backdrop:true,
+    content: "You can edit your profile & look at the details of trips from here<br>&nbsp;<br><button style='font-size:14px;color:#fff;padding:0px 10px' class='button' onclick='befrlogin()'>SIGNUP</button>"
+  },
+  {
     element: "#signleft",
     title: "Login",	
 	placement: "bottom",
@@ -585,15 +596,14 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
         (place.address_components[2] && place.address_components[2].short_name || '')      
       ].join(' ');
 	  getReverseGeocodingData(center.lat(), center.lng());
-	//document.getElementById("locasion").innerHTML=address;
-	 map.setCenter(center);map.setZoom(11); ntfnd=0;
+	document.getElementById("locasion").innerHTML=address;
+	 map.setCenter(center);map.setZoom(11); //ntfnd=0;
 	myNavigator.popPage('page5.html', { animation : 'none' } );	
 	setTimeout(function(){
 		  google.maps.event.trigger(map, 'resize');
 		 map.setCenter(center);map.setZoom(11);
 		  geoQuery.updateCriteria({center: [center.lat(), center.lng()],  radius: 30});
-		  //geoQuery = geoFire.query({ center: [center.lat(), center.lng()],  radius: 30});
-			showtour();
+		 showtour();
 	  },1500)
     }	
 	});		
