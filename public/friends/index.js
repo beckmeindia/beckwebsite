@@ -417,7 +417,12 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	icon: "package.png",
     map: map
 	});
-	var nwfr = convcurr+" "+String(Math.round((vehicle.fare)/conval));
+	var nwfr;
+	if(vehicle.fare != "GET QUOTE"){
+		nwfr = convcurr+" "+String(Math.round((vehicle.fare)/conval));	
+	}else{
+		nwfr = "GET QUOTE";
+	}
 	arrPckgs.push({
 		status:"Not Approved Yet",
 		id: vehicle.id,
@@ -1108,12 +1113,15 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	
 	function befrlogin(){
 		$("button[data-role='end']").click();
-		 $(".test").fbmodal({
+		swal({ title: "Love to have you on board",   text: "Enter into your BECK Friends Account with Facebook",   type: "success",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Go Ahead" }, function(){login()});
+/*		
+		$(".test").fbmodal({
             modalwidth: "200px",
 			opacity: 0.7,
 			fadeout: true,
 			overlayclose: false,
-			title: "Login with Facebook"});  		
+			title: "Login with Facebook"});  	
+*/			
 	}
 	
   function smsacceptdm(number){

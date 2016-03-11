@@ -5089,6 +5089,8 @@ body.stop-scrolling {
       color: transparent; }
       .sweet-alert button.confirm[disabled] ~ .la-ball-fall {
         opacity: 1;
+		background:#2bb1de;
+		box-shadow:none;
         visibility: visible;
         transition-delay: 0s; }
     .sweet-alert button::-moz-focus-inner {
