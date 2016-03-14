@@ -20,7 +20,14 @@
     } ]
   },
   {
-	"source" : "**/*.@(js)",
+	"source" : "**/*.@(mp4)",
+    "headers" : [ {
+      "key" : "Cache-Control",
+      "value" : "max-age=604800"
+    } ]
+  },
+  {
+  "source" : "**/*.@(js)",
     "headers" : [ {
       "key" : "Cache-Control",
       "value" : "max-age=604800"
