@@ -13,14 +13,14 @@
       "value" : "max-age=604800"
   } ]
   },{
-    "source" : "**/style.css",
+    "source" : "**/*.@(css)",
     "headers" : [ {
       "key" : "Cache-Control",
       "value" : "max-age=604800"
     } ]
   },
   {
-	"source" : "**/js/*.@(js)",
+	"source" : "**/*.@(js)",
     "headers" : [ {
       "key" : "Cache-Control",
       "value" : "max-age=604800"
