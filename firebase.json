@@ -6,12 +6,32 @@
     "**/.*",
     "**/node_modules/**"
   ],
-  "headers": [{
-    "source" : "/public/img/video-poster.jpg",
+  "headers":[ {
+    "source" : "**/*.@(jpg|jpeg|gif|png)",
     "headers" : [ {
       "key" : "Cache-Control",
-      "value" : "max-age=3600"
+      "value" : "max-age=604800"
+  } ]
+  },{
+    "source" : "**/style.css",
+    "headers" : [ {
+      "key" : "Cache-Control",
+      "value" : "max-age=604800"
     } ]
-    }]
-}
+  },
+  {
+	"source" : "**/js/*.@(js)",
+    "headers" : [ {
+      "key" : "Cache-Control",
+      "value" : "max-age=604800"
+    } ]
+  },
+  {
+  	"source" : "**/*.@(ttf)",
+    "headers" : [ {
+      "key" : "Cache-Control",
+      "value" : "max-age=604800"
+    } ]
 
+  }]
+}
