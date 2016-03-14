@@ -209,7 +209,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).substring(0, 30)+'. You can reach him at '+num1
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).split(" ")[0].substring(0, 30)+'. You can reach him at '+num1
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -225,7 +225,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).substring(0, 30)+'. You can reach him at '+num1
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).split(" ")[0].substring(0, 30)+'. You can reach him at '+num1
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -245,7 +245,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).substring(0, 30)+'. You can reach him at '+usrphone
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can reach him at '+usrphone
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -261,7 +261,7 @@
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).substring(0, 30)+'. You can reach him at '+usrphone
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can reach him at '+usrphone
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1142,7 +1142,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1158,7 +1158,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1178,7 +1178,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(arrPckgs[rsltshow].usrname).substring(0, 10)+'. We will notify you once it has been approved. You can check the status from your profile.'
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(arrPckgs[rsltshow].usrname).split(" ")[0].substring(0, 10)+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1194,7 +1194,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].split(" ")[0].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
       //console.log(JSON.stringify(error));
@@ -1279,8 +1279,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		
 		if(document.getElementById('myDate').value=="" || document.getElementById('myTime').value==""){
 			swal({   title: "Date & Time",   text: "Please fill a date and time for the delivery of your package",   type: "error",   confirmButtonText: "OK" });
-		}else if(today > document.getElementById('myDate').value){
-			swal({   title: "Previous Date",   text: "You cannot select a previous date for delivery",   type: "error",   confirmButtonText: "OK" });
+		}else if(today >= document.getElementById('myDate').value){
+			swal({   title: "Future Date",   text: "You need to select a date in the future from today for delivery",   type: "error",   confirmButtonText: "OK" });
 		}
 		else if((isValidDate(document.getElementById('myDate').value)) == false){swal({   title: "Invalid Date",   text: "Please select an appropriate date type for delivery",   type: "error",   confirmButtonText: "OK" });}
 		else{
