@@ -527,7 +527,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     orphan: true,
     title: "What is BECK Friends?",
 	backdrop:true,
-    content: "A global peer-to-peer marketplace for sending anything anywhere economically with an opportunity to earn as you travel<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
+    content: "A global peer-to-peer marketplace for sending anything anywhere economically with an opportunity to earn as you travel<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff' onclick='befrlogin()'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
   },   {
     element: "#locasion", 
     title: "Change Locations",
@@ -540,21 +540,21 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     title: "Live Requests",
 	placement: "bottom",
 	backdrop:true,
-    content: "The details of Live Requests appear here. Use the left and right arrow to navigate across them<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
+    content: "The details of Live Requests appear here. Use the left and right arrow to navigate across them<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff' onclick='befrlogin()'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
   },
   {
     element: "#add",
     title: "New Request",
 	placement: "bottom",
 	backdrop:true,
-    content: "You can post a Request when you want to send <br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
+    content: "You can post a Request when you want to send <br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff' onclick='befrlogin()'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
   },
   {
     element: "#mnulft",
     title: "Menu",	
 	placement: "bottom",
 	backdrop:true,
-    content: "You can edit your profile & look at the details of previous requests<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
+    content: "You can edit your profile & look at the details of previous requests<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff' onclick='befrlogin()'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
   },
   {
     element: "#signleft",
