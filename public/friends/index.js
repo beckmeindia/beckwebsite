@@ -533,7 +533,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     title: "Change Locations",
 	placement: "bottom",
 	backdrop:true,
-    content: "Search various places to see the Requests there<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
+    content: "Search various places to see the Requests there<br>&nbsp;<br><button class='button' style='background:#3B5998;padding:0px 10px;line-height:24px;font-size:12px;color:#fff' onclick='befrlogin()'><i class='ion-social-facebook' style='font-size:12px; vertical-align:-1px;color:#fff;margin-right:5px;'></i>Login</button>"
   },
   {
     element: "#map", 
