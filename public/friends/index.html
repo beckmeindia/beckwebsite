@@ -48,13 +48,14 @@
  <script>
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : '969987659705048',
+      appId      : '949587018459748',
       xfbml      : true,
       version    : 'v2.5'
     });
 	
 	FB.getLoginStatus(function(response) {
 	if (response.status === 'connected') {
+	if (response.authResponse) {
 	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {	
 	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
 	  document.getElementById("profile_img").src = String(response.picture.data.url);
@@ -62,7 +63,10 @@
 	  usrname = String(response.name); usremail = String(response.email);
 	  usrfbid = String(response.id); usrfbimg = String(response.picture.data.url);
 	  checkfirebase(usremail); $("button[data-role='end']").click();
-    });
+    })
+	}else{
+	sweetAlert("Oops...", "Something went wrong. Could not Log you in", "error");
+	};
 	document.getElementById("signleft").style.display = "none";
 	}
 	else {
