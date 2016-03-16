@@ -306,7 +306,7 @@
     vehicle = dataSnapshot.val();
     if (vehicle !== null && vehiclesInQuery[vehicleId] === true) {
     vehiclesInQuery[vehicleId] = vehicle;
-	vehicle.marker = createVehicleMarker(vehicle,vehicleId);
+	createVehicleMarker(vehicle,vehicleId);
 	vehicle.fare = dataSnapshot.child("fare").val(); vehicle.size = dataSnapshot.child("pckgsize").val(); vehicle.weight = dataSnapshot.child("pckgweight").val(); vehicle.pckimg = dataSnapshot.child("id").val();
 	vehicle.pickup = dataSnapshot.child("pickuparea").val(); vehicle.pickupaddr = dataSnapshot.child("pickupaddr").val(); vehicle.delv = dataSnapshot.child("deliveryarea").val();
 	vehicle.delvaddr = dataSnapshot.child("deliveryaddr").val(); vehicle.datetym = "By " + dataSnapshot.child("deliverytime").val()+" on "+dataSnapshot.child("deliverydate").val();
@@ -324,7 +324,7 @@ function forcekeyexit(vehicleId){
 	var vehicle = vehiclesInQuery[vehicleId];
 	if(vehicle !== undefined){
   if (vehicle !== true) {
-    vehicle.marker.setMap(null);
+   // vehicle.marker.setMap(null);
 	findAndRemove(arrPckgs, 'id', vehicleId);
   }
   delete vehiclesInQuery[vehicleId];
@@ -346,6 +346,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		if((rsltshow+1)<nofkeys){
 			rsltshow++;
 			showreslt(rsltshow);
+			drawroute(arrPckgs[rsltshow].pickuplat, arrPckgs[rsltshow].pickuplng, arrPckgs[rsltshow].delvlat, arrPckgs[rsltshow].delvlng);
 		}		
 		
 	}
@@ -354,9 +355,45 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		if(rsltshow>0){
 			rsltshow--;
 			showreslt(rsltshow);
-		}	
-				
-		
+			drawroute(arrPckgs[rsltshow].pickuplat, arrPckgs[rsltshow].pickuplng, arrPckgs[rsltshow].delvlat, arrPckgs[rsltshow].delvlng);
+		}			
+	}
+	
+	var path = null;
+	var hotSpotMapMarkers = [];
+	
+	function drawroute(picklat,picklng,delvlat,delvlng){	
+	for (var i = 0; i < hotSpotMapMarkers.length; i++)
+    hotSpotMapMarkers[i].setMap(null);
+	map.setCenter(new google.maps.LatLng(picklat,picklng));
+	var flightPlanCoordinates = [{lat:picklat,lng:picklng},{lat:delvlat,lng:delvlng}];
+	var latlngbounds = new google.maps.LatLngBounds();
+	latlngbounds.extend(new google.maps.LatLng(picklat,picklng));
+	latlngbounds.extend(new google.maps.LatLng(delvlat,delvlng));
+	map.setCenter(latlngbounds.getCenter()); map.fitBounds(latlngbounds);
+	var polyLine = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    strokeColor: "#2bb1de",
+	strokeWeight: 2,
+	geodesic:true
+	});
+	var prepath = path;
+	if(prepath){prepath.setMap(null);
+	}
+	polyLine.setMap(map);
+	path = polyLine;
+	hotSpotMapMarkers.push(new google.maps.Marker({
+    position: new google.maps.LatLng(picklat, picklng),
+    optimized: true,
+	icon: "package.png",
+    map: map
+	}));
+	hotSpotMapMarkers.push(new google.maps.Marker({
+    position: new google.maps.LatLng(delvlat, delvlng),
+    optimized: true,
+	icon: "package.png",
+    map: map
+	}));
 	}
 	
 	function showreslt(i){
@@ -384,12 +421,14 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	document.getElementById("ppickup").innerHTML = arrPckgs[i].pickup;	
 	document.getElementById("pdelv").innerHTML = arrPckgs[i].delv;	
 	document.getElementById("rqstgist").style.display="block";
+	
 	if(i==0){
 		document.getElementById("map").style.height = 'calc(100% - '+(document.getElementById('rqstgist').clientHeight+140)+'px)'
 		google.maps.event.trigger(map, 'resize');
 	}
 	map.setZoom(15);
 	map.panTo(new google.maps.LatLng(arrPckgs[i].pickuplat, arrPckgs[i].pickuplng));
+	
 	}
 	
 	function openaccept(){
@@ -411,12 +450,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	}
 	
 	function createVehicleMarker(vehicle,vehicleId) {	
-	var marker = new google.maps.Marker({
-    position: new google.maps.LatLng(vehicle.lat, vehicle.lon),
-    optimized: true,
-	icon: "package.png",
-    map: map
-	});
+	
 	var nwfr;
 	if(vehicle.fare != "GET QUOTE"){
 		nwfr = convcurr+" "+String(Math.round((vehicle.fare)/conval));	
@@ -429,6 +463,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		fare: nwfr,
 		pickuplat: vehicle.pickuplat,
 		pickuplng: vehicle.pickuplng,
+		delvlat: vehicle.delvlat,
+		delvlng: vehicle.delvlng,
 		delv: vehicle.deliveryarea,
 		size: vehicle.pckgsize,
 		weight:vehicle.pckgweight,
@@ -447,7 +483,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		usrphn: vehicle.usrphone,
         sortable: true
     });
-	return marker;
+	//return marker;
 	}
 	
 	function getReverseGeocodingData(lat, lng) {
@@ -609,7 +645,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	});		
 	},1000);	
 	}
-		
+	var markrz1,markrz2;
 	
 	geoQuery.on("ready", function() {
 	nofkeys = Object.keys(vehiclesInQuery).length;
@@ -635,14 +671,22 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	if(arrPckgs.length == nofkeys && nofkeys!=0 && acceptsloaded==1){			
 		clearInterval(interval);
 		for (var key in arraccepts) {forcekeyexit(arraccepts[key])};
-		arrPckgs.sort(function(a, b) {	
-		return parseInt(Number(String(b.fare).split(" ")[1])) - parseInt(Number(String(a.fare).split(" ")[1]));
+		arrPckgs.sort(function(a, b) {
+			if(String(b.fare).split(" ")[1]=="QUOTE"){
+				return 0 - parseInt(Number(String(a.fare).split(" ")[1]));
+			}else if(String(a.fare).split(" ")[1]=="QUOTE"){
+				return parseInt(Number(String(b.fare).split(" ")[1])) - 0;
+			}
+			else{
+				return parseInt(Number(String(b.fare).split(" ")[1])) - parseInt(Number(String(a.fare).split(" ")[1]));
+			}		
 		});
 		nofkeys = arrPckgs.length;
 		if(nofkeys==0){
 			swal({   title: "No New Packages Here",   text: "You have accepted all packages near this location. Please come back later or continue searching for other locations.",   type: "error",   confirmButtonText: "OK" });
     	}else{
 			document.getElementById("prevbtn").style.display="none"; showreslt(0);
+			drawroute(arrPckgs[0].pickuplat, arrPckgs[0].pickuplng, arrPckgs[0].delvlat, arrPckgs[0].delvlng);	
 		}
 		
 	}	
