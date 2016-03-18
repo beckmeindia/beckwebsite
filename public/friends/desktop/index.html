@@ -12,9 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="js/modernizr.custom.js"></script>
-		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-		
-		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+		<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">		
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 	<style>
 	
   .inputdemoIcons .inputIconDemo {
@@ -35,14 +34,14 @@
 	</head>
 	<body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
 	 <!-- Angular Material requires Angular.js Libraries -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
 	
   <!-- Angular Material Library -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
   
   <!-- Your application bootstrap  -->
   <script type="text/javascript">    
@@ -55,53 +54,6 @@
   $scope.imagePath = 'download.png';
   var imagePath = 'download.png';
    $scope.imagePath2 = 'pic.jpg';
-   $scope.user = {
-      name: '',
-      email: '',
-      phone: '',
-      address: ''
-    };
-	 $scope.userState = '';
-        $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-            'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-            'WY').split(' ').map(function (state) { return { abbrev: state }; });
-	$scope.todos = [
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-    ];
 });
 
       var map;
@@ -152,7 +104,7 @@
 						</div><!-- /gn-scroller -->
 					</nav>
 				</li>
-				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:red">Friends</span></li>
+				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
 				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;" /><input placeholder="Search Location" type="search" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
 				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right">Hi Rahul</li>				
 			</ul>			
@@ -161,13 +113,13 @@
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
   <div flex flex-xs="" flex-gt-xs="30">
   <md-card style="margin:24px 0px 0px 20px">
-  <md-card-header style="padding:20px 40px">
+  <md-card-header style="padding:20px 40px;">
           <md-card-avatar style="padding-top:0px">
 			<img src="pulse.gif"/>
             <!--md-icon class="md-avatar-icon" md-svg-icon="pulse.gif"></md-icon-->
           </md-card-avatar>
           <md-card-header-text>
-			<span class="md-title">Live Requests</span>   
+			<span class="md-title" style="color:#d80000;font-weight:normal;">Live Requests</span>   
 			<span class="md-subhead">Showing Result 1 of 5</span>                     
           </md-card-header-text>
         </md-card-header>
@@ -175,16 +127,16 @@
   </md-card>
   </div>
   <div flex flex-xs="" flex-gt-xs="30" style="padding-left:1px">
-  <md-content style="background:#cccccc;padding-left:0" class="md-padding" layout-xs="column" layout="row">
+  <md-content style="background:#cccccc;padding-left:0;padding-right:0px;" class="md-padding" layout-xs="column" layout="row">
     <div layout="column">
       <md-card style="margin-left:0px">	  
         <img ng-src="{{imagePath2}}" class="md-card-image" alt="Washed Out" style="height:200px">
         <md-card-header style="padding:20px 40px 10px 20px">
           <md-card-avatar style="padding-top:5px">
-            <md-icon class="md-avatar-icon" md-svg-icon="img/icons/menu.svg"></md-icon>
+            <md-icon md-svg-icon="money.svg" style="padding:0"></md-icon>
           </md-card-avatar>
           <md-card-header-text>
-			<span class="md-title">YOU EARN : $ 250</span>   
+			<span class="md-title"><span style="font-size:14px;opacity:0.7">YOU EARN</span> : $ 250</span>   
 			<span class="md-subhead">Size: Small (Fits in a bag)</span>
           </md-card-header-text>
         </md-card-header>
@@ -232,7 +184,7 @@
 	   <md-card-header>         
           <md-card-header-text>
 			<span class="md-subhead">Want something delivered?</span>
-            <span class="md-title" style="font-weight:normal">Add a Request below</span>            
+            <span class="md-title" style="font-weight:normal;color:#d80000">Add a Request below</span>            
           </md-card-header-text>
         </md-card-header>
 	  <div style="height:200px;width:100%;background:#eaeaea"></div>
@@ -243,15 +195,17 @@
 		
     <md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
       <label>Pickup Contact Name</label>
-      <input  type="text">
+	  <input  type="text" ng-required="true">
     </md-input-container>
 
     <md-input-container class="md-block" style="margin:0px">
-      <input  type="text" placeholder="Mobile (required)" ng-required="true">
+      <label>Pickup Contact Number</label>
+	  <input  type="text" ng-required="true">
     </md-input-container>
 
     <md-input-container class="md-block" style="margin:0px">
-      <input  type="text" placeholder="Pickup Contact Address">
+      <label>Pickup Contact Address</label>
+	  <input  type="text" ng-required="true">
     </md-input-container>
 	</div>
 	 <div flex>
@@ -260,18 +214,18 @@
         <md-content class="md-no-momentum inputdemoIcons">
      
 	<md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
-      <!-- Use floating label instead of placeholder -->
       <label>Delivery Contact Name</label>
-      <input type="text">
+      <input type="text" ng-required="true">
     </md-input-container>
 
     <md-input-container class="md-block" style="margin:0px">
-      <!-- Use floating placeholder instead of label -->
-      <input  type="text" placeholder="Mobile (required)" ng-required="true">
+	  <label>Delivery Contact Number</label>
+      <input  type="text" ng-required="true">
     </md-input-container>
 
     <md-input-container class="md-block" style="margin:0px">
-      <input  type="text" placeholder="Delivery Contact Address">
+	  <label>Delivery Contact Address</label>
+      <input  type="text" ng-required="true">
     </md-input-container>
 	</div>
 	</div>
