@@ -12,10 +12,12 @@
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="js/modernizr.custom.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+		<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+		<script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
 		<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">		
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-	<style>
-	
+	<style>	
   .inputdemoIcons .inputIconDemo {
     min-height: 48px; }
   .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.email {
@@ -32,28 +34,22 @@
 	}
 	</style>
 	</head>
-	<body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
-	 <!-- Angular Material requires Angular.js Libraries -->
+  <body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
-	
-  <!-- Angular Material Library -->
   <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-  
-  <!-- Your application bootstrap  -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
   <script type="text/javascript">    
-    /**
-     * You must include the dependency on 'ngMaterial' 
-     */
-   angular.module('MyApp',['ngMaterial'])
+  angular.module('MyApp',['ngMaterial',"firebase"])
 
-.controller('AppCtrl', function($scope) {
+.controller('AppCtrl', function($scope, $firebaseObject) {
   $scope.imagePath = 'download.png';
   var imagePath = 'download.png';
    $scope.imagePath2 = 'pic.jpg';
+     var ref = new Firebase("https://beckrequest.firebaseio.com/packages");
+  $scope.data = $firebaseObject(ref);
 });
 
       var map;
@@ -81,11 +77,9 @@
     }]
 	}); 
   	}
-	  google.maps.event.addDomListener(window, 'load', initMap);	
+	google.maps.event.addDomListener(window, 'load', initMap);	
    
     </script>
-    
- 
 		<div class="container">
 			<ul id="gn-menu" class="gn-menu-main" style="border-bottom:1px solid #c6d0da;position: absolute;z-index:999;">				
 				<li class="gn-trigger" style="border-right:none;">
@@ -94,32 +88,30 @@
 						<div class="gn-scroller">
 							<ul class="gn-menu">
 								<li class="gn-search-item">
-									<input placeholder="Search Location" type="search" class="gn-search">
-									<a class="gn-icon gn-icon-search"><span>Search Location</span></a>
+									<input placeholder="Search Package" type="search" class="gn-search">
+									<a class="gn-icon gn-icon-search"><span>Search Package</span></a>
 								</li>
 								<li><a class="gn-icon gn-icon-archive">Posted Requests</a></li>
 								<li><a class="gn-icon gn-icon-cog">Accepted Requests</a></li>
 								<li><a class="gn-icon gn-icon-help">Edit Profile</a></li>								
 							</ul>
-						</div><!-- /gn-scroller -->
+						</div>
 					</nav>
 				</li>
 				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
 				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;" /><input placeholder="Search Location" type="search" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
 				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right">Hi Rahul</li>				
 			</ul>			
-		</div>
-		
+		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
   <div flex flex-xs="" flex-gt-xs="30">
-  <md-card style="margin:24px 0px 0px 20px">
+  <md-card style="margin:24px 0px 0px 20px;">
   <md-card-header style="padding:20px 40px;">
-          <md-card-avatar style="padding-top:0px">
+          <md-card-avatar>
 			<img src="pulse.gif"/>
-            <!--md-icon class="md-avatar-icon" md-svg-icon="pulse.gif"></md-icon-->
-          </md-card-avatar>
+         </md-card-avatar>
           <md-card-header-text>
-			<span class="md-title" style="color:#d80000;font-weight:normal;">Live Requests</span>   
+			<span class="md-title" style="color:#d80000;letter-spacing:1px">LIVE REQUESTS</span>   
 			<span class="md-subhead">Showing Result 1 of 5</span>                     
           </md-card-header-text>
         </md-card-header>
@@ -129,7 +121,7 @@
   <div flex flex-xs="" flex-gt-xs="30" style="padding-left:1px">
   <md-content style="background:#cccccc;padding-left:0;padding-right:0px;" class="md-padding" layout-xs="column" layout="row">
     <div layout="column">
-      <md-card style="margin-left:0px">	  
+      <md-card style="margin-left:0px;margin-right:0px">	  
         <img ng-src="{{imagePath2}}" class="md-card-image" alt="Washed Out" style="height:200px">
         <md-card-header style="padding:20px 40px 10px 20px">
           <md-card-avatar style="padding-top:5px">
@@ -142,8 +134,7 @@
         </md-card-header>
         <md-card-content style="padding:0px">
 		 <md-divider></md-divider>
-        <md-content>
-		
+        <md-content>		
       <md-list flex style="padding-bottom:0;padding-top:10px">       
         <md-list-item class="md-2-line" style="min-height:55px">
           <div class="md-list-item-text" style="margin:0">
@@ -172,11 +163,9 @@
 			<md-button class="md-raised" style="background:#eaeaea">Next</md-button>			
 		</md-card-actions>
       </md-card>      
-    </div>
-    
+    </div>    
   </md-content>
-  </div>
-    
+  </div>    
     <div flex flex-xs="" flex-gt-xs="40" style="background:#d6d6d6">
   <md-content style="background:#d6d6d6;padding:20px;padding-top:10px" class="md-padding" layout-xs="column" layout="row">	
     <div layout="column">
@@ -208,21 +197,17 @@
 	  <input  type="text" ng-required="true">
     </md-input-container>
 	</div>
-	 <div flex>
-        
+	 <div flex>        
 		<md-card-content style="padding:5px 16px">
-        <md-content class="md-no-momentum inputdemoIcons">
-     
+        <md-content class="md-no-momentum inputdemoIcons">     
 	<md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
       <label>Delivery Contact Name</label>
       <input type="text" ng-required="true">
     </md-input-container>
-
     <md-input-container class="md-block" style="margin:0px">
 	  <label>Delivery Contact Number</label>
       <input  type="text" ng-required="true">
     </md-input-container>
-
     <md-input-container class="md-block" style="margin:0px">
 	  <label>Delivery Contact Address</label>
       <input  type="text" ng-required="true">
@@ -236,7 +221,7 @@
     </div>    
   </md-content>
   </div>
-</div>
+	</div>
 		<script src="js/classie.js"></script>
 		<script src="js/gnmenu.js"></script>
 		<script>
