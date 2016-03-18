@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>BECK friends</title>
+		<meta name="description" content="A sidebar menu as seen on the Google Nexus 7 website" />
+		<meta name="keywords" content="google nexus 7 menu, css transitions, sidebar, side menu, slide out menu" />
+		<meta name="author" content="Codrops" />
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<script src="js/modernizr.custom.js"></script>
+		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+		
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+	<style>
+	
+  .inputdemoIcons .inputIconDemo {
+    min-height: 48px; }
+  .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.email {
+    color: green; }
+  .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.name {
+    color: dodgerblue; }
+  .inputdemoIcons md-input-container.md-input-invalid > md-icon.email,
+  .inputdemoIcons md-input-container.md-input-invalid > md-icon.name {
+    color: red; }
+	#map{
+      height: 452px;
+	  margin:0px 10px 10px 10px;
+	  border-radius:3px
+	}
+	</style>
+	</head>
+	<body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
+	 <!-- Angular Material requires Angular.js Libraries -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
+	
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  
+  <!-- Your application bootstrap  -->
+  <script type="text/javascript">    
+    /**
+     * You must include the dependency on 'ngMaterial' 
+     */
+   angular.module('MyApp',['ngMaterial'])
+
+.controller('AppCtrl', function($scope) {
+  $scope.imagePath = 'download.png';
+  var imagePath = 'download.png';
+   $scope.imagePath2 = 'pic.jpg';
+   $scope.user = {
+      name: '',
+      email: '',
+      phone: '',
+      address: ''
+    };
+	 $scope.userState = '';
+        $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
+            'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
+            'WY').split(' ').map(function (state) { return { abbrev: state }; });
+	$scope.todos = [
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+    ];
+});
+
+      var map;
+      function initMap(){
+	directionsService = new google.maps.DirectionsService;
+	directionsDisplay = new google.maps.DirectionsRenderer;
+	map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 18.936023, lng: 72.834920},
+    scrollwheel: false,
+    zoom: 11,
+	suppressInfoWindows: true,
+	disableDefaultUI: true,
+	 styles:[{
+        featureType:"poi",
+        elementType:"labels",
+        stylers:[{
+            visibility:"off"
+        }]
+    },{
+        featureType:"transit",
+        elementType:"labels",
+        stylers:[{
+            visibility:"off"
+        }]
+    }]
+	}); 
+  	}
+	  google.maps.event.addDomListener(window, 'load', initMap);	
+   
+    </script>
+    
+ 
+		<div class="container">
+			<ul id="gn-menu" class="gn-menu-main" style="border-bottom:1px solid #c6d0da;position: absolute;z-index:999;">				
+				<li class="gn-trigger" style="border-right:none;">
+					<a class="gn-icon gn-icon-menu"><span>Menu</span></a>
+					<nav class="gn-menu-wrapper">
+						<div class="gn-scroller">
+							<ul class="gn-menu">
+								<li class="gn-search-item">
+									<input placeholder="Search Location" type="search" class="gn-search">
+									<a class="gn-icon gn-icon-search"><span>Search Location</span></a>
+								</li>
+								<li><a class="gn-icon gn-icon-archive">Posted Requests</a></li>
+								<li><a class="gn-icon gn-icon-cog">Accepted Requests</a></li>
+								<li><a class="gn-icon gn-icon-help">Edit Profile</a></li>								
+							</ul>
+						</div><!-- /gn-scroller -->
+					</nav>
+				</li>
+				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:red">Friends</span></li>
+				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;" /><input placeholder="Search Location" type="search" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
+				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right">Hi Rahul</li>				
+			</ul>			
+		</div>
+		
+		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
+  <div flex flex-xs="" flex-gt-xs="30">
+  <md-card style="margin:24px 0px 0px 20px">
+  <md-card-header style="padding:20px 40px">
+          <md-card-avatar style="padding-top:0px">
+			<img src="pulse.gif"/>
+            <!--md-icon class="md-avatar-icon" md-svg-icon="pulse.gif"></md-icon-->
+          </md-card-avatar>
+          <md-card-header-text>
+			<span class="md-title">Live Requests</span>   
+			<span class="md-subhead">Showing Result 1 of 5</span>                     
+          </md-card-header-text>
+        </md-card-header>
+  <div id="map"></div>
+  </md-card>
+  </div>
+  <div flex flex-xs="" flex-gt-xs="30" style="padding-left:1px">
+  <md-content style="background:#cccccc;padding-left:0" class="md-padding" layout-xs="column" layout="row">
+    <div layout="column">
+      <md-card style="margin-left:0px">	  
+        <img ng-src="{{imagePath2}}" class="md-card-image" alt="Washed Out" style="height:200px">
+        <md-card-header style="padding:20px 40px 10px 20px">
+          <md-card-avatar style="padding-top:5px">
+            <md-icon class="md-avatar-icon" md-svg-icon="img/icons/menu.svg"></md-icon>
+          </md-card-avatar>
+          <md-card-header-text>
+			<span class="md-title">YOU EARN : $ 250</span>   
+			<span class="md-subhead">Size: Small (Fits in a bag)</span>
+          </md-card-header-text>
+        </md-card-header>
+        <md-card-content style="padding:0px">
+		 <md-divider></md-divider>
+        <md-content>
+		
+      <md-list flex style="padding-bottom:0;padding-top:10px">       
+        <md-list-item class="md-2-line" style="min-height:55px">
+          <div class="md-list-item-text" style="margin:0">
+            <p>Pickup Area</p>
+			<h3 style="font-size:14px">Nariman point, Mumbai, Maharashtra</h3>            
+          </div>
+        </md-list-item>
+		<md-list-item class="md-2-line" style="min-height:55px">
+          <div class="md-list-item-text" style="margin:0">
+            <p>Delivery Area</p>
+			<h3 style="font-size:14px">Kolkata, West Bengal, India</h3>            
+          </div>
+        </md-list-item>
+		<md-list-item class="md-2-line" style="min-height:55px">
+          <div class="md-list-item-text" style="margin:0">
+            <p>Delivery Time</p>
+			<h3 style="font-size:14px">By 26/03/2016</h3>            
+          </div>
+        </md-list-item>
+      </md-list>
+    </md-content>
+         	<md-button class="md-raised md-primary" style="width:90%;margin-top:0;margin-left:5%">ACCEPT</md-button>			
+		</md-card-content>	
+       	<md-card-actions layout="row" layout-align="center" style="margin-bottom:10px;">
+			<md-button >Previous</md-button>
+			<md-button class="md-raised" style="background:#eaeaea">Next</md-button>			
+		</md-card-actions>
+      </md-card>      
+    </div>
+    
+  </md-content>
+  </div>
+    
+    <div flex flex-xs="" flex-gt-xs="40" style="background:#d6d6d6">
+  <md-content style="background:#d6d6d6;padding:20px;padding-top:10px" class="md-padding" layout-xs="column" layout="row">	
+    <div layout="column">
+      <md-card style="padding:15px;padding-top:0">
+	   <md-card-header>         
+          <md-card-header-text>
+			<span class="md-subhead">Want something delivered?</span>
+            <span class="md-title" style="font-weight:normal">Add a Request below</span>            
+          </md-card-header-text>
+        </md-card-header>
+	  <div style="height:200px;width:100%;background:#eaeaea"></div>
+       <div layout="row">
+	   <div flex>
+       <md-card-content style="padding:5px 16px">
+        <md-content class="md-no-momentum inputdemoIcons">
+		
+    <md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
+      <label>Pickup Contact Name</label>
+      <input  type="text">
+    </md-input-container>
+
+    <md-input-container class="md-block" style="margin:0px">
+      <input  type="text" placeholder="Mobile (required)" ng-required="true">
+    </md-input-container>
+
+    <md-input-container class="md-block" style="margin:0px">
+      <input  type="text" placeholder="Pickup Contact Address">
+    </md-input-container>
+	</div>
+	 <div flex>
+        
+		<md-card-content style="padding:5px 16px">
+        <md-content class="md-no-momentum inputdemoIcons">
+     
+	<md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
+      <!-- Use floating label instead of placeholder -->
+      <label>Delivery Contact Name</label>
+      <input type="text">
+    </md-input-container>
+
+    <md-input-container class="md-block" style="margin:0px">
+      <!-- Use floating placeholder instead of label -->
+      <input  type="text" placeholder="Mobile (required)" ng-required="true">
+    </md-input-container>
+
+    <md-input-container class="md-block" style="margin:0px">
+      <input  type="text" placeholder="Delivery Contact Address">
+    </md-input-container>
+	</div>
+	</div>
+  </md-content>
+        </md-card-content>
+		 	<md-button class="md-raised md-primary" style="background:#888;width:90%;margin-top:0;margin-left:5%;margin-bottom:15px">NEXT</md-button>	
+		</md-card>     
+    </div>    
+  </md-content>
+  </div>
+</div>
+		<script src="js/classie.js"></script>
+		<script src="js/gnmenu.js"></script>
+		<script>
+			new gnMenu( document.getElementById( 'gn-menu' ) );
+		</script>
+	</body>
+</html>
