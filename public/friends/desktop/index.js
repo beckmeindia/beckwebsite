@@ -15,23 +15,21 @@ angular.module('MyApp',['ngMaterial',"firebase"]).controller('AppCtrl', function
 var nofkeys=0;
 	geoQuery.on("key_entered", function(vehicleId, vehicleLocation) {
 	vehiclesInQuery[vehicleId] = true;
-	firebaseRef.child("packages").child(vehicleId).child("order").once("value", function(dataSnapshot) {
-    vehicle = dataSnapshot.val();	
+	firebaseRef.child("packages").child(vehicleId).once("value", function(dataSnapshot) {
+    vehicle = dataSnapshot.val();
 	if (vehicle !== null && vehiclesInQuery[vehicleId] === true) {
     vehiclesInQuery[vehicleId] = vehicle;
 	createVehicleMarker(vehicle,vehicleId);
-	//vehicle.fare = dataSnapshot.child("fare").val(); vehicle.size = dataSnapshot.child("pckgsize").val(); vehicle.weight = dataSnapshot.child("pckgweight").val(); vehicle.pckimg = dataSnapshot.child("id").val();
-	//vehicle.pickup = dataSnapshot.child("pickuparea").val(); vehicle.pickupaddr = dataSnapshot.child("pickupaddr").val(); vehicle.delv = dataSnapshot.child("deliveryarea").val();
-	//vehicle.delvaddr = dataSnapshot.child("deliveryaddr").val(); vehicle.datetym = "By " + dataSnapshot.child("deliverytime").val()+" on "+dataSnapshot.child("deliverydate").val();
-    }
-	
+	}	
 	});
   });
 
 	geoQuery.on("ready", function() {
 	nofkeys = Object.keys(vehiclesInQuery).length;
 	if(nofkeys==0 && geoQuery.radius()>1){
-		if(geoQuery.radius()==30){
+		if (geoQuery.radius()==15){
+			geoQuery.updateCriteria({radius: 30});
+		}else if (geoQuery.radius()==30){
 			geoQuery.updateCriteria({radius: 300});
 		}else if(geoQuery.radius()==300){
 			geoQuery.updateCriteria({radius: 700});
@@ -162,10 +160,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	document.getElementById("ppickup").innerHTML = arrPckgs[i].pickup;	
 	document.getElementById("pdelv").innerHTML = arrPckgs[i].delv;	
 	document.getElementById("rqstgist").style.display="block";
+	$("#tflbckg").css("background-image", "url('" + arrPckgs[i].img + "')");
+	/*
 	firebaseRef.child("packages").child(arrPckgs[i].id).child("img").once("value", function(dataSnapshot) {
 			var imagz = dataSnapshot.child("img64").val();
 			$("#tflbckg").css("background-image", "url('" + imagz + "')");
 	});
+	*/
 	map.setZoom(15);
 	map.panTo(new google.maps.LatLng(arrPckgs[i].pickuplat, arrPckgs[i].pickuplng));	
 	}
@@ -228,35 +229,36 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	
 	function createVehicleMarker(vehicle,vehicleId) {	
 	var nwfr;
-	if(vehicle.fare != "GET QUOTE"){
-		nwfr = convcurr+" "+String(Math.round((vehicle.fare)/conval));	
+	if(vehicle.order.fare != "GET QUOTE"){
+		nwfr = convcurr+" "+String(Math.round((vehicle.order.fare)/conval));	
 	}else{
 		nwfr = "GET QUOTE";
 	}
 	arrPckgs.push({
 		status:"Not Approved Yet",
-		id: vehicle.id,
+		img: vehicle.img.img64,
+		id: vehicle.order.id,
 		fare: nwfr,
-		pickuplat: vehicle.pickuplat,
-		pickuplng: vehicle.pickuplng,
-		delvlat: vehicle.delvlat,
-		delvlng: vehicle.delvlng,
-		delv: vehicle.deliveryarea,
-		size: vehicle.pckgsize,
-		weight:vehicle.pckgweight,
-		date: vehicle.deliverydate,
-		time: vehicle.deliverytime,
-		datetym: "By "+vehicle.deliverydate+" " + vehicle.deliverytime,
-		pickup: vehicle.pickuparea,
-		pickupname: vehicle.pickupname,
-		pickupnum: vehicle.pickupnum,
-		delvname: vehicle.deliveryname,
-		delvnum: vehicle.deliverynum,		
-		pickupaddr: vehicle.pickupaddr,
-		deliveryaddr: vehicle.deliveryaddr,
-		usrid: vehicle.usrid,
-        usrname: vehicle.usrname,
-		usrphn: vehicle.usrphone,
+		pickuplat: vehicle.order.pickuplat,
+		pickuplng: vehicle.order.pickuplng,
+		delvlat: vehicle.order.delvlat,
+		delvlng: vehicle.order.delvlng,
+		delv: vehicle.order.deliveryarea,
+		size: vehicle.order.pckgsize,
+		weight:vehicle.order.pckgweight,
+		date: vehicle.order.deliverydate,
+		time: vehicle.order.deliverytime,
+		datetym: "By "+vehicle.order.deliverydate+" " + vehicle.order.deliverytime,
+		pickup: vehicle.order.pickuparea,
+		pickupname: vehicle.order.pickupname,
+		pickupnum: vehicle.order.pickupnum,
+		delvname: vehicle.order.deliveryname,
+		delvnum: vehicle.order.deliverynum,		
+		pickupaddr: vehicle.order.pickupaddr,
+		deliveryaddr: vehicle.order.deliveryaddr,
+		usrid: vehicle.order.usrid,
+        usrname: vehicle.order.usrname,
+		usrphn: vehicle.order.usrphone,
         sortable: true
     });
 	}
@@ -276,7 +278,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
         autocomplete.addListener('place_changed', function() {
 		  var place = autocomplete.getPlace();
           if (!place.geometry) {
-            window.alert("Autocomplete's returned place contains no geometry");
+            //alert("There was a problem fetching the location, please select from the options that come below when you type");
             return;
           }
 		  if (place.geometry.viewport) {
@@ -287,14 +289,16 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 			
           } 
 			var center = place.geometry.location;
-			geoQuery.updateCriteria({center: [center.lat(), center.lng()],  radius: 30});	
+			geoQuery.updateCriteria({center: [center.lat(), center.lng()],  radius: 15});	
 			path.setMap(null);
 			for (var i = 0; i < hotSpotMapMarkers.length; i++)
 			hotSpotMapMarkers[i].setMap(null);
+			path.setMap(null);
 			document.getElementById("rqstgist").style.display="none";
 			document.getElementById("pckgctr").innerHTML="Loading...";
-		 var address = '';
-          if (place.address_components) {
+			var address = ''; rsltshow = 0; google.maps.event.trigger(map, 'resize');
+			$("#tflbckg").css("background-image", "");
+			if (place.address_components) {
             address = [
               (place.address_components[0] && place.address_components[0].short_name || ''),
               (place.address_components[1] && place.address_components[1].short_name || ''),

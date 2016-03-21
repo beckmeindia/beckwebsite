@@ -309,10 +309,7 @@
     if (vehicle !== null && vehiclesInQuery[vehicleId] === true) {
     vehiclesInQuery[vehicleId] = vehicle;
 	createVehicleMarker(vehicle,vehicleId);
-	vehicle.fare = dataSnapshot.child("fare").val(); vehicle.size = dataSnapshot.child("pckgsize").val(); vehicle.weight = dataSnapshot.child("pckgweight").val(); vehicle.pckimg = dataSnapshot.child("id").val();
-	vehicle.pickup = dataSnapshot.child("pickuparea").val(); vehicle.pickupaddr = dataSnapshot.child("pickupaddr").val(); vehicle.delv = dataSnapshot.child("deliveryarea").val();
-	vehicle.delvaddr = dataSnapshot.child("deliveryaddr").val(); vehicle.datetym = "By " + dataSnapshot.child("deliverytime").val()+" on "+dataSnapshot.child("deliverydate").val();
-    }
+	}
   });  
 	});
 
@@ -696,10 +693,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	});	
 	
 	function rfrshresults(center){
+			for (var i = 0; i < hotSpotMapMarkers.length; i++)
+			hotSpotMapMarkers[i].setMap(null);
 		  document.getElementById("rqstgist").style.display="none";
 		  document.getElementById("map").style.height = '100%';
 		  google.maps.event.trigger(map, 'resize');
 		  rsltshow = 0;
+		  path.setMap(null);
 		  map.setCenter(center);map.setZoom(12); ntfnd=0;
 		  geoQuery.updateCriteria({center: [center.lat(), center.lng()],radius:30});
     }
@@ -957,7 +957,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				}
 				document.getElementById("fare").innerHTML = newfrconv;
 				var imgbckz = new Image; imgbckz.src = img64;resizeImage(imgbckz);
-				document.getElementById("card2").style.backgroundImage = img;
+				document.getElementById("card2").style.backgroundImage = "url('"+img64+"')";
 				document.getElementById("pickupareasumm").innerHTML = pickuparea;
 				document.getElementById("pickupdetsumm").innerHTML = pickupaddr;
 				document.getElementById("delvareasumm").innerHTML = deliveryarea;
@@ -967,7 +967,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		}		
 	}
 	function resizeImage(img) {
-    img64 = imageToDataUri(img, 300, 200);
+    img64 = imageToDataUri(img);
 	document.getElementById("postbtn").style.display = "block";
 	}
 	
@@ -1359,20 +1359,11 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		document.getElementById("timedetails").style.display="none";				
 	}
 	
-	function imageToDataUri(img, width, height) {
-
-    // create an off-screen canvas
-    var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
-
-    // set its dimension to target size
-    canvas.width = width;
-    canvas.height = height;
-
-    // draw source image into the off-screen canvas:
-    ctx.drawImage(img, 0, 0, width, height);
-
-    // encode image to data-uri with base64 version of compressed image
+	function imageToDataUri(img) {
+	var canvas = document.createElement('canvas'),
+    ctx = canvas.getContext('2d'); var wydt = 200 * img.width / img.height;
+	canvas.width = wydt; canvas.height = 200;
+    ctx.drawImage(img, 0, 0, wydt, 200);
     return canvas.toDataURL('image/jpeg', 0.7);
 	}
 	
