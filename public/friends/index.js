@@ -699,6 +699,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		  document.getElementById("rqstgist").style.display="none";
 		  document.getElementById("map").style.height = '100%';
 		  google.maps.event.trigger(map, 'resize');
+		  rsltshow = 0;
 		  map.setCenter(center);map.setZoom(12); ntfnd=0;
 		  geoQuery.updateCriteria({center: [center.lat(), center.lng()],radius:30});
     }
