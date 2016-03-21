@@ -9,7 +9,9 @@
 		
 		function($scope, $firebaseArray) {
 		$scope.post2 = function(){
-			if(loggedin==1){ post()}	else{ befrlogin() };	
+			if(img64==""){}else{
+			if(loggedin==1){ post()}	else{ befrlogin() };
+			}			
 		}
 		
 		$scope.showprofile = function(value){
@@ -311,9 +313,8 @@
 	vehicle.pickup = dataSnapshot.child("pickuparea").val(); vehicle.pickupaddr = dataSnapshot.child("pickupaddr").val(); vehicle.delv = dataSnapshot.child("deliveryarea").val();
 	vehicle.delvaddr = dataSnapshot.child("deliveryaddr").val(); vehicle.datetym = "By " + dataSnapshot.child("deliverytime").val()+" on "+dataSnapshot.child("deliverydate").val();
     }
-  });
-  
-});
+  });  
+	});
 
 function isValidDate(dateString) {
   var regEx = /^\d{4}-\d{2}-\d{2}$/;
@@ -953,8 +954,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				else{
 				newfrconv = "GET QUOTE";
 				}
-				document.getElementById("postbtn").style.display = "block";
 				document.getElementById("fare").innerHTML = newfrconv;
+				var imgbckz = new Image; imgbckz.src = img64;resizeImage(imgbckz);
 				document.getElementById("card2").style.backgroundImage = img;
 				document.getElementById("pickupareasumm").innerHTML = pickuparea;
 				document.getElementById("pickupdetsumm").innerHTML = pickupaddr;
@@ -963,6 +964,10 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				document.getElementById("datetymsumm").innerHTML =  deliverytime+" on "+deliverydate;
 			},3500)			
 		}		
+	}
+	function resizeImage(img) {
+    img64 = imageToDataUri(img, 300, 200);
+	document.getElementById("postbtn").style.display = "block";
 	}
 	
 	var phoneNumPick, phoneNumDelv;
@@ -1090,13 +1095,17 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 					usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno, usrfbimg:usrfbimg, usrfbid:usrfbid
 				});				
 				usrphone = intno;
-				usrid = usrnewmail;				
+				usrid = usrnewmail;
+				var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
+				mailcall(regsclbck);			
 				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 
 				loggedin = 1;
 				_fbq.push(['track', 'CompleteRegistration']);				
 				});
 				});	
 				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
+			}else{
+				acceptsloaded=1;
 			}; 			
 		});
 	}
@@ -1347,6 +1356,23 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 		document.getElementById("deliverydetails").style.display="none";
 		document.getElementById("deliverybtn").style.background="#252525";	
 		document.getElementById("timedetails").style.display="none";				
+	}
+	
+	function imageToDataUri(img, width, height) {
+
+    // create an off-screen canvas
+    var canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+
+    // set its dimension to target size
+    canvas.width = width;
+    canvas.height = height;
+
+    // draw source image into the off-screen canvas:
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // encode image to data-uri with base64 version of compressed image
+    return canvas.toDataURL('image/jpeg', 0.7);
 	}
 	
 	var reader;

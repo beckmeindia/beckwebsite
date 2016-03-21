@@ -12,12 +12,25 @@
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="js/modernizr.custom.js"></script>
+		<script   src="https://code.jquery.com/jquery-2.2.2.min.js"   integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="   crossorigin="anonymous"></script>
+		<script src="https://cdn.firebase.com/libs/geofire/4.0.0/geofire.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-		<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+		<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
 		<script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
 		<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">		
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 	<style>	
+	.pac-container{
+	margin-top:15px;font-family:'Maven Pro', sans-serif;
+	}
+	.pac-item{
+	padding:10px
+	}	
+	
+	.pac-icon{
+	display:none
+	}
+	
   .inputdemoIcons .inputIconDemo {
     min-height: 48px; }
   .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.email {
@@ -35,22 +48,76 @@
 	</style>
 	</head>
   <body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <!--script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '949587018459748',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+	
+	FB.getLoginStatus(function(response) {
+	if (response.status === 'connected') {
+	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {	
+	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
+	  //document.getElementById("profile_img").src = String(response.picture.data.url);
+	  //document.getElementById("profile_name").innerHTML = String(response.name);
+	  usrname = String(response.name); usremail = String(response.email);
+	  usrfbid = String(response.id); usrfbimg = String(response.picture.data.url);
+	  checkfirebase(usremail); $("button[data-role='end']").click();
+    });	
+	//document.getElementById("signleft").style.display = "none";
+	}
+	else {
+	hiname = 1; acceptsloaded=1;
+	document.getElementById("namehdr").innerHTML = "";
+	document.getElementById("signleft").style.display = "block";
+	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
+	}
+	});	
+	};
+
+	(function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+   
+	function login(){
+	clicklogin=1;
+	FB.login(function(response) {
+	if (response.authResponse) {
+	if (response.status === 'connected') {	
+	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {
+	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
+	  //document.getElementById("profile_img").src = String(response.picture.data.url);
+	  //document.getElementById("profile_name").innerHTML = String(response.name);
+	  usrfbimg = String(response.picture.data.url); usrname = String(response.name); usremail = String(response.email); usrfbid = String(response.id);
+	  checkfirebase(usremail); $("button[data-role='end']").click();
+    })
+	}else{
+	sweetAlert("Oops...", "Something went wrong. Could not Log you in", "error");
+	};
+	//document.getElementById("signleft").style.display = "none";
+	}
+	else {
+	acceptsloaded=1;
+	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
+	document.getElementById("namehdr").innerHTML = "";
+	//document.getElementById("signleft").style.display = "block";
+	}
+	} , {scope: 'email'});	
+   }
+</script-->
+  <script src="index.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
   <script type="text/javascript">    
-  angular.module('MyApp',['ngMaterial',"firebase"])
-
-.controller('AppCtrl', function($scope, $firebaseObject) {
-  $scope.imagePath = 'download.png';
-  var imagePath = 'download.png';
-   $scope.imagePath2 = 'pic.jpg';
-     var ref = new Firebase("https://beckrequest.firebaseio.com/packages");
-  $scope.data = $firebaseObject(ref);
-});
 
       var map;
       function initMap(){
@@ -76,6 +143,7 @@
         }]
     }]
 	}); 
+	callauto();
   	}
 	google.maps.event.addDomListener(window, 'load', initMap);	
    
@@ -99,8 +167,8 @@
 					</nav>
 				</li>
 				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
-				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;" /><input placeholder="Search Location" type="search" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
-				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right">Hi Rahul</li>				
+				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;" /><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
+				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" id="namehdr">Login</li>				
 			</ul>			
 		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
@@ -112,24 +180,24 @@
          </md-card-avatar>
           <md-card-header-text>
 			<span class="md-title" style="color:#d80000;letter-spacing:1px">LIVE REQUESTS</span>   
-			<span class="md-subhead">Showing Result 1 of 5</span>                     
+			<span class="md-subhead" id="pckgctr">Loading...</span>                     
           </md-card-header-text>
         </md-card-header>
   <div id="map"></div>
   </md-card>
   </div>
-  <div flex flex-xs="" flex-gt-xs="30" style="padding-left:1px">
+  <div  flex flex-xs="" flex-gt-xs="30" style="padding-left:1px">
   <md-content style="background:#cccccc;padding-left:0;padding-right:0px;" class="md-padding" layout-xs="column" layout="row">
-    <div layout="column">
-      <md-card style="margin-left:0px;margin-right:0px">	  
-        <img ng-src="{{imagePath2}}" class="md-card-image" alt="Washed Out" style="height:200px">
+    <div layout="column" id="rqstgist" style="display:none">
+      <md-card style="margin-left:0px;margin-right:0px">
+		<div style="height:200px;width:100%;background:#eaeaea;background-size:contain; background-repeat:no-repeat; background-position:center;" id="tflbckg"></div>	  
         <md-card-header style="padding:20px 40px 10px 20px">
           <md-card-avatar style="padding-top:5px">
             <md-icon md-svg-icon="money.svg" style="padding:0"></md-icon>
           </md-card-avatar>
           <md-card-header-text>
-			<span class="md-title"><span style="font-size:14px;opacity:0.7">YOU EARN</span> : $ 250</span>   
-			<span class="md-subhead">Size: Small (Fits in a bag)</span>
+			<span class="md-title"><span style="font-size:14px;opacity:0.7">YOU EARN</span> : <span id="pfare"></span></span>   
+			<span class="md-subhead">Size: <span id="psize"></span></span>
           </md-card-header-text>
         </md-card-header>
         <md-card-content style="padding:0px">
@@ -137,30 +205,30 @@
         <md-content>		
       <md-list flex style="padding-bottom:0;padding-top:10px">       
         <md-list-item class="md-2-line" style="min-height:55px">
-          <div class="md-list-item-text" style="margin:0">
+          <div class="md-list-item-text" style="margin:0;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;width: 300px;">
             <p>Pickup Area</p>
-			<h3 style="font-size:14px">Nariman point, Mumbai, Maharashtra</h3>            
+			<h3 style="font-size:14px" id="ppickup"></h3>            
           </div>
         </md-list-item>
 		<md-list-item class="md-2-line" style="min-height:55px">
-          <div class="md-list-item-text" style="margin:0">
+          <div class="md-list-item-text" style="margin:0;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;width: 300px;">
             <p>Delivery Area</p>
-			<h3 style="font-size:14px">Kolkata, West Bengal, India</h3>            
+			<h3 style="font-size:14px" id="pdelv"></h3>            
           </div>
         </md-list-item>
 		<md-list-item class="md-2-line" style="min-height:55px">
           <div class="md-list-item-text" style="margin:0">
             <p>Delivery Time</p>
-			<h3 style="font-size:14px">By 26/03/2016</h3>            
+			<h3 style="font-size:14px" id="pdatetym"></h3>            
           </div>
         </md-list-item>
       </md-list>
     </md-content>
          	<md-button class="md-raised md-primary" style="width:90%;margin-top:0;margin-left:5%">ACCEPT</md-button>			
 		</md-card-content>	
-       	<md-card-actions layout="row" layout-align="center" style="margin-bottom:10px;">
-			<md-button >Previous</md-button>
-			<md-button class="md-raised" style="background:#eaeaea">Next</md-button>			
+       	<md-card-actions layout="row" layout-align="center" style="min-height:35px;margin-bottom:10px;">
+			<md-button id="prevbtn" onclick="showprev()">Previous</md-button>
+			<md-button class="md-raised" style="background:#eaeaea" id="nxtbtn" onclick="shownext()">Next</md-button>			
 		</md-card-actions>
       </md-card>      
     </div>    

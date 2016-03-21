@@ -49,7 +49,8 @@ t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','//connect.facebook.net/en_US/fbevents.js');
 
 fbq('init', '1066721630052558');
-fbq('track', "PageView");</script>
+fbq('track', "PageView");
+fbq('track', 'ViewContent');</script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 /></noscript>
@@ -121,7 +122,6 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 </script>
 <ons-sliding-menu var="sidebar" swipeable="false" main-page="main.html" menu-page="menu.html" max-slide-distance="250px" type="reveal" side="left">
 </ons-sliding-menu>
-
 <div class="test">Enter into your BECK Friends account</div>
 <ons-template id="main.html">
  <ons-navigator title="Navigator" var="myNavigator">
@@ -264,7 +264,9 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 	 	<input type="file" id="files" name="upload" style="z-index:999;width:97%;height:200px; opacity: 0;-moz-opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)"/>
 		</div>
 		<button class="button button--large" style="margin-top:10px;width:100%" onclick="showdatetym();">NEXT</button><br>
-        </ons-list-item>
+        <canvas id="myCanvas" width="240" height="297" style="display:none;border:1px solid #d3d3d3;">
+		<img id="scream" width="220" height="277" alt="The Scream" style="display:none">
+		</ons-list-item>
         </ons-list> 
         <ons-list id="pickupdetails" style="display:none;margin-top:-1px;">
         <ons-list-item style="padding-top:10px" onclick="pickupauto()">
