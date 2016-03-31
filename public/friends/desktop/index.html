@@ -251,7 +251,7 @@
     </md-input-container>
 	</md-content>
 	<md-content id="lala2" style="padding-top:20px;display:none;overflow:hidden">
-	<md-datepicker ng-model="myDate" md-placeholder="Delivery Date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
+	<md-datepicker onkeydown="return false;"  ng-model="myDate" md-placeholder="Delivery Date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
     <md-input-container style="margin-top:20px;margin-left:10px">
         <label>Weight</label>
         <select style="background:#fff;color:#000;margin: 7px 0px 0px 60px;border:none;font-size:14px" onChange="pckgweight = this.value">
@@ -386,7 +386,7 @@
       </div>
 		</md-toolbar>	
         <div class="modal-content" ng-controller="AppCtrl" ng-cloak style="margin:40px;">
-        <md-content ng-hide="accepts.length==0">
+        <md-content ng-show="accepts.length">
 		<md-list style="max-height:450px">
         <md-list-item  class="md-3-line" ng-repeat="msg in accepts" ng-if="msg.$id!='notification'">
           <img data-ng-src="{{msg.img}}" class="md-avatar" style="margin-left:20px"/>

@@ -8,10 +8,10 @@
 
 angular.module('MyApp',['ngMaterial',"firebase"]).controller('AppCtrl', ["$scope", "$firebaseArray", 
 function($scope, $firebaseArray) {
-  $scope.imagePath = 'download.png';
+	$scope.imagePath = 'download.png';
   var imagePath = 'download.png';
-  var imagePath = 'download.png';
-   $scope.myDate = new Date();
+   $scope.myDate = null;
+   $scope.postarr = {"length":null};
   $scope.minDate = new Date(
       (new Date()).getFullYear(),
       (new Date()).getMonth(),
@@ -23,7 +23,10 @@ function($scope, $firebaseArray) {
 	  	  
 	  $scope.post2 = function(){
 			if(img64==""){}else{
-			if(loggedin==1){ post()}	else{ befrlogin() };
+			if(loggedin==1){ 
+			post();
+			$scope.myDate = null;
+			}	else{ befrlogin() };
 			}			
 		}	  
 	  
@@ -43,7 +46,7 @@ function($scope, $firebaseArray) {
 		firebaseRef.child("users").child(usrid).child("accepts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone, usrfbid:usrfbid, usrfbimg:usrfbimg}).then(function() {
-		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
+		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; //mailcall(actionz,usremail,usrphone);	
 		$('body').plainOverlay('hide');
 		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
   		arraccepts.push(arrPckgs[rsltshow].id);
@@ -68,7 +71,7 @@ function($scope, $firebaseArray) {
 				swal("Select a BECK FRIEND", "Please select the BECK friend who would complete your request")
 			}else{
 				var actionz = "BECK friend "+ val.usrname +" was selected for order: " + idpckgmatch;
-				mailcall(actionz,val.id,val.usrphone);
+				//mailcall(actionz,val.id,val.usrphone);
 				smsmatchsuppl(val.usrphone); 
 				smsmatchdmnd(usrphone,val.usrname,val.usrphone);
 				var otherid = val.id;				
@@ -113,9 +116,10 @@ function($scope, $firebaseArray) {
 					arr[key].fare = convcurr+" "+ Math.round(Number(arr[key].fare)/conval);
 					}
 					}				
-					}
-					
+					}					
+					$scope.$apply(function() {
 					$scope.postarr = arr;
+					});
 				},1500);
 				/*				
 				if(arr.$getRecord("notification").$value == "no"){
@@ -131,9 +135,16 @@ function($scope, $firebaseArray) {
 		},2000);	
 }])
 .config(function($mdDateLocaleProvider) {
-    $mdDateLocaleProvider.formatDate = function(date) {
-       deliverydate = moment(date).format('DD/MM/YYYY');
-	   return moment(date).format('ll');	   
+	var initdt = "Delivery Date";
+    $mdDateLocaleProvider.formatDate = function(date) {      
+	   if(moment(date).format('ll')=="Invalid date"){
+		   deliverydate="";
+		   return initdt;
+	   }else{
+		    deliverydate = moment(date).format('DD/MM/YYYY');
+		   return moment(date).format('ll');	
+	   }
+	      
     };
 });
 
@@ -463,7 +474,7 @@ $(document).ready(function(){
 			swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
 		} else {
 			var actionz = "BECK friend "+ usrname +" requested a new order: " + orderid;
-			mailcall(actionz,usremail,usrphone);			
+			//mailcall(actionz,usremail,usrphone);			
 		}
 		});
 		var orderid2 = orderid+"D";
@@ -476,6 +487,8 @@ $(document).ready(function(){
 		setTimeout(function(){
 		rfrshresults(mycenter);
 		google.maps.event.trigger(map, 'resize');
+		document.getElementById("scrollDefaultExample").value="";deliverydate="";img64="";document.getElementById("searchloc3").value=""; document.getElementById("pickupnum").value=""; document.getElementById("pickupname").value=""; document.getElementById("pickupaddr").value="";document.getElementById("searchloc2").value=""; document.getElementById("deliverynum").value=""; document.getElementById("deliveryname").value=""; document.getElementById("deliveryaddr").value="";
+		document.getElementById("packagephoto").style.display = "block";
 		shwdetls();
 		$("#card").css("background-image", "");
 		$('body').plainOverlay('hide');
@@ -1128,7 +1141,7 @@ $(document).ready(function(){
 				usrphone = intno;
 				usrid = usrnewmail;
 				var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
-				mailcall(regsclbck);			
+				//mailcall(regsclbck);			
 				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 
 				loggedin = 1;
 				_fbq.push(['track', 'CompleteRegistration']);				
