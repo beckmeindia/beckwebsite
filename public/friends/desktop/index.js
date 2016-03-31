@@ -4,7 +4,7 @@
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
 	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 1; var convcurr="INR";
-	var arrPckgs = []; var rsltshow = 0; var idpckgmatch; var arraccepts = []; var revrsdone = 0; var mycenter;
+	var arrPckgs = []; var rsltshow = 0;  var arraccepts = []; var revrsdone = 0; var mycenter;
 
 angular.module('MyApp',['ngMaterial',"firebase"]).controller('AppCtrl', ["$scope", "$firebaseArray", 
 function($scope, $firebaseArray) {
@@ -33,12 +33,18 @@ function($scope, $firebaseArray) {
 		var interval = setInterval(function(){
 		if(typeof usrid === 'undefined'){}
 		else{
+		$('body').plainOverlay('show',{
+			opacity:0.8,
+			fillColor: '#000',
+			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Accepting...</div>'); }
+		});
 		clearInterval(interval);
 		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]);
 		firebaseRef.child("users").child(usrid).child("accepts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone, usrfbid:usrfbid, usrfbimg:usrfbimg}).then(function() {
-		//smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
+		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
+		$('body').plainOverlay('hide');
 		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
   		arraccepts.push(arrPckgs[rsltshow].id);
 		rfrshresults(mycenter);		
@@ -56,20 +62,20 @@ function($scope, $firebaseArray) {
 			window.open('http://www.fb.com/'+value.usrfbid,'_blank');
 		}
 		
-		$scope.approvefrnd = function(id){			
+		$scope.approvefrnd = function(val,idpckgmatch){			
 			//needs to be checked
-			var number = $("input:radio[name='select']:checked").val();
-			if(number === undefined){
+			if(val === undefined){
 				swal("Select a BECK FRIEND", "Please select the BECK friend who would complete your request")
 			}else{
-				var actionz = "BECK friend "+ $scope.acceptors[number].usrname +" was selected for order: " + idpckgmatch;
-				mailcall(actionz,$scope.acceptors[number].usrid,$scope.acceptors[number].usrphone);
-				smsmatchsuppl($scope.acceptors[number].usrphone); 
-				smsmatchdmnd(usrphone,$scope.acceptors[number].usrname,$scope.acceptors[number].usrphone);
-				var otherid = $scope.acceptors[number].id;				
+				var actionz = "BECK friend "+ val.usrname +" was selected for order: " + idpckgmatch;
+				mailcall(actionz,val.id,val.usrphone);
+				smsmatchsuppl(val.usrphone); 
+				smsmatchdmnd(usrphone,val.usrname,val.usrphone);
+				var otherid = val.id;				
 				firebaseRef.child("users").child(usrid).child("posts").child(idpckgmatch).update({"status":"Approved & Completed"});
 				firebaseRef.child("users").child(otherid).child("accepts").child(idpckgmatch).update({"status":"Approved"}).then(function() {
-				geoFire.remove(idpckgmatch);					
+				firebaseRef.child("users").child(usrid).child("posts").child(idpckgmatch).child("acceptors").remove();
+				geoFire.remove(idpckgmatch);				
 				swal("Succesfully Connected", "The details of the BECK Friend your approved for this request has been sent you through SMS", "success");
 				});				
 			}
@@ -108,6 +114,7 @@ function($scope, $firebaseArray) {
 					}
 					}				
 					}
+					
 					$scope.postarr = arr;
 				},1500);
 				/*				
@@ -188,6 +195,7 @@ function($scope, $firebaseArray) {
 	}
 	
 	function rfrshresults(center){
+		document.getElementById("pckgctr").innerHTML="Loading...";
 			for (var i = 0; i < hotSpotMapMarkers.length; i++)
 			hotSpotMapMarkers[i].setMap(null);
 		  document.getElementById("rqstgist").style.display="none";
@@ -295,7 +303,7 @@ var nofkeys=0;
 			geoQuery.updateCriteria({radius: 5000});
 		}else{
 		setTimeout(function(){swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 });
-		document.getElementById("pckgctr").innerHTML = "No Requests"},3000);
+		document.getElementById("pckgctr").innerHTML = "No Requests Found"},3000);
 		document.getElementById("rqstgist").style.display="none";
 		}
 		
@@ -338,7 +346,7 @@ var nofkeys=0;
 		}else if(geoQuery.radius()==3500){
 			geoQuery.updateCriteria({radius: 5000});
 		}else{
-			document.getElementById("pckgctr").innerHTML = "No Requests";
+			document.getElementById("pckgctr").innerHTML = "No Requests Found";
 		setTimeout(function(){swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 })},3000);		
 		}	
     	}else{
@@ -418,7 +426,8 @@ $(document).ready(function(){
 		
 		nofkeys = arrPckgs.length;
 		if(nofkeys==0){
-			swal({   title: "No New Packages Here",   text: "You have accepted all packages near this location. Please come back later or continue searching for other locations.",   type: "error",   confirmButtonText: "OK" });
+			document.getElementById("pckgctr").innerHTML = "No Requests Found";
+			swal({   title: "No New Requests Here",   text: "You have accepted all requests near this location. Please come back later or continue searching for other locations.",   type: "error",   confirmButtonText: "OK" });
     	}else{
 			document.getElementById("prevbtn").style.display="none"; showreslt(0);
 			drawroute(arrPckgs[0].pickuplat, arrPckgs[0].pickuplng, arrPckgs[0].delvlat, arrPckgs[0].delvlng);	
@@ -438,6 +447,11 @@ $(document).ready(function(){
 	}
 	
 	function post(){	
+		$('body').plainOverlay('show',{
+			opacity:0.8,
+			fillColor: '#000',
+			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Posting...</div>'); }
+		});
 		var orderid = makeid();
 		/*	
 		if(document.getElementById("descriptor").value != ""){
@@ -453,7 +467,7 @@ $(document).ready(function(){
 		}
 		});
 		var orderid2 = orderid+"D";
-		//firebaseRef.child("packages").child(orderid).update({img:{img64:img64}}).then(function() {
+		firebaseRef.child("packages").child(orderid).update({img:{img64:img64}}).then(function() {
 		firebaseRef.child("users").child(usrid).child("posts").child(orderid).update({status:"Waiting for Accept",img64:img64,description:description,id:orderid,lat:pickuplat,lon:pickuplng,usrid:usrid,usrphone:usrphone,usrname:usrname,usremail:usremail,pickuplat:pickuplat,pickuplng:pickuplng, delvlat:delvlat, delvlng:delvlng, pickuparea:pickuparea, pickupaddr:pickupaddr, pickupname:pickupname, pickupnum:pickupnum, deliveryaddr:deliveryaddr, deliveryarea:deliveryarea, deliverynum:deliverynum, deliveryname:deliveryname,deliverydate:deliverydate,deliverytime:deliverytime, pckgvalue:pckgvalue, pckgweight:pckgweight,pckgsize:pckgsize,fare:fare});
 		firebaseRef.child("users").child(usrid).child("posts").update({notification:"yes"});
 		geoFire.set(orderid, [pickuplat, pickuplng]).then(function() {}, function(error) {
@@ -462,13 +476,65 @@ $(document).ready(function(){
 		setTimeout(function(){
 		rfrshresults(mycenter);
 		google.maps.event.trigger(map, 'resize');
+		shwdetls();
+		$("#card").css("background-image", "");
+		$('body').plainOverlay('hide');
 		swal("Succesfully Posted", "Your Request is posted at the pickup location. We shall update you soon!", "success");
 		},1000)
-		/*
+		
 		}, function(error) {
 		swal({   title: "POST FAILED",   text: "Oops! Failed to post. Please try again",   type: "error",   confirmButtonText: "OK" });
 		});	
-		*/		
+			
+	}
+	
+	function editnum(){
+		if(loggedin==1){swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Change it",   closeOnConfirm: false }, function(){ smsending() })}else{befrlogin()};
+	}
+	
+	function smsending(){
+		if(loggedin==1){
+				swal({title: "Mobile Verification", text: "", type: "input", closeOnConfirm: false, animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
+				function(inputValue){
+				if((inputValue.length == 11) && (inputValue[0] == '0')){
+					inputValue = inputValue.substr(1,inputValue.length);
+				};
+				var number = inputValue.replace(/[^\d]/g, '').length;
+				if (inputValue === false) return false; 
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
+				if (String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, '')) == String(usrphone)) {swal.showInputError("Please do not enter the existing registered mobile number");     return false   }
+				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
+				if(document.getElementById("countrycd").value == '91'){
+					otpcall(intno);
+				}else{
+					otpintcall(intno);
+				}
+						
+				swal({title: "Enter OTP", text: "Please enter the 4 digit OTP sent as SMS",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "OTP (One Time Password)" }, 
+				function(inputValue2){
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				firebaseRef.child("users").child(usrid).update({
+					usrphone:intno
+				});				
+				usrphone = intno;
+				swal("Update Succesful", "Congratulations. You have succesully updated your mobile number", "success"); 
+				loggedin = 1;				
+				});
+				});	
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px; font-family:\'Maven Pro\', sans-serif;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
+			}
+			else{
+				befrlogin();
+			}
+	}
+	
+	function doClick(url) {
+   if(loggedin==1)
+       location.href = "#"+url;
+   else
+       befrlogin();
 	}
 	
 	var today;
@@ -484,7 +550,10 @@ $(document).ready(function(){
 			sweetAlert("Pickup Contact", "Please fill a valid 10-digit number for Pickup Location contact number", "error");
 		}else if(!deliverynum.match(phoneno)){
 			sweetAlert("Delivery Contact", "Please fill a valid 10-digit number for Delivery Location contact number", "error");
-		}else{			
+		}else{	
+			document.getElementById("lala").style.display = "none";	
+			document.getElementById("delvlala").style.display = "none";	
+			document.getElementById("prevbtn2").innerHTML = "EDIT DETAILS";			
 			document.getElementById("fare").innerHTML = "Calculating...";
 			document.getElementById("farediv").style.display="block";
 			document.getElementById("postbtn").style.display="none";
@@ -680,8 +749,7 @@ $(document).ready(function(){
 		}else if(img64===undefined||img64==""){
 			sweetAlert("Package Photo", "Please add a package photo!", "error");
 		}else{
-			document.getElementById("tytl").innerHTML = "Just one last step";
-		
+			document.getElementById("tytl").innerHTML = "Just one last step";		
 			deliverytime = document.getElementById("scrollDefaultExample").value;			
 			showprev2();
 		}
@@ -810,6 +878,7 @@ $(document).ready(function(){
 		document.getElementById("delvlala2").style.display = "none"
 		document.getElementById("delvlala").style.display = "block";
 		document.getElementById("postbtn").style.display = "block";
+		document.getElementById("prevbtn2").innerHTML = "BACK";
 		document.getElementById("prevbtn2").style.display = "block";
 		document.getElementById("nxt").style.display = "none";
 	}
@@ -905,18 +974,91 @@ $(document).ready(function(){
         });
 	}
 	
+	
+	  function smsmatchdmnd(number,name1,num1){
+	if(String(number).substring(0, 2) == '91'){
+	  $.ajax({
+      url: 'https://www.beckme.in/otp.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).split(" ")[0].substring(0, 30)+'. You can reach him at '+num1
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+        //console.log("01"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}else{
+	$.ajax({
+      url: 'https://www.beckme.in/otpint.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).split(" ")[0].substring(0, 30)+'. You can reach him at '+num1
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+       //console.log("02"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}
+	}
+	
+	function smsmatchsuppl(number){	
+	if(String(number).substring(0, 2) == '91'){
+	$.ajax({
+      url: 'https://www.beckme.in/otp.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can reach him at '+usrphone
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+      // console.log("11"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}else{
+	$.ajax({
+      url: 'https://www.beckme.in/otpint.php',
+      data:
+      {
+        phoneNumber : number,
+        randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can reach him at '+usrphone
+      },
+      error: function(error) {
+      //console.log(JSON.stringify(error));
+        },
+      success: function(data) {
+       //console.log("12"+JSON.stringify(data));
+       },
+      type: 'POST'
+	});
+	}
+	}
+	
+	
 	function befrlogin(){
 		swal({ title: "Love to have you on board",   text: "Enter into your BECK Friends Account with Facebook",   type: "success",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Go Ahead" }, function(){login()});		
 	}
-	function callauto(){
+	function callauto(){		
 		var autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchloc'));
         autocomplete.bindTo('bounds', map);
-		document.getElementById("autotop").style.display="block";
+		setTimeout('$("body").css("visibility","visible");', 1000);
         autocomplete.addListener('place_changed', function() {
 		  var place = autocomplete.getPlace();
           if (!place.geometry) {
-            //swal("There was a problem fetching the location, please select from the options that come below when you type");
-            return;
+           return;
           }
 		  if (place.geometry.viewport) {
             map.fitBounds(place.geometry.viewport);

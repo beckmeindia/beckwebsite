@@ -8,10 +8,6 @@
 		<meta name="description" content="Peer-to-peer marketplace for sending anything anywhere" />
 		<meta name="keywords" content="Peer-to-peer marketplace for sending anything anywhere" />
 		<meta name="author" content="BeckFriends" />
-		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
-		<script src="js/modernizr.custom.js"></script>
 		<link rel="stylesheet" type="text/css" href="all.css"/>		
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
 		<script src="all.js"></script>
@@ -44,7 +40,7 @@
 	}
 	</style>
 	</head>
-  <body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
+  <body  ng-app="MyApp" ng-cloak style="background:#eaeaea" style="visibility: hidden">
   <script>
    var map,directionsService, directionsDisplay;	
     function initMap(){
@@ -147,13 +143,13 @@
 								</li>
 								<li><a id="demo01" href="#animatedModal" class="gn-icon gn-icon-archive">Posted Requests</a></li>
 								<li><a id="demo02" href="#acceptedModal" class="gn-icon gn-icon-help">Accepted Requests</a></li>
-								<li><a class="gn-icon gn-icon-cog">Edit Profile</a></li>								
+								<li><a class="gn-icon gn-icon-cog" onclick="editnum()">Edit Profile</a></li>								
 							</ul>
 						</div>
 					</nav>
 				</li>
 				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
-				<li id="autotop" style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%;display:none"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
+				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
 				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" ><span id="namehdr" style="display:none"></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary"><md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon> Login</md-button></li>				
 			</ul>			
 		</div>		
@@ -223,7 +219,7 @@
     <div flex flex-xs="" flex-gt-xs="40" style="background:#d6d6d6">
   <md-content style="background:#d6d6d6;padding:10px;padding-top:15px" class="md-padding" layout-xs="column" layout="row">	
     <div layout="column">
-      <md-card style="padding:10px;padding-top:0">
+      <md-card style="padding:10px;padding-top:0;min-width:450px">
 	   <md-card-header>         
           <md-card-header-text>
 			<span class="md-subhead">Want something delivered?</span>
@@ -317,15 +313,14 @@
 	<md-button id="posting" ng-click="post2()" class="md-raised md-primary" style="width:90%;;margin-left:5%">POST THIS REQUEST</md-button>
  	<md-button id="nxt" onclick="next()" class="md-raised md-primary" style="background:#2bb1de;width:90%;margin-top:0;margin-left:5%;margin-bottom:15px">NEXT</md-button>
 	<md-button id="postbtn" onclick="done()" class="md-raised md-primary" style="background:#2bb1de;width:90%;margin-top:0;margin-left:5%;margin-bottom:15px;display:none">DONE</md-button>			
-	<md-button id="prevbtn2" onclick="shwdetls()" class="md-raised" style="background:#eaeaea;display:none;width:40px;margin-left:40%">Back</md-button>
+	<md-button id="prevbtn2" onclick="shwdetls()" class="md-raised" style="background:#eaeaea;display:none;width:30%;margin-left:35%">BACK</md-button>
 	
 	</md-card>     
     </div>    
   </md-content>  
   </div>
 	</div>
-		<script src="js/classie.js"></script>
-		<script src="js/gnmenu.js"></script>
+		
 		<script>
 			new gnMenu( document.getElementById( 'gn-menu' ) );
 		</script>
@@ -348,19 +343,31 @@
         <div class="modal-content" ng-controller="AppCtrl" ng-cloak style="margin:40px;">
         <md-content ng-show="postarr.length">
 		<md-list style="max-height:450px">
-        <md-list-item class="md-3-line" ng-repeat="msg in postarr" ng-if="msg.$id!='notification'">
-          <img data-ng-src="{{msg.img64}}" class="md-avatar" style="margin-left:20px"/>
-          <div class="md-list-item-text" layout="column" style="padding-top:15px">
+        <md-list-item class="md-3-line" style="margin-left:20px" ng-repeat="msg in postarr" ng-if="msg.$id!='notification'">
+          <img data-ng-src="{{msg.img64}}" class="md-avatar" style="margin-left:20px;width:180px;height:180px;border-radius:10%"/>
+          <div class="md-list-item-text" layout="column" style="padding-top:25px;margin-top:0;padding-left:20px;">
             <h3><span style="color:red;font-size:12px;letter-spacing:1px;margin-right:7px">YOU EARN </span> {{msg.fare}}</h3>
             <h4 style="margin-top:10px">Size : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.pckgsize }}</span> </h4>
 			<h4 style="margin-top:10px">Delivery By: <span style="color:#5f6f81;letter-spacing:1px">{{msg.deliverytime}} on {{ msg.deliverydate }}</span> </h4>
 			<h4 style="margin-top:10px">Pickup Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.pickuparea }}</span> </h4>
             <h4 style="margin-top:10px">Delivery Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.deliveryarea }}</span></h4>
 			<h4 style="margin-top:10px">Status : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.status }}</span></h4>
-			<md-button class="md-raised  md-primary" style="margin-top:10px; width:300px">Check Acceptors</md-button>	
+			
+          </div>
+		  <md-list flex flex-xs="" flex-gt-xs="30" style="padding-left:10px">
+		   <md-subheader class="md-no-sticky">BECK Friends who accepted this Request</md-subheader>
+		  <md-list-item class="md-3-line" style="min-height:50px" ng-repeat="val in msg.acceptors">
+          <img ng-src="{{val.usrfbimg}}" class="md-avatar" style="border-radius:50%;width:40px;height:40px"/>
+          <div class="md-list-item-text" layout="column">
+            <h3 style="height:30px"><md-button ng-click="showprofile(val)" target="_blank" style="margin:0;font-size:12px;padding:0px">{{val.usrname}}</md-button></h3>
+            <h3 style="height:30px"><md-button ng-click="approvefrnd(val,msg.id)" class="md-primary" style="margin:0;font-size:12px;padding:0px 5px">APPROVE THIS PERSON</md-button></h3>            
           </div>
         </md-list-item>
-        </md-list flex>
+		
+		
+		</md-list>
+		</md-list-item>
+        </md-list>
 		</md-content>
         </div>
     </div>
@@ -379,7 +386,7 @@
       </div>
 		</md-toolbar>	
         <div class="modal-content" ng-controller="AppCtrl" ng-cloak style="margin:40px;">
-        <md-content ng-show="accepts.length">
+        <md-content ng-hide="accepts.length==0">
 		<md-list style="max-height:450px">
         <md-list-item  class="md-3-line" ng-repeat="msg in accepts" ng-if="msg.$id!='notification'">
           <img data-ng-src="{{msg.img}}" class="md-avatar" style="margin-left:20px"/>

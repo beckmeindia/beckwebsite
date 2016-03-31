@@ -449,7 +449,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
           <div class="list-item-right">
             <div class="list-item-content">
               <div class="name">{{ value.usrname }}</div>
-              <span class="desc" ng-click="showprofile(value)">VIEW PROFILE</span>			 
+              <span class="desc" ng-click="showprofile(msg)">VIEW PROFILE</span>			 
             </div>
 		  </div>
 		 
@@ -619,8 +619,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
         </ons-list-item>
         <ons-list-item style="border:1px solid#fff; padding-top: 10px;padding-bottom:10px;" onclick="if(loggedin==1){sidebar.toggleMenu(); setTimeout(function(){ openposts() },500)}else{befrlogin()}">
          Posted Requests <span id="notif2" class="notification" style="font-size:8px;display:none">NEW</span>
-        </ons-list-item>
-       
+        </ons-list-item>       
 		<ons-list-item style="border:1px solid#fff; padding-top: 10px;" onclick="editnum()">
          Edit Contact No.
         </ons-list-item>
