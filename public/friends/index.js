@@ -3,7 +3,7 @@
 	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 10 Kgs",pckgsize = "SMALL (FITS IN BAG)";
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
-	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 60; var convcurr="USD";
+	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 1; var convcurr="INR";
 	var arrPckgs = []; var rsltshow = 0; var idpckgmatch; var arraccepts = []; var revrsdone = 0;
 	app.controller('AppController', ["$scope", "$firebaseArray",
 		
@@ -34,7 +34,7 @@
 					geoFire.remove(idpckgmatch);					
 					setTimeout(function(){
 		google.maps.event.trigger(map, 'resize');
-		swal("Succesfully Connected", "The details of the BECK Friend your approved for this request has been sent you through SMS", "success");
+		swal("Succesfully Connected", "The details of the BECK Friend you approved for this request has been sent you through SMS", "success");
 		rfrshresults(map.getCenter());
 		},2000);
 					myNavigator.popPage('confirm.html', { animation : 'none' } ); myNavigator.popPage('track.html', { animation : 'none' } ); myNavigator.popPage('posted.html', { animation : 'none' } );
@@ -171,12 +171,9 @@
 					if(arr[key].$id === undefined || arr[key].fare == 'GET QUOTE'){}else{
 					arr[key].fare = convcurr+" "+ Math.round(Number(arr[key].fare)/conval);
 					}
-				}	
-				
-					}
-				},1500);
-				
-				
+				}				
+				}
+				},1500);				
 				if(arr.$getRecord("notification").$value == "no"){
 					document.getElementById("notif2").style.display="none";					
 				}
@@ -1092,6 +1089,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				var number = inputValue.replace(/[^\d]/g, '').length ;
 				if (inputValue === false) return false; 
 				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				if(usremail=="" || usremail===undefined){ swal({   title: "Your Email!",   text: "Oops! There was a problem confirming your email",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your email here" }, function(inputValuez){   if (inputValuez === false) return false;      if (inputValuez === "") {     swal.showInputError("You need to write something!");     return false   }     usrnewmail = String(inputValuez).replace(/[^a-zA-Z0-9]/g, ' '); usremail = inputValuez})};
 				firebaseRef.child("users").child(usrnewmail).update({
 					usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno, usrfbimg:usrfbimg, usrfbid:usrfbid
 				});				
@@ -1099,9 +1097,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				usrid = usrnewmail;
 				var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
 				mailcall(regsclbck);			
-				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 
+				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 				
 				loggedin = 1;
-				_fbq.push(['track', 'CompleteRegistration']);				
 				});
 				});	
 				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
@@ -1178,15 +1175,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	
 	function befrlogin(){
 		$("button[data-role='end']").click();
-		swal({ title: "Love to have you on board",   text: "Enter into your BECK Friends Account with Facebook",   type: "success",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Go Ahead" }, function(){login()});
-/*		
-		$(".test").fbmodal({
-            modalwidth: "200px",
-			opacity: 0.7,
-			fadeout: true,
-			overlayclose: false,
-			title: "Login with Facebook"});  	
-*/			
+		swal({ title: "Love to have you on board",   text: "Enter into your BECK Friends Account with Facebook",   type: "success",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Go Ahead" }, function(){login()});		
 	}
 	
   function smsacceptdm(number){

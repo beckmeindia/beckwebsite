@@ -5,32 +5,29 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 		<title>BECK friends</title>
-		<meta name="description" content="A sidebar menu as seen on the Google Nexus 7 website" />
-		<meta name="keywords" content="google nexus 7 menu, css transitions, sidebar, side menu, slide out menu" />
-		<meta name="author" content="Codrops" />
+		<meta name="description" content="Peer-to-peer marketplace for sending anything anywhere" />
+		<meta name="keywords" content="Peer-to-peer marketplace for sending anything anywhere" />
+		<meta name="author" content="BeckFriends" />
 		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="js/modernizr.custom.js"></script>
-		<script   src="https://code.jquery.com/jquery-2.2.2.min.js"   integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="   crossorigin="anonymous"></script>
-		<script src="https://cdn.firebase.com/libs/geofire/4.0.0/geofire.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-		<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
-		<script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
-		<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">		
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+		<link rel="stylesheet" type="text/css" href="all.css"/>		
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
+		<script src="all.js"></script>
 	<style>	
 	.pac-container{
 	margin-top:15px;font-family:'Maven Pro', sans-serif;
+	z-index:9999;
 	}
 	.pac-item{
 	padding:10px
-	}	
-	
+	}		
 	.pac-icon{
 	display:none
-	}
-	
+	}	
+.selectdemoBasicUsage md-input-container {
+  margin-right: 10px; }
   .inputdemoIcons .inputIconDemo {
     min-height: 48px; }
   .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.email {
@@ -48,83 +45,13 @@
 	</style>
 	</head>
   <body  ng-app="MyApp" ng-cloak style="background:#eaeaea">
-  <!--script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '949587018459748',
-      xfbml      : true,
-      version    : 'v2.5'
-    });
-	
-	FB.getLoginStatus(function(response) {
-	if (response.status === 'connected') {
-	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {	
-	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
-	  //document.getElementById("profile_img").src = String(response.picture.data.url);
-	  //document.getElementById("profile_name").innerHTML = String(response.name);
-	  usrname = String(response.name); usremail = String(response.email);
-	  usrfbid = String(response.id); usrfbimg = String(response.picture.data.url);
-	  checkfirebase(usremail); $("button[data-role='end']").click();
-    });	
-	//document.getElementById("signleft").style.display = "none";
-	}
-	else {
-	hiname = 1; acceptsloaded=1;
-	document.getElementById("namehdr").innerHTML = "";
-	document.getElementById("signleft").style.display = "block";
-	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
-	}
-	});	
-	};
-
-	(function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-   
-	function login(){
-	clicklogin=1;
-	FB.login(function(response) {
-	if (response.authResponse) {
-	if (response.status === 'connected') {	
-	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {
-	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
-	  //document.getElementById("profile_img").src = String(response.picture.data.url);
-	  //document.getElementById("profile_name").innerHTML = String(response.name);
-	  usrfbimg = String(response.picture.data.url); usrname = String(response.name); usremail = String(response.email); usrfbid = String(response.id);
-	  checkfirebase(usremail); $("button[data-role='end']").click();
-    })
-	}else{
-	sweetAlert("Oops...", "Something went wrong. Could not Log you in", "error");
-	};
-	//document.getElementById("signleft").style.display = "none";
-	}
-	else {
-	acceptsloaded=1;
-	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
-	document.getElementById("namehdr").innerHTML = "";
-	//document.getElementById("signleft").style.display = "block";
-	}
-	} , {scope: 'email'});	
-   }
-</script-->
-  <script src="index.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
-  <script type="text/javascript">    
-
-      var map;
-      function initMap(){
+  <script>
+   var map,directionsService, directionsDisplay;	
+    function initMap(){
 	directionsService = new google.maps.DirectionsService;
 	directionsDisplay = new google.maps.DirectionsRenderer;
 	map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 18.936023, lng: 72.834920},
+    center: {lat: 0, lng: 0},
     scrollwheel: false,
     zoom: 11,
 	suppressInfoWindows: true,
@@ -144,10 +71,70 @@
     }]
 	}); 
 	callauto();
+	callauto2();
+	callauto3();
   	}
-	google.maps.event.addDomListener(window, 'load', initMap);	
+	google.maps.event.addDomListener(window, 'load', initMap);	   
+	
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '949587018459748',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+	
+	FB.getLoginStatus(function(response) {
+	if (response.status === 'connected') {
+	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {	
+	  document.getElementById("namehdr").style.display = "block";
+	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
+	  //document.getElementById("profile_img").src = String(response.picture.data.url);
+	  usrname = String(response.name); usremail = String(response.email);
+	  usrfbid = String(response.id); usrfbimg = String(response.picture.data.url);
+	  checkfirebase(usremail);
+    });	
+	document.getElementById("signleft").style.display = "none";
+	}
+	else {
+	hiname = 1; acceptsloaded=1;
+	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
+	}
+	});	
+	};
+
+	(function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
    
-    </script>
+	function login(){
+	clicklogin=1;
+	FB.login(function(response) {
+	if (response.authResponse) {
+	if (response.status === 'connected') {	
+	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {
+	  document.getElementById("namehdr").style.display = "block";
+	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
+	  //document.getElementById("profile_img").src = String(response.picture.data.url);
+	   usrfbimg = String(response.picture.data.url); usrname = String(response.name); usremail = String(response.email); usrfbid = String(response.id);
+	  checkfirebase(usremail); 
+    })
+	}else{
+	sweetAlert("Oops...", "Something went wrong. Could not Log you in", "error");
+	};
+	document.getElementById("signleft").style.display = "none";
+	}
+	else {
+	acceptsloaded=1;
+	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
+	}
+	} , {scope: 'email'});	
+	}
+	</script>
+  <script src="index.js"></script>
 		<div class="container">
 			<ul id="gn-menu" class="gn-menu-main" style="border-bottom:1px solid #c6d0da;position: absolute;z-index:999;">				
 				<li class="gn-trigger" style="border-right:none;">
@@ -155,20 +142,19 @@
 					<nav class="gn-menu-wrapper">
 						<div class="gn-scroller">
 							<ul class="gn-menu">
-								<li class="gn-search-item">
-									<input placeholder="Search Package" type="search" class="gn-search">
-									<a class="gn-icon gn-icon-search"><span>Search Package</span></a>
+								<li class="gn-search-item" style="display:none">
+									<a id="demo03" href="#initModal" class="gn-icon gn-icon-search"></a>
 								</li>
-								<li><a class="gn-icon gn-icon-archive">Posted Requests</a></li>
-								<li><a class="gn-icon gn-icon-cog">Accepted Requests</a></li>
-								<li><a class="gn-icon gn-icon-help">Edit Profile</a></li>								
+								<li><a id="demo01" href="#animatedModal" class="gn-icon gn-icon-archive">Posted Requests</a></li>
+								<li><a id="demo02" href="#acceptedModal" class="gn-icon gn-icon-help">Accepted Requests</a></li>
+								<li><a class="gn-icon gn-icon-cog">Edit Profile</a></li>								
 							</ul>
 						</div>
 					</nav>
 				</li>
 				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
-				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;" /><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
-				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" id="namehdr">Login</li>				
+				<li id="autotop" style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%;display:none"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
+				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" ><span id="namehdr" style="display:none"></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary"><md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon> Login</md-button></li>				
 			</ul>			
 		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
@@ -224,7 +210,7 @@
         </md-list-item>
       </md-list>
     </md-content>
-         	<md-button class="md-raised md-primary" style="width:90%;margin-top:0;margin-left:5%">ACCEPT</md-button>			
+         	<md-button class="md-raised md-primary" style="width:90%;margin-top:0;margin-left:5%" ng-click="accept2()">ACCEPT</md-button>			
 		</md-card-content>	
        	<md-card-actions layout="row" layout-align="center" style="min-height:35px;margin-bottom:10px;">
 			<md-button id="prevbtn" onclick="showprev()">Previous</md-button>
@@ -235,61 +221,107 @@
   </md-content>
   </div>    
     <div flex flex-xs="" flex-gt-xs="40" style="background:#d6d6d6">
-  <md-content style="background:#d6d6d6;padding:20px;padding-top:10px" class="md-padding" layout-xs="column" layout="row">	
+  <md-content style="background:#d6d6d6;padding:10px;padding-top:15px" class="md-padding" layout-xs="column" layout="row">	
     <div layout="column">
-      <md-card style="padding:15px;padding-top:0">
+      <md-card style="padding:10px;padding-top:0">
 	   <md-card-header>         
           <md-card-header-text>
 			<span class="md-subhead">Want something delivered?</span>
-            <span class="md-title" style="font-weight:normal;color:#d80000">Add a Request below</span>            
+            <span id="tytl" class="md-title" style="font-weight:normal;color:#d80000"></span>            
           </md-card-header-text>
         </md-card-header>
-			<div id="packagephoto" style="color:#888;position:absolute;margin-top:95px;margin-left:130px;font-size:18px;height:20px;z-index:9;text-align:center;letter-spacing:1px;" onclick="document.getElementById('files').click()">ADD PACKAGE PHOTO</div>
-	  	  <div id="card" onclick="card()" style="height:200px;width:100%;background:#eaeaea"><input type="file" id="files" name="upload" style="z-index:999;width:97%;height:200px; opacity: 0;-moz-opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)"/>
-	</div>
-       <div layout="row">
+			<div id="packagephoto" style="color:#888;position:absolute;margin-top:90px;margin-left:130px;font-size:18px;height:20px;z-index:9;text-align:center;letter-spacing:1px" onclick="document.getElementById('files').click()">ADD PACKAGE PHOTO</div>
+	  	  <div id="card" onclick="card()" style="height:200px;width:90%;margin-left:5%;background:#eaeaea;display:none"><input type="file" id="files" name="upload" style="z-index:999;width:97%;height:200px; opacity: 0;-moz-opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"/></div>
+    <div layout="row" id="pckginfo">
 	   <div flex>
        <md-card-content style="padding:5px 16px">
-        <md-content class="md-no-momentum inputdemoIcons">
-		
-    <md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
-      <label>Pickup Contact Name</label>
-	  <input  type="text" ng-required="true">
-    </md-input-container>
-
-    <md-input-container class="md-block" style="margin:0px">
-      <label>Pickup Contact Number</label>
-	  <input  type="text" ng-required="true">
-    </md-input-container>
-
-    <md-input-container class="md-block" style="margin:0px">
-      <label>Pickup Contact Address</label>
-	  <input  type="text" ng-required="true">
-    </md-input-container>
-	</div>
-	 <div flex>        
-		<md-card-content style="padding:5px 16px">
-        <md-content class="md-no-momentum inputdemoIcons">     
+        <md-content id="lala">
 	<md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
-      <label>Delivery Contact Name</label>
-      <input type="text" ng-required="true">
-    </md-input-container>
+      <label style="padding-left:40px">Pickup Area</label>
+      <img src="search.png" style="width:28px;margin-top:0px;display:inline;position:absolute;">      
+	  <input id="searchloc3" type="text" ng-required="true" style="padding-left:40px" placeholder="Type Here">
+    </md-input-container>		
+    <md-input-container class="md-icon-float md-block" style="margin:0px">
+      <label style="font-size:14px">Pickup Contact Name</label>
+	  <input id="pickupname" type="text" ng-required="true">
+    </md-input-container>    
     <md-input-container class="md-block" style="margin:0px">
-	  <label>Delivery Contact Number</label>
-      <input  type="text" ng-required="true">
+      <label style="font-size:14px">Pickup Contact Address</label>
+	  <input id="pickupaddr" type="text" ng-required="true">
     </md-input-container>
-    <md-input-container class="md-block" style="margin:0px">
-	  <label>Delivery Contact Address</label>
-      <input  type="text" ng-required="true">
+	<md-input-container class="md-block" style="margin:0px">
+      <label style="font-size:14px">Pickup Contact Number</label>
+	  <input id="pickupnum" type="text" ng-required="true">
     </md-input-container>
+	</md-content>
+	<md-content id="lala2" style="padding-top:20px;display:none;overflow:hidden">
+	<md-datepicker ng-model="myDate" md-placeholder="Delivery Date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
+    <md-input-container style="margin-top:20px;margin-left:10px">
+        <label>Weight</label>
+        <select style="background:#fff;color:#000;margin: 7px 0px 0px 60px;border:none;font-size:14px" onChange="pckgweight = this.value">
+  <option value="1 Kg - 10 Kgs">1 - 10 Kgs</option>
+  <option value="10 Kgs - 20 Kgs">10 - 20 Kgs</option>
+  <option value="20 Kgs - 50 Kgs">20- 50 Kgs</option>
+  <option value="50 Kgs & more">50 Kgs & more</option>
+</select>
+      </md-input-container>
+	</md-content>
+	</md-card-content>
 	</div>
+	<div flex>        
+		<md-card-content style="padding:5px 16px">
+        <md-content id="delvlala" class="md-no-momentum inputdemoIcons"> 
+	<md-input-container class="md-icon-float md-block" style="margin-bottom:0px">
+      <label style="padding-left:40px">Delivery Area</label>
+	  <img src="search.png" style="width:28px;margin-top:0px;display:inline;position:absolute;">
+      <input  id="searchloc2" type="text" ng-required="true" style="padding-left:40px" placeholder="Type Here">
+    </md-input-container>		
+	<md-input-container class="md-icon-float md-block" style="margin:0px">
+      <label style="font-size:14px">Delivery Contact Name</label>
+      <input id="deliveryname" type="text" ng-required="true">
+    </md-input-container>    
+	<md-input-container class="md-block" style="margin:0px">
+	  <label style="font-size:14px">Delivery Contact Address</label>
+      <input id="deliveryaddr" type="text" ng-required="true">
+    </md-input-container>
+	<md-input-container class="md-block" style="margin:0px">
+	  <label style="font-size:14px">Delivery Contact Number</label>
+      <input id="deliverynum" type="text" ng-required="true">
+    </md-input-container>
+	</md-content>
+	<md-content id="delvlala2" class="md-no-momentum inputdemoIcons" style="display:none">     
+	<md-input-container class="md-block" style="width:80%;margin:0;margin-top:22px;margin-left:10%">
+      <label>Delivery Time</label>
+	  <input id="scrollDefaultExample" onkeydown="return false;" type="text" class="time ui-timepicker-input" autocomplete="off">
+    </md-input-container>
+     <md-input-container style="margin-top:0;margin-left:20px">
+        <label>Size</label>
+        <select style="background:#fff; color:#000;margin: 10px 0px 0px 40px;border:none;font-size:12px" onChange="pckgsize = this.value">
+  <option value="SMALL (FITS IN BAG)">SMALL (FITS IN BAG)</option>
+  <option value="MEDIUM (FITS IN CAR)">MEDIUM (FITS IN CAR)</option>
+  <option value="LARGE (FITS IN VAN)">LARGE (FITS IN VAN)</option>
+  <option value="HUGE (FITS IN TRUCK)">HUGE (FITS IN TRUCK)</option>
+</select>
+      </md-input-container>
+	</md-content>
+	</md-card-content>
+	</div>	
 	</div>
-  </md-content>
-        </md-card-content>
-		 	<md-button class="md-raised md-primary" style="background:#888;width:90%;margin-top:0;margin-left:5%;margin-bottom:15px">NEXT</md-button>	
-		</md-card>     
+	<md-card-header id="farediv" style="padding-left:40px;padding-top:0;">         
+          <md-card-header-text >
+			<span class="md-subhead">ESTIMATE^</span>
+            <span id="fare" class="md-title" style="font-weight:normal;color:rgb(63,81,181)">Calculating...</span>
+			<span class="md-subhead" style="font-size:12px">^Actual FARE to be mutually decided</span>			
+          </md-card-header-text>
+    </md-card-header>
+	<md-button id="posting" ng-click="post2()" class="md-raised md-primary" style="width:90%;;margin-left:5%">POST THIS REQUEST</md-button>
+ 	<md-button id="nxt" onclick="next()" class="md-raised md-primary" style="background:#2bb1de;width:90%;margin-top:0;margin-left:5%;margin-bottom:15px">NEXT</md-button>
+	<md-button id="postbtn" onclick="done()" class="md-raised md-primary" style="background:#2bb1de;width:90%;margin-top:0;margin-left:5%;margin-bottom:15px;display:none">DONE</md-button>			
+	<md-button id="prevbtn2" onclick="shwdetls()" class="md-raised" style="background:#eaeaea;display:none;width:40px;margin-left:40%">Back</md-button>
+	
+	</md-card>     
     </div>    
-  </md-content>
+  </md-content>  
   </div>
 	</div>
 		<script src="js/classie.js"></script>
@@ -297,5 +329,78 @@
 		<script>
 			new gnMenu( document.getElementById( 'gn-menu' ) );
 		</script>
+	<div id="animatedModal">
+		 <md-toolbar style="background:#252525">
+      <div class="md-toolbar-tools">
+        
+        <h2>
+          <span style="color:#fff;margin-left:50px;font-weight:normal">Posted Requests</span>
+        </h2>
+        <span flex></span>
+        <md-button style="margin-right:50px;color:#fff">
+          <div class="close-animatedModal"> 
+            CLOSE
+        </div> 
+        </md-button>
+       
+      </div>
+		</md-toolbar>	
+        <div class="modal-content" ng-controller="AppCtrl" ng-cloak style="margin:40px;">
+        <md-content ng-show="postarr.length">
+		<md-list style="max-height:450px">
+        <md-list-item class="md-3-line" ng-repeat="msg in postarr" ng-if="msg.$id!='notification'">
+          <img data-ng-src="{{msg.img64}}" class="md-avatar" style="margin-left:20px"/>
+          <div class="md-list-item-text" layout="column" style="padding-top:15px">
+            <h3><span style="color:red;font-size:12px;letter-spacing:1px;margin-right:7px">YOU EARN </span> {{msg.fare}}</h3>
+            <h4 style="margin-top:10px">Size : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.pckgsize }}</span> </h4>
+			<h4 style="margin-top:10px">Delivery By: <span style="color:#5f6f81;letter-spacing:1px">{{msg.deliverytime}} on {{ msg.deliverydate }}</span> </h4>
+			<h4 style="margin-top:10px">Pickup Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.pickuparea }}</span> </h4>
+            <h4 style="margin-top:10px">Delivery Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.deliveryarea }}</span></h4>
+			<h4 style="margin-top:10px">Status : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.status }}</span></h4>
+			<md-button class="md-raised  md-primary" style="margin-top:10px; width:300px">Check Acceptors</md-button>	
+          </div>
+        </md-list-item>
+        </md-list flex>
+		</md-content>
+        </div>
+    </div>
+	<div id="acceptedModal">
+		 <md-toolbar style="background:#252525">
+      <div class="md-toolbar-tools">        
+        <h2>
+          <span style="color:#fff;margin-left:50px;font-weight:normal">Accepted Requests</span>
+        </h2>
+        <span flex></span>
+        <md-button style="margin-right:50px;color:#fff">
+          <div class="close-acceptedModal"> 
+            CLOSE
+        </div> 
+        </md-button>       
+      </div>
+		</md-toolbar>	
+        <div class="modal-content" ng-controller="AppCtrl" ng-cloak style="margin:40px;">
+        <md-content ng-show="accepts.length">
+		<md-list style="max-height:450px">
+        <md-list-item  class="md-3-line" ng-repeat="msg in accepts" ng-if="msg.$id!='notification'">
+          <img data-ng-src="{{msg.img}}" class="md-avatar" style="margin-left:20px"/>
+          <div class="md-list-item-text" layout="column" style="padding-top:15px">
+            <h3><span style="color:red;font-size:12px;letter-spacing:1px;margin-right:7px">YOU EARN </span> {{ msg.fare }}</h3>
+            <h4 style="margin-top:10px">Size : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.size }}</span> </h4>
+			<h4 style="margin-top:10px">Delivery By : <span style="color:#5f6f81;letter-spacing:1px">{{msg.time}} on {{ msg.date }}</span></h4>			
+			<h4 style="margin-top:10px">Pickup Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.pickup }}</span> </h4>
+			<h4 style="margin-top:10px">Delivery Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.delv }}</span> </h4>
+			<h4 style="margin-top:10px">Status : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.status }}</span> </h4>
+          </div>
+        </md-list-item>
+        </md-list flex>
+		</md-content>
+        </div>
+    </div>
+	<div id="initModal" style="background: url(bckg.jpg) #39403D no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+	<div class="close-initModal" style="display:none">CLOSE</div> 
+	<div  id="typer" style="text-align:center;color:#888;font-size:32px;width:80%; height: 600px; position:absolute; left:0; right:0; top:30%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;"></div>
+	<div style="text-align:center;color:#888;font-size:16px;width:80%; height: 600px; position:absolute; left:0; right:0; top:50%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Search Your Location From the Top<br>To Get Started</div>	
+	<!--md-button onclick="befrlogin()" class="md-raised md-primary" style="width:10%; height: 60px; position:absolute; left:0; right:0; top:0px; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Let me In</md-button-->
+    </div>
 	</body>
 </html>

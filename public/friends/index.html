@@ -198,7 +198,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
    
    <ons-template id="page1.html">
   <ons-page modifier="shop-details" style="background:#fff">
-	<div class="navigation-bar" style="background:#252525;;border-bottom:0px;position:fixed;z-index:999">
+	<div class="navigation-bar" style="background:#252525;;border-bottom:0px; z-index:999">
   <div class="navigation-bar__left"></div>
   <div class="navigation-bar__center" style="font-size:16px;color:#fff">
    REQUEST DETAILS
@@ -207,7 +207,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
     <button class="button button--quiet" style="color:#fff;font-size:12px; font-weight:bold;MARGIN-TOP:2PX">CANCEL</button>      
   </div>  
  </div>	
-        <div class="rating" style="margin-top:40px"><div class="rating-num" style="background:#fff;padding:0;">
+        <div class="rating"><div class="rating-num" style="background:#fff;padding:0;">
         </div></div>
         <ons-list id="choicebtns" style="border-top:0px solid #fff;"><ons-list-item style="border-top:0px solid #fff; line-height: 1; padding: 0;">
           <ons-row class="action" style="border-top:0px solid #fff;">
@@ -237,22 +237,22 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 		<ons-list style="margin-top:-1px;" id="packagedetails">
           <ons-list-item>
             <div class="button-bar" style="margin-top:5px;border-radius:0px;width:100%;border:1px solid #efefef;">
-  <div class="button-bar__item">
+  <div class="button-bar__item" onclick="pckgsize = 'SMALL (FITS IN BAG)'">
     <input type="radio" name="segment-a" onclick="pckgsize = 'SMALL (FITS IN BAG)'">
     <button class="button-bar__button" style="height:70px;line-height:10px">SMALL<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>BAG</div></button>
   </div>
 
-  <div class="button-bar__item">
+  <div class="button-bar__item" onclick="pckgsize = 'MEDIUM (FITS IN CAR)'">
     <input type="radio" name="segment-a" onclick="pckgsize = 'MEDIUM (FITS IN CAR)'">
     <button class="button-bar__button" style="height:70px;line-height:10px">MEDIUM<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>CAR</div></button>
   </div>
 
-  <div class="button-bar__item">
+  <div class="button-bar__item" onclick="pckgsize = 'LARGE (FITS IN VAN)'">
     <input type="radio" name="segment-a" onclick="pckgsize = 'LARGE (FITS IN VAN)'">
     <button class="button-bar__button" style="height:70px;line-height:10px">LARGE<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>VAN</div></button>
   </div>
   
-    <div class="button-bar__item"> 
+    <div class="button-bar__item" onclick="pckgsize = 'HUGE (FITS IN TRUCK)'"> 
     <input type="radio" name="segment-a" onclick="pckgsize = 'HUGE (FITS IN TRUCK)'">
     <button class="button-bar__button" style="height:70px;line-height:10px">HUGE<br><div style="margin-top:10px;font-size:10px;letter-spacing:1px;line-height:6px;">FITS IN<br>&nbsp;<br>TRUCK</div></button>
   </div>
@@ -355,7 +355,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 
  <ons-template id="page2.html">
   <ons-page modifier="shop-details" style="background:#f4f4f4">
-	<div class="navigation-bar" style="border-bottom:1px solid #252525;position:fixed;background:#252525">
+	<div class="navigation-bar" style="border-bottom:1px solid #252525; background:#252525">
   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
   <ons-back-button style="color:#fff"></ons-back-button>    
   </div>
@@ -363,7 +363,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
    PACKAGE SUMMARY
   </div> 
  </div> 
-  <ul class="list" style="background:#252525;margin-top:40px;"> 
+  <ul class="list" style="background:#252525;"> 
   <li class="list__item" style="border:none;color:#fff;font-size:20px;padding-right:20px;padding-left:20px;margin-top:20px;margin-bottom:5px;">ESTIMATE^<div id="fare" style="color:#fff;float:right;font-size:20px"></div></li>
   <li class="list__header" style="font-weight:normal;padding-left:20px;background:#252525;color:#fff;height:45px;font-size:10px;letter-spacing:1px"> ^ Actual FARE to be mutually decided</li>
   </ul>
@@ -393,13 +393,13 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 
  <ons-template id="page4.html">
   <ons-page modifier="shop-details" style="background:#f4f4f4">
-	<div class="navigation-bar" style="border-bottom:1px solid #252525;position:fixed;background:#252525">
+	<div class="navigation-bar" style="border-bottom:1px solid #252525; background:#252525">
 	<div class="navigation-bar__left" style="color:#fff;font-size:8px">
     <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>     
 	</div>
 	<div class="navigation-bar__center" style="font-size:16px;color:#fff">REQUEST SUMMARY</div> 
 	</div>	
-  <ul class="list" style="background:#252525;margin-top:40px;"> 
+  <ul class="list" style="background:#252525;"> 
   <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:5px;font-size:24px;padding-right:20px;padding-left:20px">YOU EARN^<div id="pflfare" style="color:#fff;float:right;font-size:26px"></div></li>
   <li class="list__header" style="font-weight:normal;padding-left:20px;background:#252525;color:#fff;height:45px;font-size:10px;letter-spacing:1px"> ^ Actual FARE to be mutually decided</li>
 
@@ -428,14 +428,14 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 
  <ons-template id="track.html">
   <ons-page modifier="shop-details" style="background:#f4f4f4">
-	<div class="navigation-bar" style="border-bottom:1px solid #252525;position:fixed;background:#252525">
+	<div class="navigation-bar" style="border-bottom:1px solid #252525; background:#252525">
 	<div class="navigation-bar__left" style="color:#fff;font-size:8px">
     <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button>       
 	</div>
 	<div class="navigation-bar__center" style="font-size:16px;color:#fff">REQUEST SUMMARY</div> 
 	
 	</div>	
-  <ul class="list" style="background:#252525;margin-top:40px;"> 
+  <ul class="list" style="background:#252525;"> 
   <li class="list__item" style="border:none;color:#fff;margin-top:20px;margin-bottom:20px;font-size:24px;padding-right:20px;padding-left:20px">ESTIMATE<div id="tflfare" style="color:#fff;float:right;font-size:26px"></div></li>
   </ul>    
     <ons-list id="accptrdiv">
@@ -488,7 +488,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 
 <ons-template id="request.html">
  <ons-page style="background:#000">
-	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+	<div style=" top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
 	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
 	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">POSTING REQUEST</h1></div>
 	</div>
@@ -497,7 +497,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 
 <ons-template id="accept.html">
   <ons-page style="background:#000">
-	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+	<div style=" top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
 	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
 	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">ACCEPTING REQUEST</h1></div>
 	</div>
@@ -505,7 +505,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 </ons-template>
 <ons-template id="confirm.html">
   <ons-page style="background:#000">
-	<div style="position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
+	<div style=" top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
 	<img style="margin-left:calc(50% - 72px);" src="openripple.gif">	
 	<div class="bar bar-header bar-light" style="margin-top:30px;background:#000;color:#fff"><h1 class="title" style="text-align:center;background:#000;color:#fff;font-size:14px;letter-spacing:2px;font-weight:300">CONFIRMING REQUEST</h1></div>
 	</div>
@@ -513,7 +513,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
 </ons-template>
 <ons-template id="schedule.html">
       <ons-page style="background:#fff">
-	   <div class="navigation-bar" style="position:fixed;background:#252525">
+	   <div class="navigation-bar" style=" background:#252525">
 	   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
 	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button> 
 	   </div>
@@ -524,7 +524,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
     
   </div>
 	</div>
-        <ons-list class="plan-list" style="margin-top:40px">
+        <ons-list class="plan-list">
           <ons-list-item class="plan" ng-repeat="msg in accepts" ng-if="msg.$id!='notification'" ng-click="fillboxes(msg)">
             <ons-row>
               <ons-col width="100px" class="plan-left">
@@ -560,7 +560,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
     </ons-template>
 	<ons-template id="posted.html">
       <ons-page style="background:#fff">
-	  <div class="navigation-bar" style="position:fixed;background:#252525">
+	  <div class="navigation-bar" style=" background:#252525">
 	   <div class="navigation-bar__left" style="color:#fff;font-size:8px">
 	   <ons-back-button style="color:#fff" onclick="google.maps.event.trigger(map, 'resize');"></ons-back-button> 
 	   </div>
@@ -569,7 +569,7 @@ src="https://www.facebook.com/tr?id=1066721630052558&ev=PageView&noscript=1"
   </div>
   <div class="navigation-bar__right"></div>
 	</div>
-        <ons-list class="plan-list" style="margin-top:40px">
+        <ons-list class="plan-list">
           <ons-list-item class="plan" ng-repeat="msg in posts" ng-if="msg.$id!='notification'" ng-click="fillboxes2(msg)">
             <ons-row>
               <ons-col width="100px" class="plan-left">
