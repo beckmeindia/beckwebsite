@@ -4,7 +4,8 @@
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
 	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 1; var convcurr="INR";
-	var arrPckgs = []; var rsltshow = 0;  var arraccepts = []; var revrsdone = 0; var mycenter;
+	var clicklogin=0;
+	var arrPckgs = []; var rsltshow = 0;  var arraccepts = []; var revrsdone = 0; var mycenter; var lognclckd = 0; var flgg=0;
 
 angular.module('MyApp',['ngMaterial',"firebase"]).controller('AppCtrl', ["$scope", "$firebaseArray", 
 function($scope, $firebaseArray) {
@@ -46,7 +47,7 @@ function($scope, $firebaseArray) {
 		firebaseRef.child("users").child(usrid).child("accepts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone, usrfbid:usrfbid, usrfbimg:usrfbimg}).then(function() {
-		//smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; //mailcall(actionz,usremail,usrphone);	
+		//smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; mailcall(actionz,usremail,usrphone);	
 		$('body').plainOverlay('hide');
 		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
   		arraccepts.push(arrPckgs[rsltshow].id);
@@ -159,10 +160,8 @@ function($scope, $firebaseArray) {
 		phoneno : custPhone
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       // console.log("worked");
        },
       type: 'POST'
 	});
@@ -170,19 +169,16 @@ function($scope, $firebaseArray) {
 	
   function smsacceptdm(number){
 	if(String(number).substring(0, 2) == '91'){
-					//otpcall(inputValue);
 	  $.ajax({
       url: 'https://www.beckme.in/otp.php',
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can approve his request from your profile'
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-        //console.log("01"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -192,13 +188,11 @@ function($scope, $firebaseArray) {
       data:
       {
         phoneNumber : number,
-        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can approve his request from your profile at www.beckme.com/friends'
+        randomNumber : 'Your request has been accepted by your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can approve his request from your profile'
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log("02"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -258,10 +252,8 @@ function($scope, $firebaseArray) {
         randomNumber : 'Thanks for accepting the request of your BECK friend '+String(arrPckgs[rsltshow].usrname).split(" ")[0].substring(0, 10)+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log("11"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -274,10 +266,8 @@ function($scope, $firebaseArray) {
         randomNumber : 'Thanks for accepting the request of your BECK friend '+arrPckgs[rsltshow].split(" ")[0].usrname+'. We will notify you once it has been approved. You can check the status from your profile.'
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log("12"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -313,6 +303,7 @@ var nofkeys=0;
 		}else if(geoQuery.radius()==3500){
 			geoQuery.updateCriteria({radius: 5000});
 		}else{
+			$('#map').plainOverlay('hide');
 		setTimeout(function(){swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 });
 		document.getElementById("pckgctr").innerHTML = "No Requests Found"},3000);
 		document.getElementById("rqstgist").style.display="none";
@@ -322,6 +313,15 @@ var nofkeys=0;
 	var interval = setInterval(function(){
 	if(arrPckgs.length == nofkeys && nofkeys!=0 && acceptsloaded==1){			
 		clearInterval(interval);
+		if(flgg==0)
+		{
+		$('#map').plainOverlay('show',{
+			opacity:0.8,
+			fillColor: '#000',
+			progress: function() { return $('<div style="font-size:26px;color:#fff;font-weight:bold;text-align:center">Customizing Requests<br> for your account...</div>'); }
+		});
+			flgg=1;
+		}
 		for (var key in arraccepts) {forcekeyexit(arraccepts[key])};
 		arrPckgs.sort(function(a, b) {
 			if(String(b.fare).split(" ")[1]=="QUOTE"){
@@ -357,10 +357,12 @@ var nofkeys=0;
 		}else if(geoQuery.radius()==3500){
 			geoQuery.updateCriteria({radius: 5000});
 		}else{
+			$('#map').plainOverlay('hide');
 			document.getElementById("pckgctr").innerHTML = "No Requests Found";
 		setTimeout(function(){swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 })},3000);		
 		}	
     	}else{
+			$('#map').plainOverlay('hide');
 			document.getElementById("prevbtn").style.display="none"; showreslt(0);
 			drawroute(arrPckgs[0].pickuplat, arrPckgs[0].pickuplng, arrPckgs[0].delvlat, arrPckgs[0].delvlng);	
 		}
@@ -417,6 +419,7 @@ $(document).ready(function(){
 		}else if(geoQuery.radius()==3500){
 			geoQuery.updateCriteria({radius: 5000});
 		}else{
+			$('#map').plainOverlay('hide');
 		setTimeout(function(){swal({   title: "No Live Requests",   text: "Presently there are no live requests around this location. You can add a request here if you want or search live requests for another location",   timer: 8000 })},3000);		
 		}		
 	}
@@ -998,10 +1001,8 @@ $(document).ready(function(){
         randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).split(" ")[0].substring(0, 30)+'. You can reach him at '+num1
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-        //console.log("01"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -1014,10 +1015,8 @@ $(document).ready(function(){
         randomNumber : 'Your request has been accepted by your BECK friend '+String(name1).split(" ")[0].substring(0, 30)+'. You can reach him at '+num1
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log("02"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -1034,10 +1033,8 @@ $(document).ready(function(){
         randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can reach him at '+usrphone
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-      // console.log("11"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -1050,10 +1047,8 @@ $(document).ready(function(){
         randomNumber : 'Thanks for accepting the request of your BECK friend '+String(usrname).split(" ")[0].substring(0, 30)+'. You can reach him at '+usrphone
       },
       error: function(error) {
-      //console.log(JSON.stringify(error));
         },
       success: function(data) {
-       //console.log("12"+JSON.stringify(data));
        },
       type: 'POST'
 	});
@@ -1092,8 +1087,7 @@ $(document).ready(function(){
 			document.getElementById("pckgctr").innerHTML="Loading...";
 			var address = ''; rsltshow = 0; google.maps.event.trigger(map, 'resize');
 			$("#tflbckg").css("background-image", "");
-			$('.close-initModal').trigger('click');
-			
+			$('.close-initModal').trigger('click');			
 			if (place.address_components) {
             address = [
               (place.address_components[0] && place.address_components[0].short_name || ''),
@@ -1105,7 +1099,15 @@ $(document).ready(function(){
         });
 	}
 	
-	function checkfirebase(email){		
+	function checkfirebase(email){	
+		if(clicklogin==1){
+			console.log("view called");
+			$('body').plainOverlay('show',{
+			opacity:0.8,
+			fillColor: '#000',
+			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Syncing your details...</div>'); }
+			});
+		}	
 		usrnewmail = String(email).replace(/[^a-zA-Z0-9]/g, ' ');
 		firebaseRef.child("users").once("value", function(snapshot) {			
 			if(snapshot.hasChild(usrnewmail)){
@@ -1113,8 +1115,10 @@ $(document).ready(function(){
 				usremail=  snapshot.child(usrnewmail).child("usremail").val();
 				usrphone = snapshot.child(usrnewmail).child("usrphone").val();
 				usrid = snapshot.child(usrnewmail).child("usrid").val();
-				fbflag = 0; loggedin = 1;		
-			}else if(clicklogin==1){				
+				fbflag = 0; loggedin = 1;	
+				$('body').plainOverlay('hide');			
+			}else if(clicklogin==1){
+				$('body').plainOverlay('hide');					
 				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
 				function(inputValue){
 				if((inputValue.length == 11) && (inputValue[0] == '0')){

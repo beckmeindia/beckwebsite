@@ -12,6 +12,11 @@
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
 		<script src="all.js"></script>
 	<style>	
+	select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+	  }
 	.pac-container{
 	margin-top:15px;font-family:'Maven Pro', sans-serif;
 	z-index:9999;
@@ -108,10 +113,12 @@
    
 	function login(){
 	clicklogin=1;
+	
 	FB.login(function(response) {
 	if (response.authResponse) {
 	if (response.status === 'connected') {	
 	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {
+	
 	  document.getElementById("profile_img").src = String(response.picture.data.url);
 	  document.getElementById("namehdr").innerHTML += 'Hi ' + String(response.name).split(" ")[0].substring(0, 10);	 
 	  document.getElementById("namehdr").style.display = "inline-block";
@@ -286,17 +293,17 @@
     </md-input-container>
 	</md-content>
 	<md-content id="delvlala2" class="md-no-momentum inputdemoIcons" style="display:none">     
-	<md-input-container class="md-block" style="width:80%;margin:0;margin-top:22px;margin-left:10%">
+	<md-input-container class="md-block" style="width:80%;margin:0;margin-top:22px;margin-left:0px">
       <label>Delivery Time</label>
 	  <input id="scrollDefaultExample" onkeydown="return false;" type="text" class="time ui-timepicker-input" autocomplete="off">
     </md-input-container>
-     <md-input-container style="margin-top:0;margin-left:20px">
+     <md-input-container style="margin-top:0;margin-left:0px">
         <label>Size</label>
         <select style="background:#fff; color:#000;margin: 10px 0px 0px 40px;border:none;font-size:12px" onChange="pckgsize = this.value">
-  <option value="SMALL (FITS IN BAG)">SMALL (FITS IN BAG)</option>
-  <option value="MEDIUM (FITS IN CAR)">MEDIUM (FITS IN CAR)</option>
-  <option value="LARGE (FITS IN VAN)">LARGE (FITS IN VAN)</option>
-  <option value="HUGE (FITS IN TRUCK)">HUGE (FITS IN TRUCK)</option>
+  <option value="SMALL (FITS IN BAG)">SMALL(FITS IN BAG)</option>
+  <option value="MEDIUM (FITS IN CAR)">MEDIUM(FITS IN CAR)</option>
+  <option value="LARGE (FITS IN VAN)">LARGE(FITS IN VAN)</option>
+  <option value="HUGE (FITS IN TRUCK)">HUGE(FITS IN TRUCK)</option>
 </select>
       </md-input-container>
 	</md-content>
@@ -406,7 +413,7 @@
 	<div id="initModal" style="background: url(bckg.jpg) #39403D no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
 	<div class="close-initModal" style="display:none">CLOSE</div> 
 	<div  id="typer" style="text-align:center;color:#888;font-size:32px;width:80%; height: 600px; position:absolute; left:0; right:0; top:30%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;"></div>
-	<div style="text-align:center;color:#888;font-size:16px;width:80%; height: 600px; position:absolute; left:0; right:0; top:50%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Search Your Location From the Top<br>To Get Started</div>	
+	<div style="text-align:center;color:#888;font-size:16px;width:80%; height: 600px; position:absolute; left:0; right:0; top:50%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Search Your Location From the Top To Get Started</div>	
 	<!--md-button onclick="befrlogin()" class="md-raised md-primary" style="width:10%; height: 60px; position:absolute; left:0; right:0; top:0px; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Let me In</md-button-->
     </div>
 	</body>
