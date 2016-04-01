@@ -36,17 +36,17 @@ function($scope, $firebaseArray) {
 		var interval = setInterval(function(){
 		if(typeof usrid === 'undefined'){}
 		else{
-		$('body').plainOverlay('show',{
+			$('body').plainOverlay('show',{
 			opacity:0.8,
 			fillColor: '#000',
 			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Accepting...</div>'); }
-		});
+			});
 		clearInterval(interval);
 		firebaseRef.child("users").child(usrid).child("accepts").child(arrPckgs[rsltshow].id).update(arrPckgs[rsltshow]);
 		firebaseRef.child("users").child(usrid).child("accepts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").update({notification:"yes"});
 		firebaseRef.child("users").child(arrPckgs[rsltshow].usrid).child("posts").child(arrPckgs[rsltshow].id).child("acceptors").child(usrid).update({id:usrid,usrname:usrname,usrphone:usrphone, usrfbid:usrfbid, usrfbimg:usrfbimg}).then(function() {
-		smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; //mailcall(actionz,usremail,usrphone);	
+		//smsacceptdm(arrPckgs[rsltshow].usrphn);smsacceptsupp(usrphone); var actionz = "BECK friend "+ usrname +" accepted a new order: " + arrPckgs[rsltshow].id; //mailcall(actionz,usremail,usrphone);	
 		$('body').plainOverlay('hide');
 		swal("Succesfully Accepted", "The details of the request you accepted has been sent you through SMS", "success");
   		arraccepts.push(arrPckgs[rsltshow].id);
@@ -392,7 +392,7 @@ $(document).ready(function(){
 	$("#demo01").animatedModal({animationDuration:'.3s'});
 	$("#demo02").animatedModal({modalTarget:'acceptedModal',animationDuration:'.3s'});
 	$("#demo03").animatedModal({modalTarget:'initModal',animationDuration:'.3s',animatedIn:'none',animatedOut:'fadeOutUp'});
-	$("#demo03").trigger('click');
+	$("#demo03").trigger('click');	
 	shwdetls();
             var win = $(window),
                 foo = $('#typer');
