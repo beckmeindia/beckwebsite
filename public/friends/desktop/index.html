@@ -82,9 +82,9 @@
 	FB.getLoginStatus(function(response) {
 	if (response.status === 'connected') {
 	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {	
-	  document.getElementById("namehdr").style.display = "block";
-	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
-	  //document.getElementById("profile_img").src = String(response.picture.data.url);
+	  document.getElementById("profile_img").src = String(response.picture.data.url);
+	  document.getElementById("namehdr").innerHTML += 'Hi ' + String(response.name).split(" ")[0].substring(0, 10);		 
+	  document.getElementById("namehdr").style.display = "inline-block";
 	  usrname = String(response.name); usremail = String(response.email);
 	  usrfbid = String(response.id); usrfbimg = String(response.picture.data.url);
 	  checkfirebase(usremail);
@@ -112,9 +112,9 @@
 	if (response.authResponse) {
 	if (response.status === 'connected') {	
 	FB.api('/me?fields=id,email,name,picture.height(100)', function(response) {
-	  document.getElementById("namehdr").style.display = "block";
-	  document.getElementById("namehdr").innerHTML = 'Hi ' + String(response.name).split(" ")[0];
-	  //document.getElementById("profile_img").src = String(response.picture.data.url);
+	  document.getElementById("profile_img").src = String(response.picture.data.url);
+	  document.getElementById("namehdr").innerHTML += 'Hi ' + String(response.name).split(" ")[0].substring(0, 10);	 
+	  document.getElementById("namehdr").style.display = "inline-block";
 	   usrfbimg = String(response.picture.data.url); usrname = String(response.name); usremail = String(response.email); usrfbid = String(response.id);
 	  checkfirebase(usremail); 
     })
@@ -150,7 +150,7 @@
 				</li>
 				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
 				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
-				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" ><span id="namehdr" style="display:none"></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary"><md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon> Login</md-button></li>				
+				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" ><span id="namehdr" style="display:none;vertical-align: middle"><img id="profile_img" style="margin-top:-10px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle"/></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary"><md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon> Login</md-button></li>				
 			</ul>			
 		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
@@ -388,9 +388,9 @@
         <div class="modal-content" ng-controller="AppCtrl" ng-cloak style="margin:40px;">
         <md-content ng-show="accepts.length">
 		<md-list style="max-height:450px">
-        <md-list-item  class="md-3-line" ng-repeat="msg in accepts" ng-if="msg.$id!='notification'">
-          <img data-ng-src="{{msg.img}}" class="md-avatar" style="margin-left:20px"/>
-          <div class="md-list-item-text" layout="column" style="padding-top:15px">
+        <md-list-item  class="md-3-line" ng-repeat="msg in accepts" style="margin-left:20px" ng-if="msg.$id!='notification'">
+          <img data-ng-src="{{msg.img}}" class="md-avatar" style="margin-left:20px;width:180px;height:180px;border-radius:10%"/>
+          <div class="md-list-item-text" layout="column" style="padding-top:25px;padding-left:20px;">
             <h3><span style="color:red;font-size:12px;letter-spacing:1px;margin-right:7px">YOU EARN </span> {{ msg.fare }}</h3>
             <h4 style="margin-top:10px">Size : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.size }}</span> </h4>
 			<h4 style="margin-top:10px">Delivery By : <span style="color:#5f6f81;letter-spacing:1px">{{msg.time}} on {{ msg.date }}</span></h4>			
