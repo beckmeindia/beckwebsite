@@ -396,6 +396,11 @@ $(document).ready(function(){
 	$("#demo03").animatedModal({modalTarget:'initModal',animationDuration:'.3s',animatedIn:'none',animatedOut:'fadeOutUp'});
 	$("#demo03").trigger('click');	
 	shwdetls();
+	$("#os-phrases > h2.openz").lettering('words').children("span").lettering().children("span").lettering();
+	$('#cloudz').css('background-image','url(bckg.jpg)')
+  .waitForImages(function() {
+   document.getElementById("cloudz").style.display="block"
+  }, $.noop, true);
             var win = $(window),
                 foo = $('#typer');
 
@@ -436,8 +441,7 @@ $(document).ready(function(){
 			else{
 				return parseInt(Number(String(b.fare).split(" ")[1])) - parseInt(Number(String(a.fare).split(" ")[1]));
 			}		
-		});
-		
+		});		
 		nofkeys = arrPckgs.length;
 		if(nofkeys==0){
 			document.getElementById("pckgctr").innerHTML = "No Requests Found";
@@ -841,12 +845,11 @@ $(document).ready(function(){
 	function drawroute(picklat,picklng,delvlat,delvlng){	
 	for (var i = 0; i < hotSpotMapMarkers.length; i++)
     hotSpotMapMarkers[i].setMap(null);
-	map.setCenter(new google.maps.LatLng(picklat,picklng));
 	var flightPlanCoordinates = [{lat:picklat,lng:picklng},{lat:delvlat,lng:delvlng}];
 	var latlngbounds = new google.maps.LatLngBounds();
 	latlngbounds.extend(new google.maps.LatLng(picklat,picklng));
 	latlngbounds.extend(new google.maps.LatLng(delvlat,delvlng));
-	map.setCenter(latlngbounds.getCenter()); map.fitBounds(latlngbounds);
+
 	var polyLine = new google.maps.Polyline({
     path: flightPlanCoordinates,
     strokeColor: "#2bb1de",
@@ -870,6 +873,7 @@ $(document).ready(function(){
 	icon: "package.png",
     map: map
 	}));
+	map.fitBounds(latlngbounds);
 	}
 	
 	function shwdetls(){
@@ -1059,11 +1063,11 @@ $(document).ready(function(){
 	function befrlogin(){
 		swal({ title: "Love to have you on board",   text: "Enter into your BECK Friends Account with Facebook",   type: "success",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Go Ahead" }, function(){login()});		
 	}
+
 	function callauto(){		
 		var autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchloc'));
-        autocomplete.bindTo('bounds', map);
-		setTimeout('$("body").css("visibility","visible");', 1000);
-        autocomplete.addListener('place_changed', function() {
+        autocomplete.bindTo('bounds', map); 			
+		autocomplete.addListener('place_changed', function() {
 		  var place = autocomplete.getPlace();
           if (!place.geometry) {
            return;
@@ -1087,7 +1091,8 @@ $(document).ready(function(){
 			document.getElementById("pckgctr").innerHTML="Loading...";
 			var address = ''; rsltshow = 0; google.maps.event.trigger(map, 'resize');
 			$("#tflbckg").css("background-image", "");
-			$('.close-initModal').trigger('click');			
+			$('.close-initModal').trigger('click');	
+			document.getElementById("mnuitm").style.display="block";
 			if (place.address_components) {
             address = [
               (place.address_components[0] && place.address_components[0].short_name || ''),
@@ -1105,7 +1110,7 @@ $(document).ready(function(){
 			$('body').plainOverlay('show',{
 			opacity:0.8,
 			fillColor: '#000',
-			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Syncing your details...</div>'); }
+			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Finding your details...</div>'); }
 			});
 		}	
 		usrnewmail = String(email).replace(/[^a-zA-Z0-9]/g, ' ');

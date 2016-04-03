@@ -7,11 +7,392 @@
 		<title>BECK friends</title>
 		<meta name="description" content="Peer-to-peer marketplace for sending anything anywhere" />
 		<meta name="keywords" content="Peer-to-peer marketplace for sending anything anywhere" />
-		<meta name="author" content="BeckFriends" />
+		<meta name="author" content="BeckFriends" />		
 		<link rel="stylesheet" type="text/css" href="all.css"/>		
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzPsPjOxzeJeld7JTP4jIbqnZ61FjKkzg&libraries=places"></script>
 		<script src="all.js"></script>
-	<style>	
+		 <script>
+		 
+			var md = new MobileDetect(window.navigator.userAgent);
+			if (md.mobile() === undefined || md.mobile() === null){}
+			else{
+			window.location="https://www.beckme.com/friends/";
+			}
+		</script>
+	<style>
+.os-phrases h2.openz {
+	font-family: 'Dosis', 'Lato', sans-serif;
+	font-size: 35px;
+	font-weight: 200;
+	height: 200px;
+	width: 100%;
+	overflow: hidden;
+	text-transform: uppercase;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	letter-spacing: 14px;
+	text-align: center;
+}
+.os-phrases h2.openz,
+.os-phrases h2.openz > span {
+	height: 100%;
+	/* Centering with flexbox */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.os-phrases h2.openz > span {
+	margin: 0 15px;
+}
+.os-phrases h2.openz > span > span {
+	display: inline-block;
+	perspective: 1000px;
+	transform-origin: 50% 50%;
+}
+.os-phrases h2.openz > span > span > span {
+	display: inline-block;
+	color: hsla(0,0%,0%,0);
+	transform-style: preserve-3d;
+	transform: translate3d(0,0,0);
+	animation: OpeningSequence 5.2s linear forwards;
+}
+.os-phrases h2.openz:nth-child(2) > span > span > span {
+	animation-delay: 5s;
+}
+
+.os-phrases h2.openz:nth-child(3) > span > span > span {
+	animation-delay: 10s;
+}
+
+.os-phrases h2.openz:nth-child(4) > span > span > span {
+	animation-delay: 15s;
+}
+
+.os-phrases h2.openz:nth-child(5) > span > span > span {
+	font-size: 30px;
+	animation-delay: 21s;
+	animation-duration: 8s;
+}
+
+.os-phrases h2.openz:nth-child(6) > span > span > span {
+	animation-delay: 30s;
+}
+
+.os-phrases h2.openz:nth-child(7) > span > span > span {
+	animation-delay: 34s;
+}
+@keyframes OpeningSequence {
+	0% {
+		text-shadow: 0 0 50px #fff;
+		letter-spacing: 80px;
+		opacity: 0.2;
+		transform: rotateY(-90deg);
+	}
+	50% {
+		text-shadow: 0 0 1px #fff;
+		letter-spacing: 14px;
+		opacity: 0.8;
+		transform: rotateY(0deg);
+	}
+	85% {
+		text-shadow: 0 0 1px #fff;
+		opacity: 0.8;
+		transform: rotateY(0deg) translateZ(100px);
+	}
+	100% {
+		text-shadow: 0 0 10px #fff;
+		opacity: 0;
+		transform: translateZ(130px);
+		pointer-events: none;
+	}
+}
+.os-phrases h2.openz:nth-child(8) > span > span > span {
+	font-size: 30px;
+	animation: FadeIn 4s linear 40s forwards;
+}
+
+@keyframes FadeIn { 
+	0% {
+		opacity: 0;
+		text-shadow: 0 0 50px #fff;
+	}
+	100% {
+		opacity: 0.8;
+		text-shadow: 0 0 1px #fff;
+	}
+}
+
+.os-phrases h2.openz:first-child .word3,
+.os-phrases h2.openz:nth-child(2) .word2,
+.os-phrases h2.openz:nth-child(4) .word2 {
+	font-weight: 600;
+}
+.plane-container {
+  width: 60%;
+  margin: 0px auto;
+  z-index: 3;
+  position:absolute;
+}
+ /*Paper Plane: Image*/
+.plane {
+  width: 100%;
+  height: 40px;
+}
+
+/*Paper Plane: Animation*/
+.plane-container {
+  -webkit-animation: paper-plane-scoping 2s alternate infinite;
+  -moz-animation: paper-plane-scoping 2s alternate infinite;
+  animation: paper-plane-scoping 2s alternate infinite;
+
+  -webkit-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+
+@-webkit-keyframes paper-plane-scoping {
+  0% {
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+  100% {
+    -webkit-transform: translateY(100px);
+    -moz-transform: translateY(100px);
+    transform: translateY(100px);
+  }
+}
+
+.plane {
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+
+  -webkit-animation: paper-plane-soaring 4s forwards infinite;
+  -moz-animation: paper-plane-soaring 4s forwards infinite;
+  animation: paper-plane-soaring 4s forwards infinite;
+}
+@-webkit-keyframes paper-plane-soaring {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  40% {
+    -webkit-transform: rotate(15deg);
+    -moz-transform: rotate(15deg);
+    transform: rotate(15deg);
+  }
+  50% {
+    -webkit-transform: rotate(15deg);
+    -moz-transform: rotate(15deg);
+    transform: rotate(15deg);
+  }
+  60% {
+    -webkit-transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+  70% {
+    -webkit-transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}
+	.sky {
+  height: 100%;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  opacity:0.2;
+  -webkit-animation: sky_background 50s ease-out infinite;
+  -moz-animation: sky_background 50s ease-out infinite;
+  -o-animation: sky_background 50s ease-out infinite;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0)
+}
+
+.clouds_one {
+  background: url("cloud_one.png");
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 300%;
+  -webkit-animation: cloud_one 50s linear infinite;
+  -moz-animation: cloud_one 50s linear infinite;
+  -o-animation: cloud_one 50s linear infinite;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0)
+}
+
+.clouds_two {
+  background: url("cloud_two.png");
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 300%;
+  -webkit-animation: cloud_two 75s linear infinite;
+  -moz-animation: cloud_two 75s linear infinite;
+  -o-animation: cloud_two 75s linear infinite;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0)
+}
+
+.clouds_three {
+  background: url("cloud_three.png");
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 300%;
+  -webkit-animation: cloud_three 100s linear infinite;
+  -moz-animation: cloud_three 100s linear infinite;
+  -o-animation: cloud_three 100s linear infinite;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0)
+}
+
+@-webkit-keyframes sky_background {
+  0% {
+    background: #000;
+    color: #000
+  }
+  50% {
+    background: #000;
+    color: #000
+  }
+  100% {
+    background: #000;
+    color: #000
+  }
+}
+
+@-webkit-keyframes moon {
+  0% {
+    opacity: 0;
+    left: -200% -moz-transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    -moz-transform: scale(1);
+    left: 0% bottom: 250px;
+    -webkit-transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    bottom: 500px;
+    -moz-transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+  }
+}
+
+@-webkit-keyframes cloud_one {
+  0% {
+    left: 0
+  }
+  100% {
+    left: -200%
+  }
+}
+
+@-webkit-keyframes cloud_two {
+  0% {
+    left: 0
+  }
+  100% {
+    left: -200%
+  }
+}
+
+@-webkit-keyframes cloud_three {
+  0% {
+    left: 0
+  }
+  100% {
+    left: -200%
+  }
+}
+
+@-moz-keyframes sky_background {
+  0% {
+    background: #000;
+    color: #000
+  }
+  50% {
+    background: #000;
+    color: #000
+  }
+  100% {
+    background: #000;
+    color: #000
+  }
+}
+
+@-moz-keyframes moon {
+  0% {
+    opacity: 0;
+    left: -200% -moz-transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    -moz-transform: scale(1);
+    left: 0% bottom: 250px;
+    -webkit-transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    bottom: 500px;
+    -moz-transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+  }
+}
+
+@-moz-keyframes cloud_one {
+  0% {
+    left: 0
+  }
+  100% {
+    left: -200%
+  }
+}
+
+@-moz-keyframes cloud_two {
+  0% {
+    left: 0
+  }
+  100% {
+    left: -200%
+  }
+}
+
+@-moz-keyframes cloud_three {
+  0% {
+    left: 0
+  }
+  100% {
+    left: -200%
+  }
+}
+input:focus {
+  outline: none;
+}
 	select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -22,7 +403,7 @@
 	z-index:9999;
 	}
 	.pac-item{
-	padding:10px
+	padding:10px;
 	}		
 	.pac-icon{
 	display:none
@@ -45,7 +426,7 @@
 	}
 	</style>
 	</head>
-  <body  ng-app="MyApp" ng-cloak style="background:#eaeaea" style="visibility: hidden">
+  <body ng-app="MyApp" ng-cloak style="background:#eaeaea" style="display:none">
   <script>
    var map,directionsService, directionsDisplay;	
     function initMap(){
@@ -74,7 +455,7 @@
 	callauto();
 	callauto2();
 	callauto3();
-  	}
+	}
 	google.maps.event.addDomListener(window, 'load', initMap);	   
 	
   window.fbAsyncInit = function() {
@@ -140,8 +521,8 @@
   <script src="index.js"></script>
 		<div class="container">
 			<ul id="gn-menu" class="gn-menu-main" style="border-bottom:1px solid #c6d0da;position: absolute;z-index:999;">				
-				<li class="gn-trigger" style="border-right:none;">
-					<a class="gn-icon gn-icon-menu"><span>Menu</span></a>
+				<li id="mnuitm" class="gn-trigger" style="border-right:none;display:none">
+					<a class="gn-icon gn-icon-menu"></a>
 					<nav class="gn-menu-wrapper">
 						<div class="gn-scroller">
 							<ul class="gn-menu">
@@ -155,9 +536,9 @@
 						</div>
 					</nav>
 				</li>
-				<li style="padding-left:20px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
-				<li style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
-				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right" ><span id="namehdr" style="display:none;vertical-align: middle;margin-top:-5px"><img id="profile_img" style="margin-top:-10px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle"/></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary" style="margin-top:-5px"><md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon> Login</md-button></li>				
+				<li style="padding-left:60px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
+				<li id="mnuitm2" style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
+				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right;" ><span id="namehdr" style="vertical-align: middle;margin-top:-5px;display:none"><img id="profile_img" style="margin-top:-5px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle;"/></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary" style="margin-top:-5px"><md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon> Login</md-button></li>				
 			</ul>			
 		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc"  ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
@@ -233,7 +614,7 @@
             <span id="tytl" class="md-title" style="font-weight:normal;color:#d80000"></span>            
           </md-card-header-text>
         </md-card-header>
-			<div id="packagephoto" style="color:#888;position:absolute;margin-top:90px;margin-left:130px;font-size:18px;height:20px;z-index:9;text-align:center;letter-spacing:1px" onclick="document.getElementById('files').click()">ADD PACKAGE PHOTO</div>
+			<div id="packagephoto" style="position:absolute; left:0; right:0; top:-100px; bottom:0; margin:auto; max-width:100%; max-height:200px; overflow:auto;color:#888;font-size:18px;height:30px;z-index:9;text-align:center;letter-spacing:1px" onclick="document.getElementById('files').click()">ADD PACKAGE PHOTO</div>
 	  	  <div id="card" onclick="card()" style="height:200px;width:90%;margin-left:5%;background:#eaeaea;display:none"><input type="file" id="files" name="upload" style="z-index:999;width:97%;height:200px; opacity: 0;-moz-opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"/></div>
     <div layout="row" id="pckginfo">
 	   <div flex>
@@ -358,20 +739,18 @@
 			<h4 style="margin-top:10px">Delivery By: <span style="color:#5f6f81;letter-spacing:1px">{{msg.deliverytime}} on {{ msg.deliverydate }}</span> </h4>
 			<h4 style="margin-top:10px">Pickup Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.pickuparea }}</span> </h4>
             <h4 style="margin-top:10px">Delivery Area : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.deliveryarea }}</span></h4>
-			<h4 style="margin-top:10px">Status : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.status }}</span></h4>
-			
+			<h4 style="margin-top:10px">Status : <span style="color:#5f6f81;letter-spacing:1px">{{ msg.status }}</span></h4>			
           </div>
 		  <md-list flex flex-xs="" flex-gt-xs="30" style="padding-left:10px">
-		   <md-subheader class="md-no-sticky">BECK Friends who accepted this Request</md-subheader>
+		   <md-subheader class="md-no-sticky" ng-show="msg.acceptors != null">BECK Friends who accepted this Request</md-subheader>
+		   <md-subheader class="md-no-sticky" ng-show="msg.acceptors == null">No BECK Friends accepted this Request</md-subheader>
 		  <md-list-item class="md-3-line" style="min-height:50px" ng-repeat="val in msg.acceptors">
           <img ng-src="{{val.usrfbimg}}" class="md-avatar" style="border-radius:50%;width:40px;height:40px"/>
           <div class="md-list-item-text" layout="column">
             <h3 style="height:30px"><md-button ng-click="showprofile(val)" target="_blank" style="margin:0;font-size:12px;padding:0px">{{val.usrname}}</md-button></h3>
             <h3 style="height:30px"><md-button ng-click="approvefrnd(val,msg.id)" class="md-primary" style="margin:0;font-size:12px;padding:0px 5px">APPROVE THIS PERSON</md-button></h3>            
           </div>
-        </md-list-item>
-		
-		
+        </md-list-item>	
 		</md-list>
 		</md-list-item>
         </md-list>
@@ -410,11 +789,35 @@
 		</md-content>
         </div>
     </div>
-	<div id="initModal" style="background: url(bckg.jpg) #39403D no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
-	<div class="close-initModal" style="display:none">CLOSE</div> 
-	<div  id="typer" style="text-align:center;color:#888;font-size:32px;width:80%; height: 600px; position:absolute; left:0; right:0; top:30%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;"></div>
-	<div style="text-align:center;color:#888;font-size:16px;width:80%; height: 600px; position:absolute; left:0; right:0; top:50%; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Search Your Location From the Top To Get Started</div>	
-	<!--md-button onclick="befrlogin()" class="md-raised md-primary" style="width:10%; height: 60px; position:absolute; left:0; right:0; top:0px; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto;">Let me In</md-button-->
-    </div>
+	<div id="initModal">
+	<div class="close-initModal" style="display:none">CLOSE</div> 	
+	
+	<div id="cloudz" style="display:none;text-align:center;color:#888;font-size:16px;width:100%; height: 600px; position:absolute; left:0; right:0; top:0; bottom:0; max-width:100%; max-height:100%; background-color:#000; background-repeat: no-repeat;background-attachment: fixed;background-position: center;  -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+	<div class="plane-container">
+<svg version="1.1" x="0px" y="0px"
+width="1131.53px" height="379.304px" viewBox="0 0 1131.53 379.304" enable-background="new 0 0 1131.53 379.304"
+xml:space="preserve" class="plane">
+<polygon fill="#2c5b62" points="72.008,0 274.113,140.173 274.113,301.804 390.796,221.102 601.682,367.302 1131.53,0.223  "/>
+<polygon fill="#14292c" points="1131.53,0.223 274.113,140.173 274.113,301.804 390.796,221.102   "/>
+</svg>
+
+</div>
+	<div class="sky">
+    <div class="clouds_one"></div>
+    <div class="clouds_two"></div>
+    <div class="clouds_three"></div>
+	</div>
+	<div class="os-phrases" id="os-phrases">
+	<h2 class="openz">Send anything anywhere</h2>
+	<h2 class="openz">Earn as you travel</h2>
+	<h2 class="openz">Check Live Requests</h2>
+	<h2 class="openz">Anywhere in the world</h2>
+	<h2 class="openz">Add packages of any size</h2>
+	<h2 class="openz">Get packages delivered</h2>
+	<h2 class="openz">With verified profiles</h2>
+	<h2 class="openz">Signup to start Earning</h2>
+	</div>
+	</div>
+	</div>
 	</body>
 </html>
